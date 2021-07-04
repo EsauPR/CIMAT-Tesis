@@ -1,22 +1,19 @@
+\section{De RNN's a Transformers}
 
-\section{Before the Transformers}
+Las Redes Neuronales Recurrentes o RNN (por sus siglas en Inglés) datan del año 1986, basadas en el
+trabajo de Rumelhart \cite{Rumelhart}. Este tipo de redes están especializadas en el procesamiento
+de datos que contienen información temporal, mejorando los resultados obtenidos por por otros tipos
+de redes como Redes FeedForward o Redes Convolucionales.
 
-
-The Recurrent Neural Networks or RNN dates from 1986 based on the work of Rumelhart
-\cite{Rumelhart}.
-The Recurrent Neural Networks or RNN dates from 1986 based on the work of Rumelhart. These networks
-are specialized to work with data that contains temporal information and therefore the results
-obtained improve against other types such as FeedForward or Convolutional networks.
-
-
-The main idea behind these models is the concept of Parameter Sharing. Con Parameter Sharing un
-modelo puede generalizar mejor cuando la información esta contenida en diferentes partes de una
-secuencia. Así, el modelo no necesita aprender independientemente todas las reglas que forman la
-secuencias, sino que ahora, la salida para cada elemento en el tiempo esta determinada por la
-salida del elemento anterior. Resultando en una recurrencia con las mismas reglas de actualización
-aplicadas a cada elemento en el tiempo. La ecuación \ref{eq:rnn} representa este proceso; $h^{(t)}$
-es el estado de la recurrencia aplicada por alguna función $f$ a un elemento $x^{(t)}t$ de la
-secuencia $x$ en el tiempo $t$, $\theta$ son los parámetros compartidos.
+La principal idea detrás de estos modelos de red es el concepto de \textit{Parameter Sharing}.
+Con \textit{Parameter Sharing} un modelo un modelo puede generalizar mejor cuando la información
+que esta contenida en diferentes partes de una secuencia. Así, el modelo no necesita aprender
+independientemente todas las reglas que forman la secuencias, sino que ahora, la salida para cada
+elemento en el tiempo esta determinada por la salida del elemento anterior. Resultando en una
+recurrencia con las mismas reglas de actualización aplicadas a cada elemento en el tiempo.
+La ecuación \ref{eq:rnn} representa este proceso; $h^{(t)}$ es el estado de la recurrencia aplicada
+por alguna función $f$ a un elemento $x^{(t)}t$ de la secuencia $x$ en el tiempo $t$, $\theta$ son
+los parámetros compartidos.
 
 \begin{equation}
     h^{(t)} = f(h^{(t-1)}, x^{(t)}; \theta)
@@ -43,3 +40,27 @@ siguiente nodo.}
 % the \label gives a reference for this figure so that you can refer to it in the text by its number in a way which will be automatically updated if you change the document.  THIS IS A GOOD IDEA; having automatically updated references for figures, equations, etc, will keep your document in order even as you continue to update it over a period of months.  This reference can be called in the text using the \ref tag.
 \label{fig:rnn_cg}
 \end{figure}
+
+
+Celdas de memoria LSTM GRU
+
+
+
+Problema de RNN
+Vanising gradient
+https://www.iro.umontreal.ca/~lisa/pointeurs/ieeetrnn94.pdf
+https://arxiv.org/pdf/1211.5063.pdf
+
+
+Attention mechanism
+
+
+
+\section{El modelo Transformer}
+
+A finales del año 2017 se presentó un nuevo modelo que vino a revolucionar el área de Procesamiento
+de Lenguaje Natural, El Transformer \cite{Vaswani}. Una de sus principales características es la
+capacidad de procesar la información de alguna secuencia de forma paralela, caso contrario a las
+Redes Neuronales Recurrentes, donde la información se procesa recurrentemente. Gracias a ello
+la capacidad de \textit{recuerdo} no se ve afectado por el problema de \textit{El
+desvanecimiento del Gradiente} cuando se trabaja con secuencias bastante largas.
