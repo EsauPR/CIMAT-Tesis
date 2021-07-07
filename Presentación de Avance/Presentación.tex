@@ -88,11 +88,12 @@ Lenguaje Natural.\\~\
 Finalmente se propone una variante enfocado en aumentar la capacidad receptiva de las cabezas de
 atención permitiendo mayor flexibilidad al no estar ligada al tamaño de embedding predefinidos.\\~\
 
-Las experimentaciones del funcionamiento del modelo se realizan en los siguientes problemas:
+Las experimentaciones del funcionamiento la variante del modelo se realizan en los siguientes
+problemas:
 \begin{itemize}
     \item Predicción de Pose 2D en humanos sobre imágenes
     \item Predicción de Pose 3D en humanos (Monocular, Desacoplado)
-    \item ViT y Clasificación de Enfermedades Comunes de Tórax (INAOEP, CIMAT, IMSS)
+    \item ViT y Clasificación de Enfermedades Comunes de Tórax (INAOE, CIMAT, IMSS)
 \end{itemize}
 \end{frame}
 
@@ -284,7 +285,7 @@ $W^O$ $\in \mathbb{R}^{hd_v \times d_m}$ y $d_k=d_v=d_m/h$
 
 %---------------------------------------------------------
 \begin{frame}
-\frametitle{MultiHead-Self-Attention}
+\frametitle{MultiHead-Self-Attention - Flexible}
 
 \begin{itemize}
     \item El tamaño de la cabeza es dependiente de la dimensión del embedding y el número de cabezas
@@ -327,7 +328,8 @@ podemos solventar los puntos anteriores.
         \hline
     \end{tabular}
     \end{center}
-\caption{Average Precision y Average Recall sobre el conjunto de validación COCO-2017.}
+\caption{Average Precision y Average Recall sobre el conjunto de validación COCO-2017 para
+         Estimación de Pose 2D.}
 \label{table:2d}
 \end{table}
 
@@ -360,7 +362,6 @@ podemos solventar los puntos anteriores.
 % \begin{frame}
 % \frametitle{Detección de Pose 2D}
 % \tiny
-
 % \begin{table}[h!]
 % \centering
 % \begin{tabular}{|l||c|c|c|c|c|}
@@ -395,6 +396,7 @@ podemos solventar los puntos anteriores.
 % \end{table}
 
 % \end{frame}
+%---------------------------------------------------------
 
 %---------------------------------------------------------
 \begin{frame}
