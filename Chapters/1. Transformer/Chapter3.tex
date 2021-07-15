@@ -16,9 +16,9 @@ por alguna función $f$ a un elemento $x^{(t)}t$ de la secuencia $x$ en el tiemp
 los parámetros compartidos.
 
 \begin{equation}
-    h^{(t)} = f(h^{(t-1)}, x^{(t)}; \theta)
+    h^{(t)} = f(x^{(t)}, h^{(t-1)}; \theta)
+    \label{eq:rnnh}
 \end{equation}
-\label{eq:rnn}
 
 En una \textit{RNN} vista como un \textit{gráfo computacional dirigído y acíclico}, cada nodo
 representa un estado en la recurrencia y procesa la información de la secuencia $x$ con los mismos
@@ -33,6 +33,8 @@ secuencia genera un nuevo estado oculto $h^{(t)}$ para retroalimentar nuevamente
 siguiente nodo.}
 \label{fig:rnn_cg}
 \end{figure}
+
+\subsection{Redes Neuronales Recurrentes más comunes}
 
 Existen diversas formas como construir \textit{Redes neuronales Recurrentes}, pueden producir una
 salida en cada paso de tiempo o tener solo una al final de la recurrencia  y también pueden tener
@@ -133,24 +135,81 @@ $y^{(t)}$ sirve como objetivo para la función de costo del paso anterior y como
 
 
 Si bien, los modelos ejemplificados anteriormente son construidos de forma \textit{causal}, es
-decir, la secuencia es procesada en un solo sentido, estos pueden ser modificados fácilmente para
-que las secuencias sean procesadas en ambas direcciones, a lo que llamamos \textbf{Redes Neuronales
-Recurrentes Bidireccionales}.
+decir, la secuencia es procesada en un solo sentido en donde la información pasada es transmitida
+hacia el estados futuros, no siempre este flujo de información es suficientemente para resolver
+ciertas tareas. Un \textit{Modelo de Lenguaje} aprende la estructura estadística del lenguaje con el
+que fue entrenado y su meta es predecir la siguiente palabra, n-grama o letra dado un contexto antes
+visto. En otros términos dada una secuencia de texto de longitud $T$ $x^{(1)}, x^{(2)}, ..., x^{(T)}$
+la meta es predecir la probabilidad conjunta de la secuencia:
+
+\begin{equation}
+    P(x^{(1)}, x^{(2)}, ..., x^{(T)}) = \prod_{t=1}^{T} P(x^{(t)} | x^{(t)}, \dots , x^{(t-1)})
+\end{equation}
+
+Con ello, un modelo de lenguaje basado en \textit{Redes Neuronales Recurrentes} es capaz de predecir
+un siguiente elemento $\hat x^{(t)}$ simplemente obteniéndolo de la secuencia mediante:
+
+\begin{equation}
+    \hat x^{(t)} \approx P(x^{(t)} | x^{(t-1)}, \dots, x^{(1)}) \approx P(x^{(t)} | h^{(t-1)})
+\end{equation}
+
+donde $h^{(t-1)}$ es el estado oculto que almacena la información pasada hasta el tiempo $t$
+tal y como se definió en \ref{eq:rnnh}.
+
+Sin embargo, la información previa de la secuencia codificada en $h^{(t)}$ no siempre contiene los
+elementos necesarios para que el modelo pueda predecir correctamente el siguiente elemento,
+observe la siguiente oración:
+
+\begin{center}
+    % \tiny
+    << \textit{Ella estaba muy \_\_\_\_\_, después de que Alejandra vió el amanecer en la playa } >>
+\end{center}
+
+En la oración anterior el espacio en blanco puede ser completado con algún adjetivo calificativo;
+\textit{contenta}, \textit{enojada}, \textit{maravillada}, etc. Gracias a la información provista por
+la parte final de la oración, podemos deducir quede las 3 opciones seguramente la menos probable de
+elegir es \textit{enojada}. Es decir, usamos información del futuro que no pudo haber sido vista por
+una red (que procesa la información en forma causal) para tomar la mejor elección. Una ligera
+modificación fácilmente aplicable a estos modelos es que las secuencias sean procesadas
+en ambas direcciones, a lo que llamamos \textbf{Redes Neuronales Recurrentes Bidireccionales}
+\cite{Schuster}.
+
+Así una \textit{RNN Recurrente}  procesa la secuencia en ambos sentidos, capturando información del
+pasado en el estado oculto $\overrightarrow{h}^{(t)}$  cuando la recurrencia es del inicio al final
+de la secuencia e información del futuro en $\overleftarrow{h}  ^{(t)}$ cuando la recurrencia es del
+final al inicio de la secuencia. Finalmente el estado oculto $h^{(t)}$ es una concatenación de ambos
+estados $\overrightarrow{h}^{(t)}$ y $\overleftarrow{h}^{(t)}$, vea la ecuación \ref{eq:rrnbi},
+y la salida $O^{(t)}$ ahora puede ser calculada con información tanto del futuro como del pasado
+\ref{eq:rrn_out}.
+
+\begin{equation}
+\begin{split}
+    \overrightarrow{h}^{(t)} = f(x^{(t)}, \overrightarrow{h}^{(t-1)}; \theta_f)\\
+    \overleftarrow{h}^{(t)} = f(x^{(t)}, \overleftarrow{h}^{(t+1)}; \theta_b)\\
+    h^{(t)} = Concat(\overrightarrow{h}^{(t)}, \overleftarrow{h}^{(t)})
+\end{split}
+\label{eq:rrnbi}
+\end{equation}
+
+\begin{equation}
+        O^{(t)} = g(h^{(t)}; \theta_{out})
+\label{eq:rrn_out}
+\end{equation}
+
+
+\subsection{Compuertas LSTM y GRU}
 
 
 
-- Celdas de memoria LSTM GRU
+\subsection{Mecanismos de Atención}
 
-- Attention mechanism
-- Mencionar parallización y backpropragation trougth the time
+\subsection{BackPropagation a través del tiempo}
 
+\subsection{Problema del Desvanecimiento del Gradiente}
 - Problema de RNN
 Vanising gradient
 https://www.iro.umontreal.ca/~lisa/pointeurs/ieeetrnn94.pdf
 https://arxiv.org/pdf/1211.5063.pdf
-
-
-
 
 
 \section{El modelo Transformer}
@@ -161,3 +220,10 @@ capacidad de procesar la información de alguna secuencia de forma paralela, cas
 Redes Neuronales Recurrentes, donde la información se procesa recurrentemente. Gracias a ello
 la capacidad de \textit{recuerdo} no se ve afectado por el problema de \textit{El
 desvanecimiento del Gradiente} cuando se trabaja con secuencias bastante largas.
+
+
+\begin{figure}
+    \begin{center}
+        \scalebox{0.4}{\input{ROC_AUC.pgf}}
+    \end{center}
+\end{figure}
