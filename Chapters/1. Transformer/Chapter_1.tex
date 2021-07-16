@@ -1,39 +1,3 @@
-\section{De RNN's a Transformers}
-
-Las \textbf{Redes Neuronales Recurrentes} o \textbf{RNN} (por sus siglas en Inglés) datan del año
-1986, basadas en el trabajo de Rumelhart \cite{Rumelhart}. Este tipo de redes están especializadas
-en el procesamiento de datos que contienen información temporal, mejorando los resultados obtenidos
-por otros tipos de redes como \textit{Redes FeedForward} o \textit{Redes Convolucionales}.
-
-La principal idea detrás de estos modelos de red es el concepto de \textit{Parameter Sharing}.
-Con \textit{Parameter Sharing} un modelo un modelo puede generalizar mejor cuando la información
-que esta contenida en diferentes partes de una secuencia. Así, el modelo no necesita aprender
-independientemente todas las reglas que forman la secuencias, sino que ahora, la salida para cada
-elemento en el tiempo esta determinada por la salida del elemento anterior. Resultando en una
-recurrencia con las mismas reglas de actualización aplicadas a cada elemento en el tiempo.
-La ecuación \ref{eq:rnn} representa este proceso; $h^{(t)}$ es el estado de la recurrencia aplicada
-por alguna función $f$ a un elemento $x^{(t)}t$ de la secuencia $x$ en el tiempo, $t$ y $\theta$ son
-los parámetros compartidos.
-
-\begin{equation}
-    h^{(t)} = f(x^{(t)}, h^{(t-1)}; \theta)
-    \label{eq:rnnh}
-\end{equation}
-
-En una \textit{RNN} vista como un \textit{gráfo computacional dirigído y acíclico}, cada nodo
-representa un estado en la recurrencia y procesa la información de la secuencia $x$ con los mismos
-parámetros $\theta$ en cada paso, observe la figura \ref{fig:rnn_cg}.
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=.8\textwidth]{Chapters/1. Transformer/Figures/rnn/rnn_cgraph.png}
-\caption[RNN - Grafo Computacional]{Grafo computacional generado por una \textit{RNN} al "desenrrollar" la
-recurrencia. Usando los parámetros compartidos en cada nodo, con cada elemento $x^{(t)}$ de la
-secuencia genera un nuevo estado oculto $h^{(t)}$ para retroalimentar nuevamente la entrada del
-siguiente nodo.}
-\label{fig:rnn_cg}
-\end{figure}
-
 \subsection{Redes Neuronales Recurrentes más comunes}
 
 Existen diversas formas como construir \textit{Redes neuronales Recurrentes}, pueden producir una
@@ -52,7 +16,7 @@ pasado a través de la predicción del paso anterior, perdiendo así gran parte 
 codificada en los estados ocultos, a menos que la salida $O^{(t-1)}$ sea lo suficientemente rica y
 esté en altas dimensiones.
 
-% \begin{figure}[h!]
+% \begin{figure}[!ht]
 % \centering
 % \includegraphics[width=.8\textwidth]{Chapters/1. Transformer/Figures/rnn/rnn_cfg.png}
 % \caption[RNN - CFG]{Distintos tipos de RNNs. \textbf{a)} Las activaciones de las capas ocultas $h^{(t)}$
@@ -65,7 +29,7 @@ esté en altas dimensiones.
 % \label{fig:rnn_cfg}
 % \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
     \centering
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
@@ -124,7 +88,7 @@ también es usada para calcular la función de costo del paso anterior $L^{(t-1)
 red puede ser usada en tareas como Image Captioning, en donde la entrada es una imagen y la salida
 una secuencia de palabras que describen esta misma.
 
-\begin{figure}[h!]
+\begin{figure}[!ht]
 \centering
 \includegraphics[width=.4\textwidth]{Chapters/1. Transformer/Figures/rnn/rnn_cfge.png}
 \caption[RNN - Image Captioning]{Modelo usado para tareas de \textit{Image Captioning}, la entrada es una
@@ -195,35 +159,3 @@ y la salida $O^{(t)}$ ahora puede ser calculada con información tanto del futur
         O^{(t)} = g(h^{(t)}; \theta_{out})
 \label{eq:rrn_out}
 \end{equation}
-
-
-\subsection{Compuertas LSTM y GRU}
-
-
-
-\subsection{Mecanismos de Atención}
-
-\subsection{BackPropagation a través del tiempo}
-
-\subsection{Problema del Desvanecimiento del Gradiente}
-- Problema de RNN
-Vanising gradient
-https://www.iro.umontreal.ca/~lisa/pointeurs/ieeetrnn94.pdf
-https://arxiv.org/pdf/1211.5063.pdf
-
-
-\section{El modelo Transformer}
-
-A finales del año 2017 se presentó un nuevo modelo que vino a revolucionar el área de Procesamiento
-de Lenguaje Natural, El Transformer \cite{Vaswani}. Una de sus principales características es la
-capacidad de procesar la información de alguna secuencia de forma paralela, caso contrario a las
-Redes Neuronales Recurrentes, donde la información se procesa recurrentemente. Gracias a ello
-la capacidad de \textit{recuerdo} no se ve afectado por el problema de \textit{El
-desvanecimiento del Gradiente} cuando se trabaja con secuencias bastante largas.
-
-
-\begin{figure}
-    \begin{center}
-        \scalebox{0.4}{\input{ROC_AUC.pgf}}
-    \end{center}
-\end{figure}

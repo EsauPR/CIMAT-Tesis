@@ -6,7 +6,7 @@ In addition to setting your work into context, a second good idea for your intro
 
 \section{A section}
 
-The \texttt{\textbackslash section} tag will create a new section within a chapter.  Sections will be sequenced with digits following a decimal point in the table of contents, i.e. this is section 1.1.
+% The \texttt{\textbackslash section} tag will create a new section within a chapter.  Sections will be sequenced with digits following a decimal point in the table of contents, i.e. this is section 1.1.
 
 \section{Another section}
 
@@ -14,31 +14,31 @@ This second section is, obviously, 1.2.
 
 \subsection{A subsection}
 
-Subsections are created using the \texttt{\textbackslash subsection} delineate smaller pieces of your document, and will appear after a second decimal point; this is subsection 1 of section 2 of chapter 1, i.e. 1.2.1.
+% Subsections are created using the \texttt{\textbackslash subsection} delineate smaller pieces of your document, and will appear after a second decimal point; this is subsection 1 of section 2 of chapter 1, i.e. 1.2.1.
 
 \subsubsection{A subsubsection}
 
-Subsubsections are still smaller sections.  By default, this is the finest subdivision of a chapter in \LaTeX, and they will \emph{not} appear in the table of contents.  
+Subsubsections are still smaller sections.  By default, this is the finest subdivision of a chapter in \LaTeX, and they will \emph{not} appear in the table of contents.
 
 \subsection{A useful command}
 
 \marginpar{This is a margin note.}
-One command I often ask my students to use is \texttt{\textbackslash marginpar}, which can be used to create a margin note.  These are super helfpul if there's something to which you need to return later (say, after you've looked up a number), as notes in the margin are really easy to find quickly.  
+One command I often ask my students to use is \texttt{\textbackslash marginpar}, which can be used to create a margin note.  These are super helfpul if there's something to which you need to return later (say, after you've looked up a number), as notes in the margin are really easy to find quickly.
 
 \section{Some figures}
 
 You will surely want to add figures to your thesis to help explain your ideas.  There are a number of different ways to include such things, but the most typical way would be to generate the figure in another piece of software (\texttt{MATLAB, Mathematica, Adobe Illustrator, \ldots} and simply include it in your \LaTeX ~code.  This will require use of the \emph{figure} environment.\footnote{there are many other possible environments to include figures, such as wrapfigure, but these will require including additional packages \ldots}  See this document's \LaTeX ~code for details . . .
 
 % Here is the figure environment.  The [] after \begin{figure} are an optional argument that tells LaTeX where to try to place the figure.  If you do not include it then it will figure out the `best' place to put things on its own, but on occasion the choices it makes are a bit strange.  Even so, you should probably try to let it make the decisions whenever possible, and only come back to enforce new locations after you have essentially finished your document.  Otherwise you may find that your instructions are no longer appropriate if you add text elsewhere in the document that changes how things are alligned.  Anyhow, [h] instructs LaTeX to put th e figure `here', and adding an exclamation point [h!] means REALLY, PUT IT HERE.  [t] and [b] mean to put the figure at the top or bottom of a page, respectively.
-\begin{figure}[h!]
+\begin{figure}[!ht]
 
 %\centering centers the figure on the page.  This is convention.
 \centering
 
-% The \includegraphics command is the default way to include a figure.  The first optional argument in [] brackets defines how large the figure should be on the page.  This can be defined in inches, centimeters, or as a fraction of the \textwidth.  Then, in the curly {} braces you will put the file name for the figure.  Here it has been stored in a subfolder entitled Figures.  You are encouraged to give your figures descriptive file names, as this will help future students to figure out what figure corresponds to which file without having to read your LaTeX code.  
+% The \includegraphics command is the default way to include a figure.  The first optional argument in [] brackets defines how large the figure should be on the page.  This can be defined in inches, centimeters, or as a fraction of the \textwidth.  Then, in the curly {} braces you will put the file name for the figure.  Here it has been stored in a subfolder entitled Figures.  You are encouraged to give your figures descriptive file names, as this will help future students to figure out what figure corresponds to which file without having to read your LaTeX code.
 \includegraphics[width=.8\textwidth]{Chapters/Figures/calcium_levels_1-1.PNG}
 
-%\caption will create a figure caption.  Putting an asterisk after it (as in \caption* ) will cause the caption to not be numbered and to not appear in the list of figures.  The [] argument is optional but recommended; this is the short-form caption which will appear in the list of figures.  The {} argument is required, and gives the full caption which will appear in the main text.  The first few words of this caption will be used in the list of figures if no [] form is given.  
+%\caption will create a figure caption.  Putting an asterisk after it (as in \caption* ) will cause the caption to not be numbered and to not appear in the list of figures.  The [] argument is optional but recommended; this is the short-form caption which will appear in the list of figures.  The {} argument is required, and gives the full caption which will appear in the main text.  The first few words of this caption will be used in the list of figures if no [] form is given.
 \caption[Short-form caption]{Long-form caption that appears in main body of the document}
 
 % the \label gives a reference for this figure so that you can refer to it in the text by its number in a way which will be automatically updated if you change the document.  THIS IS A GOOD IDEA; having automatically updated references for figures, equations, etc, will keep your document in order even as you continue to update it over a period of months.  This reference can be called in the text using the \ref tag.
@@ -79,5 +79,3 @@ LDS 5606 A/B & M5/M5 & 84/84 & 30-44 & 0.027 & 19 & H$\alpha$, IR, UV\\
 \end{tabular}
 \end{center}
 \end{table}
-
-
