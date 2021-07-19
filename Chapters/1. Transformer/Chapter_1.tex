@@ -7,8 +7,8 @@ figura \ref{fig:rnn_cfga}. En eta figura, cada etapa de la recurrencia es retroa
 activación del estado oculto previo. Así, $h^{(t)}$ contiene información codificada de elementos
 previos de la secuencia que puede ser usada en el futuro para obtener una salida $O^{(t+1)}$. En la
 figura \ref{fig:rnn_cfgb} se
-cambia la retroalimentación de $h^{(t)}$ por $O^{(t)}$. Nótese que en este caso, la red es entrenada
-para obtener un valor en específico $O^{(t)}$ lo que provocaría que gran parte de la información de
+cambia la retroalimentación de $h^{(t)}$ por $o^{(t)}$. Nótese que en este caso, la red es entrenada
+para obtener un valor en específico $o^{(t)}$ lo que provocaría que gran parte de la información de
 los estados ocultos pasados $h^{(t-1)}, h^{(t-2)}, ...$ no se transmita. En el esquema anterior
 \ref{fig:rnn_cfga} la red es entrenada para decidir que información debe transmitir en el futuro a través
 de los estados ocultos, en cambio, en la figura \ref{fig:rnn_cfgb} cada estado esta conectado con el
@@ -20,9 +20,9 @@ esté en altas dimensiones.
 % \centering
 % \includegraphics[width=.8\textwidth]{Chapters/1. Transformer/Figures/rnn/rnn_cfg.png}
 % \caption[RNN - CFG]{Distintos tipos de RNNs. \textbf{a)} Las activaciones de las capas ocultas $h^{(t)}$
-% alimentan al nodo siguiente, cada etapa de la recurrencia genera una salida $O^{(t)}$ \textbf{b)}
-% Cada nodo es alimentado por las salidas de cada estado oculto $O^{(t)}$. \textbf{c)} Al final de la
-% recurrencia solo tiene una salida $O^{(T)}$, puede ser usada para resumir/predecir un valor de una
+% alimentan al nodo siguiente, cada etapa de la recurrencia genera una salida $o^{(t)}$ \textbf{b)}
+% Cada nodo es alimentado por las salidas de cada estado oculto $o^{(t)}$. \textbf{c)} Al final de la
+% recurrencia solo tiene una salida $o^{(T)}$, puede ser usada para resumir/predecir un valor de una
 % secuencia. \textbf{d)} Teacher Forcing. En modo de entrenamiento cada nodo en el tiempo $t$ es
 % retroalimentado por la salida correcta $y^{(t-1)}$, en modo evaluación es retroalimentado por las
 % salidas del modelo $O^{(t-1)}$}
@@ -35,21 +35,21 @@ esté en altas dimensiones.
         \centering
         \includegraphics[width=\textwidth]{Chapters/1. Transformer/Figures/rnn/rnn_cfga.png}
         \caption{Las activaciones de las capas ocultas $h^{(t)}$
-        alimentan al nodo siguiente, cada etapa de la recurrencia genera una salida $O^{(t)}$.}
+        alimentan al nodo siguiente, cada etapa de la recurrencia genera una salida $o^{(t)}$.}
         \label{fig:rnn_cfga}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.4\textwidth}
         \centering
         \includegraphics[width=\textwidth]{Chapters/1. Transformer/Figures/rnn/rnn_cfgb.png}
-        \caption{Cada nodo es alimentado por las salidas de cada estado oculto $O^{(t)}$.}
+        \caption{Cada nodo es alimentado por las salidas de cada estado oculto $o^{(t)}$.}
         \label{fig:rnn_cfgb}
     \end{subfigure}
 
     \begin{subfigure}[b]{0.4\textwidth}
         \centering
         \includegraphics[height=0.63\textwidth]{Chapters/1. Transformer/Figures/rnn/rnn_cfgc.png}
-        \caption{Al final de la recurrencia solo tiene una salida $O^{(T)}$, puede ser usada para
+        \caption{Al final de la recurrencia solo tiene una salida $o^{(T)}$, puede ser usada para
         resumir/predecir un valor de una secuencia.}
         \label{fig:rnn_cfgc}
     \end{subfigure}
@@ -103,7 +103,9 @@ decir, la secuencia es procesada en un solo sentido en donde la información pas
 hacia el estados futuros, no siempre este flujo de información es suficientemente para resolver
 ciertas tareas. Un \textit{Modelo de Lenguaje} aprende la estructura estadística del lenguaje con el
 que fue entrenado y su meta es predecir la siguiente palabra, n-grama o letra dado un contexto antes
-visto. En otros términos dada una secuencia de texto de longitud $T$ $x^{(1)}, x^{(2)}, ..., x^{(T)}$
+visto. En otros términos, dada una secuencia de texto de longitud
+$T$ $x^{(1)}, x^{(2)}, ..., x^{(T)}$
+con $x \in \mathcal{R}^d$ donde $d$ es la dimensión de la codificación de las palabras,
 la meta es predecir la probabilidad conjunta de la secuencia:
 
 \begin{equation}
@@ -129,21 +131,22 @@ observe la siguiente oración:
     << \textit{Ella estaba muy \_\_\_\_\_, después de que Alejandra vió el amanecer en la playa } >>
 \end{center}
 
-En la oración anterior el espacio en blanco puede ser completado con algún adjetivo calificativo;
+En la oración anterior, el espacio en blanco puede ser completado con algún adjetivo calificativo;
 \textit{contenta}, \textit{enojada}, \textit{maravillada}, etc. Gracias a la información provista por
-la parte final de la oración, podemos deducir quede las 3 opciones seguramente la menos probable de
+la parte final de la oración, podemos deducir que de las 3 opciones la menos probable de
 elegir es \textit{enojada}. Es decir, usamos información del futuro que no pudo haber sido vista por
 una red (que procesa la información en forma causal) para tomar la mejor elección. Una ligera
 modificación fácilmente aplicable a estos modelos es que las secuencias sean procesadas
 en ambas direcciones, a lo que llamamos \textbf{Redes Neuronales Recurrentes Bidireccionales}
 \cite{Schuster}.
 
-Así una \textit{RNN Recurrente}  procesa la secuencia en ambos sentidos, capturando información del
+Así una \textit{RNN Recurrente}  procesa la secuencia en ambos sentidos (una \textit{RNN} en un
+sentido y otra en el otro), capturando información del
 pasado en el estado oculto $\overrightarrow{h}^{(t)}$  cuando la recurrencia es del inicio al final
 de la secuencia e información del futuro en $\overleftarrow{h}  ^{(t)}$ cuando la recurrencia es del
 final al inicio de la secuencia. Finalmente, el estado oculto $h^{(t)}$ es una concatenación de ambos
-estados $\overrightarrow{h}^{(t)}$ y $\overleftarrow{h}^{(t)}$, vea la ecuación \ref{eq:rrnbi},
-y la salida $O^{(t)}$ ahora puede ser calculada con información tanto del futuro como del pasado
+estados $\overrightarrow{h}^{(t)}$ y $\overleftarrow{h}^{(t)}$, vea la ecuación \ref{eq:rrnbi}.
+Por lo cual, la salida $o^{(t)}$ ahora puede ser calculada con información tanto del futuro como del pasado
 \ref{eq:rrn_out}.
 
 \begin{equation}
@@ -156,6 +159,6 @@ y la salida $O^{(t)}$ ahora puede ser calculada con información tanto del futur
 \end{equation}
 
 \begin{equation}
-        O^{(t)} = g(h^{(t)}; \theta_{out})
+        o^{(t)} = g(h^{(t)}; \theta_{out})
 \label{eq:rrn_out}
 \end{equation}
