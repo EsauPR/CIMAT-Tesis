@@ -119,11 +119,31 @@ respectivamente.
 
 \subsubsection{GRU}
 
-\textbf{Gated Recurrent Units} o \textbf{GRU} por sus siglas en inglés fueron propuestas en 2014
-\cite{GRU1} como una alternativa más rápida computacionalmente y con similar rendimiento que las
-\textit{LSTM} \cite{GRU2}. A diferencia de las \textit{LSTM}, las \textit{GRU} prescinden de la
-\textit{Celda de Memoria} y utilizan un par de compuertas (la \textit{Compuerta de Entrada} y la de
-\textit{Olvido}) para decidir que información conservar o no y codificarla dentro del estado oculto.
+\textbf{Gated Recurrent Units} o \textbf{GRU} por sus siglas en inglés, fueron propuestas en 2014
+\cite{GRU1} como una alternativa computacionalmente más rápida y con similar rendimiento que las
+\textit{LSTM} \cite{GRU2}. A diferencia de anteriores, las \textit{GRU} prescinden de la
+\textit{Celda de Memoria} y utilizan un par de compuertas (la \textit{Compuerta de Actualización} y
+la de \textit{Olvido}) para decidir que información aún es necesario que esté codificada dentro del
+estado oculto \ref{eq:gru_gates}.
+La \textit{Compuerta de Olvido} permite decidir que del pasado aún debe ser transmitido a futuros
+estados o de otro modo ser desechada. La \textit{Compuerta de Actualización} indica que información nueva es relevante y
+necesita ser incorporada al no estar codificada dentro del estado oculto \ref{eq:gru_out}.
+
+\begin{equation}
+    \begin{split}
+        R^{(t)} = \sigma(x^{(t)} W_{xR} + h^{(t-1)} W_{hR} + b_R)\\
+        Z^{(t)} = \sigma(x^{(t)} W_{xZ} + h^{(t-1)} W_{hZ} + b_Z)
+    \end{split}
+    \label{eq:gru_gates}
+\end{equation}
+
+\begin{equation}
+    \begin{split}
+        \tilde h^{(t)} = \tanh(x^{(t)} W_{xh} + ( R^{(t)} \odot h^{(t-1)}) W_{hh} + b_h)\\
+        h^{(t)} =  Z^{(t)} \odot h^{(t-1)} + (1 - Z^{(t)}) \odot \tilde h^{(t-1)} \\
+    \end{split}
+    \label{eq:gru_out}
+\end{equation}
 
 \begin{figure}[ht!]
 \centering
