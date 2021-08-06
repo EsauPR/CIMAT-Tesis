@@ -4,7 +4,8 @@ Una de las arquitecturas comunes vistas previamente es la \ref{fig:rnn_cfgc} cuy
 procesada es resumida en una sola salida. Este tipo de red es usada como parte de las soluciones a
 tareas de como reconocimiento de voz (\textit{Speech Recognition}), traducción de lenguaje
 (\textit{Machine Translation}) o asistencia en respuestas automáticas (\textit{Question Answering})
-típicamente bajo modelos Secuencia a Secuencia (\textit{Sequence to Sequence, Seq2Seq}). Los modelos
+típicamente bajo modelos Secuencia a Secuencia (\textit{Sequence to Sequence, Seq2Seq})
+\cite{DBLP:journals/corr/ChoMGBSB14}. Los modelos
 \textit{Seq2Seq} están formados por dos redes neuronales como la mostrada en \ref{fig:seq2seq}. La
 primera se comporta como \textit{codificador} al resumir la entrada para producir un vector de salida
 de tamaño fijo llamado \textit{vector de contexto}. La segunda red se comporta como un
@@ -59,11 +60,16 @@ del \textit{decoder} \ref{eq:sqs_s}.
 
 Sin embargo, cuando las secuencias son bastante largas el \textit{vector de contexto} emitido por el
 \textit{codificador} no es lo suficientemente grande como para resumir correctamente la secuencia y
-por tanto, la información inicial de la entrada es olvidad, por lo que su presencia es escasa en estados
+por tanto, la información inicial de la entrada es olvidada, por lo que su presencia es escasa en estados
 ocultos más lejanas. Así, en 2015 \cite[Bahdanau et. al]{bahdanau2016neural} observaron estos efectos y
 propusieron una forma de minimizarlos, surgiendo los \textbf{Mecanismos de Atención}.
 
-Ahora las palabras predichas no son calculadas por un único \textit{vector de contexto} generado por
+La idea principal para mitigar estos problemas es permitir que el \textit{decoder} pueda acceder al
+la historia de los estados ocultos del \textit{encoder}, así, el decoder ahora contará con un mecanismo
+para selectivamente centrarse en partes distintas de la secuencia que tienen mayor influencia sobre el
+la salida esperada a cierto tiempo.
+
+Por tanto, las palabras predichas no son calculadas por un único \textit{vector de contexto} generado por
 el codificador, sino que para cada objetivo $y^{(t)}$ se calcula un \textit{vector de contexto} $c^{(t)}$:
 
 \begin{equation}
@@ -125,8 +131,8 @@ Scaled Dot-Product \textsuperscript{2} & $score(s^{(t)}, h^{(i)}) = \frac{s^{(t)
 \end{tabular}
 \end{center}
 \caption{Tipos de funciones para calcular el Puntaje de Alineación. (Tabla basada en \cite{weng2018attention}). \\
-\textsuperscript{1} También llamado \textit{Concat} Luong, et al., 2015 y
-\quotes{Additive attention”} en Vaswani, et al., 2017.\\
+\textsuperscript{1} También llamado \textit{Concat} por Luong, et al., 2015 y
+\quotes{Additive attention”} por Vaswani, et al., 2017.\\
 \textsuperscript{2} El factor de escala $\frac{1}{\sqrt{d_k}}$ ayuda a estabilizar cuando el
 gradiente es muy pequeño. $d_k$ es el tamaño de la cabeza de atención.
 \label{Tab:att}}
