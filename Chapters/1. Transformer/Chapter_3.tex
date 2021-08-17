@@ -213,7 +213,7 @@ de manera jerárquica a las palabras que forman una oración para posteriormente
 las oraciones que conformar un texto más largo. \citeauthor{yang2016hierarchical} utiliza este procedimiento
 para generar un vector de características usado posteriormente en un etapa de clasificación.
 
-En la tercer categoría la atención es realizada diversas partes de la secuencia; la suma pesada sobre
+En la tercer categoría la atención es realizada en diversas partes de la secuencia; la suma pesada sobre
 todos los puntajes de las entradas usada por \citeauthor{bahdanau2016neural} se le denomina \textbf{
 Atención suave} (\textit{Soft-Attention}). Una alternativa es la \textbf{Atención dura}
 (\textit{Hard-Attention}) \cite{DBLP:journals/corr/XuBKCCSZB15} que calcula la atención no sobre todas
@@ -225,3 +225,15 @@ atención sobre una ventana elegida ya sea centrada con respecto a la tiempo act
 o predicha por una función (alineamiento predictivo). La \textit{atención local} fue propuesta por
 \citeauthor{DBLP:journals/corr/LuongPM15} así como la \textit{Atención Global} que es similar a la
 \textit{atención suave}.
+
+La última categoría divide los modelos de atención por las formas de representación de las entradas
+sobre las que la atención es aplicada. Distintos modelos pueden beneficiarse de procesar los datos
+creando vectores de características distintos, cada uno de ellos deriva de algún tipo de representación
+de la entrada. Así, es posible prestar atención sobre las diferentes representaciones y formar una
+final usando una combinación pesada de estos a través de dichos pesos de atención.
+\citeauthor{DBLP:journals/corr/abs-1904-02874} llama a este tipo de modelos de atención como
+\textbf{multi-representational AM}. La segunda categoría que describen es \textbf{milti-dimensional attention}
+donde la atención no es aplicada sobre los diversas vectores de características sino a un nivel más interno,
+sobre sus dimensiones. Pesando cada característica de un vector de características permite seleccionar
+aquellas que mejor lo describen para un contexto dado. EN \textit{NLP}, resulta bastante útil cuando se trata
+con \textit{polisemia}, en donde una palabra o frase puede tener más de un significado.
