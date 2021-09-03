@@ -164,7 +164,7 @@ como:
     \begin{split}
         Q_i = E_Q W_i^Q\\
         K_i = E_K W_i^K\\
-        V_i = E_V W_i^K\\
+        V_i = E_V W_i^V\\
     \end{split}
 \end{equation}
 
@@ -216,6 +216,8 @@ geométrica desde $2\pi$ hasta $10000 \cdot 2\pi$ \ref{eq:trans_pos_enc}:
 Poner una figura completa de todo el esquema del Transformer
 
 \subsection{Problemas típicos en el entrenamiento de Transformers}
+
+\subsubsection{Learning Rate WarmUp y Layer Normalization}
 
 A pesar de que la arquitectura del modelo Transformer no es tan compleja, puesto que tanto el
 codificador como el decodificador están formados por pilas de capas de atención y MLP, el
@@ -311,16 +313,40 @@ con el paso del tiempo.
 Por otro lado, \citeauthor{pmlr-v119-huang20f} mencionan que usar la técnica de \textit{Learning Rate WarmUp}
 para mitigar la varianza del optimizador Adam no es del todo la solución y que el problema radica
 precisamente en la arquitectura del modelo Transformer, principalmente en las capas de normalización
-\cite{DBLP:journals/corr/abs-1711-02132} \cite{DBLP:journals/corr/abs-2002-04745}.
+\cite{DBLP:journals/corr/abs-1804-09849} \cite{DBLP:journals/corr/abs-2002-04745}. En particular
+\citeauthor{DBLP:journals/corr/abs-2002-04745} encuentran que para un modelo Transformer de cualquier
+tamaño con capas de normalización entre bloques residuales (\textit{Post-LN Transformer}), la escala
+de la norma del gradiente que incide en la última capa de normalización permanecen igual al no depender
+de la cantidad de bloques del transformer. Por el contrario, si la capa de normalización es colocada
+justo antes de la conexión residual (\textit{Pre-LN Transformer}) la magnitud de la norma del
+gradiente decrece conforme el tamaño del modelo incrementa, guiando así, al problema de desvanecimiento de
+gradiente. \citeauthor{pmlr-v119-huang20f} proponen eliminar las capas de normalización del modelo
+Transformer que en conjunto con la inestabilidad del algoritmo de optimización de Adam provocan la
+dificultad de entrenamiento durante desde las primeras etapas. Para ello, estandarizan la siguiente
+inicialización (\textit{T-Fixup}) de pesos del modelo, permitiendo evitar la etapa de \textit{WarmUp}
+y las capas de normalización en el Transformer. La figura \ref{fig:t-fixup} muestra una comparativa
+de los histogramas usando la inicialización \textit{T-Fixup} e usar el algoritmo de Adam con y sin
+etapa de \textit{Warmup}:
 
+\begin{itemize}
+    \item Aplicar initialization tipo \textit{Xavier} para todos los pesos del modelo.
+          Excepto el proceso de generación de embedding adecuados al tamaño del modelo $d_m$.
+    \item Usar una inicialización tipo \textit{Gaussiana} con $\mathbb{N}(0, d_m^\frac{1}{2})$ para
+          los pesos de generación de embeddings.
+    \item Escalar las matrices $W_i^V$ y $W^O$ en cada bloque de atención en el decodificador, los
+          pesos en de cada capa MLP del decodificador y los pesos de generación de embeddings tanto
+          del codificador como decodificador por $9N^{-\frac{1}{4}}$ donde $N$ es el número de bloques
+          del Transformer.
+    \item Escalar las matrices $W_i^V$ y $W^O$ de cada bloque de atención del codificador y los pesos
+          de cada capa de MLP del codificador por $0.67N^{-\frac{1}{4}}$
+\end{itemize}
 
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.5 \textwidth]{Chapters/1. Transformer/Figures/transformer/tfixup.png}
+    \caption{Histograma de gradientes del Algoritmo Adam con y sin etapa de \textit{WarmUp} y
+    usando inicialización \textit{T-Fixup}. Imagen original de \citeauthor{pmlr-v119-huang20f}}
+    \label{fig:t-fixup}
+\end{figure}
 
-
-Improving Transformer Optimization Through Better Initialization
-
-We first show that insta-
-bility in the Adam optimizer, in part caused by gradient
-vanishing from layer normalization, causes optimization to
-break when warmup is not used, and propose a weight initializa
-tion scheme for the Transformer that fully eliminates the
-need for layer normalization and warmup
+\subsubsection{Cabezas de atención}
