@@ -216,3 +216,111 @@ geométrica desde $2\pi$ hasta $10000 \cdot 2\pi$ \ref{eq:trans_pos_enc}:
 Poner una figura completa de todo el esquema del Transformer
 
 \subsection{Problemas típicos en el entrenamiento de Transformers}
+
+A pesar de que la arquitectura del modelo Transformer no es tan compleja, puesto que tanto el
+codificador como el decodificador están formados por pilas de capas de atención y MLP, el
+entrenamiento de este tipo de modelos muchas veces no resulta tan trivial. Regularmente requiere de
+una combinación de técnicas para lograr su convergencia a valores aceptables y en conjunto con una
+gran cantidad de datos, tamaños de lotes de procesamiento grandes y una gran cantidad de tiempo
+de procesamiento en gpu \cite{DBLP:journals/corr/abs-1804-00247}.
+
+\textit{Learning Rate WarmUp} es una de las primeras técnicas usadas y descritas en el proceso de
+entrenamiento por \citeauthor{Vaswani}. Usando el algoritmo Adam como optimizador se varía el factor
+de aprendizaje de acuerdo a la fórmula:
+
+\begin{equation}
+    lrate = d_{m}^{-0.5} \vdot \min\big(step\_num^{-0.5}, step\_num \vdot warmup\_steps^{-0.5} \big)
+\end{equation}
+
+En el esquema anterior, más conocido como \textit{Noam-Warmup}, el modelo original es entrenado
+incrementando linealmente el factor de aprendizaje en los primeros $warmup\_steps=4000$ pasos.
+Posteriormente, decrementa propocionalmente al inverso del la raíz cuadrada del paso $step\_num$
+actual, véase la figura \ref{fig:noam}.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.5 \textwidth]{Chapters/1. Transformer/Figures/transformer/noam.png}
+    \caption{Noam-Warmup con $warmup\_steps=4000$ y $d_{m} = 512$}
+    \label{fig:noam}
+\end{figure}
+
+Si bien, la razón por la que funciona este tipo de técnica no está del todo claro, se presume que usar
+\textit{Learning Rate WarmUp} ayuda a reducir la varianza del factor de aprendizaje adaptativo durante
+las primeras etapas del entrenamiento del modelo, dado que el segundo momento del algoritmo
+de Adam durante etapas tempranas de optimización es proporcional a una integral divergente
+\cite{DBLP:journals/corr/abs-1908-03265} lo que provoca las actualizaciones inestables, llevando al
+modelo fuera de las regiones donde un mejor mínimo existe. Con esto en mente
+\citeauthor{DBLP:journals/corr/abs-1908-03265} propone el algoritmo de optimización
+\textit{RAdam} (Rectified Adam) como una alternativa a usar \textit{Learning Rate WarmUp} para mitigar
+este efecto durante la fase inicial del entrenamiento de los modelos.
+
+El \textit{Learning Rate WarmUp}
+comúnmente es usado en conjunto con algoritmos de optimiza estocásticos como \textit{RMSprop} o
+\textit{Adam}. En vez configurar el \textit{factor de aprendizaje} $\alpha$ con un decremento
+constante, la estrategia de \textit{Learning Rate WarmUp} configura este factor con valores muy
+pequeños en los primeros pasos de entrenamiento. Durante las primeras etapas del entrenamiento
+el factor de aprendizaje es incrementado hasta un límite que es ligeramente superior o inferior al valor
+inicial de $\alpha$ del optimizador usado y posteriormente es  decrementado
+progresivamente hasta la convergencia del modelo.
+
+Así, en cada paso del algoritmo de optimización el cuál está parametrizado por el factor de aprendizaje
+$\alpha$, puede ser aplicado un factor de \textit{warmup} $\omega \in [0,1]$ que sirve para reducir
+$\alpha$ y a la vez el paso de optimización en cada tiempo, replazando $\alpha_t = \alpha \omega_t$.
+La forma mas sencilla es usar un factor \textbf{linear warmup} parametrizado por un periodo de
+\quotes{calentamiento} $\tau$.
+
+\begin{equation}
+    \omega_t^{linear, \tau} = \min\big(1, \frac{t}{\tau} \big)
+    \label{eq:warn_linear}
+\end{equation}
+
+\citeauthor{DBLP:journals/corr/abs-1910-04209} proponen 3 formas de aplicar la técnica de \textit{warmup}:
+
+\textbf{Exponential warmup} aplica un decaimiento exponencial
+
+\begin{equation}
+    \omega_t^{expo, \tau} = 1 - \exp(- \frac{1}{\tau} t)
+    \label{eq:warn_expo}
+\end{equation}
+
+recomienda elegir $\tau = (1 - \beta_2)^{-1}$ tal que no se tan diferente del segundo momento de
+corrección de bias del algoritmo de \textit{Adam} $\beta_2$.
+
+\begin{equation}
+    \omega_t^{expo, untuned} = 1 - \exp(- (1 - \beta_2) t)
+    \label{eq:warn_expo_untened}
+\end{equation}
+
+Similar al decaimiento exponencial proponen usar \textit{linear warmup} sobre
+$\tau = 2 (1 - \beta_2)^{-1}$ iteraciones para preservar un efecto similar de des-aceleración
+con el paso del tiempo.
+
+\begin{equation}
+    \omega_t^{linear, untuned} = \min\big(1, \frac{1 - \beta_2}{2} t \big)
+    \label{eq:warn_linear_untuned}
+\end{equation}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.5 \textwidth]{Chapters/1. Transformer/Figures/transformer/warmups.png}
+    \caption{Learning rate sobre X 18000 iteraciones usando RAdam y lineal, exponencial warmup con Adam}
+    \label{fig:warmup}
+\end{figure}
+
+
+Por otro lado, \citeauthor{pmlr-v119-huang20f} mencionan que usar la técnica de \textit{Learning Rate WarmUp}
+para mitigar la varianza del optimizador Adam no es del todo la solución y que el problema radica
+precisamente en la arquitectura del modelo Transformer, principalmente en las capas de normalización
+\cite{DBLP:journals/corr/abs-1711-02132} \cite{DBLP:journals/corr/abs-2002-04745}.
+
+
+
+
+Improving Transformer Optimization Through Better Initialization
+
+We first show that insta-
+bility in the Adam optimizer, in part caused by gradient
+vanishing from layer normalization, causes optimization to
+break when warmup is not used, and propose a weight initializa
+tion scheme for the Transformer that fully eliminates the
+need for layer normalization and warmup
