@@ -373,13 +373,22 @@ pasos al parametrizar la atención por una conectividad de distintos patrones el
 las matrices de atención por lo regular podría decirse que son ralas al no contener dependencias
 capturadas sobre demasiados representaciones como se observa en la imagen \ref{fig:att-spar}.
 
+\citeauthor*{DBLP:journals/corr/abs-1905-07799} Propone reducir el ancho de la atención bajo el supuesto
+de que cada representación no necesita prestar atención sobre todas las demás y sino que debe ser
+adaptativo, así para cada cabeza de atención se agrega una función de enmascaramiento que controla
+la flexibilidad del ancho de la ventana formada cambiando dinámicamente dependiendo de la representación
+en cuestión
+
+
+
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=0.5 \textwidth]{Chapters/1. Transformer/Figures/transformer/head_sparsity.png}
     \caption{Visualización de 8 cabezas de atención sobre una tarea de Machine-Translation. Las
-    matrices de atención tienden a ser ralas al tener carencia de relaciones relevantes entre muchas
+    matrices de atención tienden a ser ralas al tener carencia de relaciones relevantes entre diversas
     representaciones.}
     \label{fig:att-spar}
 \end{figure}
 
 Aproximar softmax con matrices representando transformaciones a través de kernels.
+linformer
