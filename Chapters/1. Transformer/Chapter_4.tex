@@ -349,4 +349,37 @@ etapa de \textit{Warmup}:
     \label{fig:t-fixup}
 \end{figure}
 
-\subsubsection{Cabezas de atención}
+\subsubsection{Calculo de la atención}
+
+Además de lo específico y delicado del entrenamiento del Modelo Transformer su costo en tiempo
+computacional y de memoria también representa un serio problema a la hora de optimizar e inferir.
+Debido, principalmente a que en el proceso de atención debe focalizar cada token con respecto a todos
+los demás, lo que lleva a que su complejidad crezca cuadráticamente con respecto a el tamaño de la
+secuencia.
+
+Varías técnicas han sido propuestas para reducir este problema, muchas de ellas involucran en reducir
+la atención a vecindades de representaciones.
+
+atender a vecindades
+\citeauthor*{DBLP:journals/corr/abs-1802-05751} Particiona la información de las representaciones de
+las consultas asignándolos a diferentes bloques de memoria restringiéndose a vecindarios locales
+alrededor de cada consulta. Principalmente basados en cómo las redes convolucionales trabajar. Sin
+embargo esta solucion es parcial y solo aplicable a secuencias de datos con relaciones cortas, cómo
+imágenes.
+
+\citeauthor*{DBLP:journals/corr/abs-1904-10509} factoriza la matriz de atención para reducir su complejidad
+de $O(n^2)$ a $O(n\sqrt(n))$ a través de matrices ralas, separando la atención a través de diferentes
+pasos al parametrizar la atención por una conectividad de distintos patrones elegidos, debido a que
+las matrices de atención por lo regular podría decirse que son ralas al no contener dependencias
+capturadas sobre demasiados representaciones como se observa en la imagen \ref{fig:att-spar}.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.5 \textwidth]{Chapters/1. Transformer/Figures/transformer/head_sparsity.png}
+    \caption{Visualización de 8 cabezas de atención sobre una tarea de Machine-Translation. Las
+    matrices de atención tienden a ser ralas al tener carencia de relaciones relevantes entre muchas
+    representaciones.}
+    \label{fig:att-spar}
+\end{figure}
+
+Aproximar softmax con matrices representando transformaciones a través de kernels.
