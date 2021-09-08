@@ -358,9 +358,11 @@ los demás, lo que lleva a que su complejidad crezca cuadráticamente con respec
 secuencia.
 
 Varías técnicas han sido propuestas para reducir este problema, muchas de ellas involucran en reducir
-la atención a vecindades de representaciones.
+la atención a vecindades de representaciones, aproximar la matriz de atención con otras matrices de
+transformaciones a través de kernels o sustituir completamente la operación softmax por otra función.
 
-atender a vecindades
+\textbf{Atención de vencindades}:
+
 \citeauthor*{DBLP:journals/corr/abs-1802-05751} Particiona la información de las representaciones de
 las consultas asignándolos a diferentes bloques de memoria restringiéndose a vecindarios locales
 alrededor de cada consulta. Principalmente basados en cómo las redes convolucionales trabajar. Sin
@@ -373,22 +375,50 @@ pasos al parametrizar la atención por una conectividad de distintos patrones el
 las matrices de atención por lo regular podría decirse que son ralas al no contener dependencias
 capturadas sobre demasiados representaciones como se observa en la imagen \ref{fig:att-spar}.
 
-\citeauthor*{DBLP:journals/corr/abs-1905-07799} Propone reducir el ancho de la atención bajo el supuesto
-de que cada representación no necesita prestar atención sobre todas las demás y sino que debe ser
-adaptativo, así para cada cabeza de atención se agrega una función de enmascaramiento que controla
-la flexibilidad del ancho de la ventana formada cambiando dinámicamente dependiendo de la representación
-en cuestión
-
-
-
 \begin{figure}[ht!]
     \centering
-    \includegraphics[width=0.5 \textwidth]{Chapters/1. Transformer/Figures/transformer/head_sparsity.png}
+    \includegraphics[width=0.7 \textwidth]{Chapters/1. Transformer/Figures/transformer/head_sparsity.png}
     \caption{Visualización de 8 cabezas de atención sobre una tarea de Machine-Translation. Las
     matrices de atención tienden a ser ralas al tener carencia de relaciones relevantes entre diversas
-    representaciones.}
+    representaciones a distancias lejanas.}
     \label{fig:att-spar}
 \end{figure}
 
+\citeauthor*{DBLP:journals/corr/abs-1905-07799} proponen reducir el ancho de la atención bajo el supuesto
+de que cada representación no necesita prestar atención sobre todas las demás y sino que debe ser
+adaptativo, así para cada cabeza de atención se agrega una función de enmascaramiento que controla
+la flexibilidad del ancho de la ventana formada cambiando dinámicamente dependiendo de la representación
+en cuestión. \citeauthor*{DBLP:journals/corr/abs-2004-05150} siguen un estrategia similar, implementado
+atención local con ventanas dilatadas distintas para cada cabeza permitiendo atender contextos menos
+locales en cada ocasión y atención global sobre preseleccionados localizaciones. Dada la dificultad de
+implementación sin usar ciclos para iterar sobre los elementos seleccionados a atender, implementan
+su propio kernel en \textit{CUDA} con las operaciones optimizadas para realizar esta tarea.
+
+\citeauthor*{DBLP:journals/corr/abs-1901-02860} mencionan que si el problema es el procesamiento de
+grandes secuencias por qué no dividirlas en secuencias más pequeñas y procesarlas individualmente
+y así evitar usar grandes cantidades de memoria para su procesamiento. El principal problema de este
+enfoque es que cada secuencia es procesada individualmente y la información de previas secuencias es
+ignorada evitando que esta fluya a través de las próximas secuencias. Para solucionar este
+inconveniente introducen un mecanismos de recurrencia en la arquitectura del transformer. Durante el
+entrenamiento \ref{fig:trans-xl} un estado oculto es calculado de las secuencias previas y guardado
+en memoria para extender el contexto al momento de procesar la siguiente secuencia. Durante el
+proceso de evaluación, el resultado de las operaciones del transformer pueden ser reusado y no
+calculado nuevamente desde cero, permitiendo reducir considerablemente el tiempo de evaluación.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8 \textwidth]{Chapters/1. Transformer/Figures/transformer/trans-XL.png}
+    \caption{Transformer-XL. Para tratar con secuencias largas divide el proceso en secuencias más
+             cortas creando estados ocultos intermedios y usandolos en el cálculo de las próximas
+             secuencias. Figura obtenida de \cite{DBLP:journals/corr/abs-1901-02860}}
+    \label{fig:trans-xl}
+\end{figure}
+
+
 Aproximar softmax con matrices representando transformaciones a través de kernels.
-linformer
+- linformer
+
+Simple and more tractable attention mechanisms whit additional constrains
+- Reformer
+
+Share attention weights
