@@ -361,7 +361,7 @@ Varías técnicas han sido propuestas para reducir este problema, muchas de ella
 la atención a vecindades de representaciones, aproximar la matriz de atención con otras matrices de
 transformaciones a través de kernels o sustituir completamente la operación softmax por otra función.
 
-\textbf{Atención de vencindades}:
+\textbf{Atención de vecindades}:
 
 \citeauthor*{DBLP:journals/corr/abs-1802-05751} Particiona la información de las representaciones de
 las consultas asignándolos a diferentes bloques de memoria restringiéndose a vecindarios locales
@@ -371,9 +371,9 @@ imágenes.
 
 \citeauthor*{DBLP:journals/corr/abs-1904-10509} factoriza la matriz de atención para reducir su complejidad
 de $O(n^2)$ a $O(n\sqrt(n))$ a través de matrices ralas, separando la atención a través de diferentes
-pasos al parametrizar la atención por una conectividad de distintos patrones elegidos, debido a que
-las matrices de atención por lo regular podría decirse que son ralas al no contener dependencias
-capturadas sobre demasiados representaciones como se observa en la imagen \ref{fig:att-spar}.
+pasos al parametrizar la atención por una conectividad de distintos patrones elegidos, bajo el supuesto
+de que las matrices de atención por lo regular son ralas al no contener dependencias de relevancia
+sobre demasiados representaciones como se observa en la imagen \ref{fig:att-spar}.
 
 \begin{figure}[ht!]
     \centering
@@ -414,11 +414,33 @@ calculado nuevamente desde cero, permitiendo reducir considerablemente el tiempo
     \label{fig:trans-xl}
 \end{figure}
 
+También \citeauthor{DBLP:journals/corr/abs-1906-11024} proponen un modelo para compartir pesos de capas
+adyacentes (Shared Attention Network - SAN).
+Cada $\pi$ capas continuas en el codificador comparten la misma matriz de atención y en el
+decodificador se comparte la proyección de los pesos de atención sobre la representación de los
+valores $V_i$, en otras palabras se comparte directamente la cabeza de atención $head_i$. Dado que no
+es tan fácil conocer que capas deben compartir pesos, establecen un proceso iterativo
+de entrenamiento basados en calcular que tan diferentes son las capas del transformer usando
+la \textit{Divergencia de Jensen-Shannon}. Si la similaridad entre dos capas es mayor a cierto umbral
+se indica que dichas capas deben compartir pesos. Se repite un nuevo entrenamiento y se calcula
+nuevamente la similaridad entre capas, y así sucesivamente hasta convergencia. Podemos notar que este
+proceso de entrenamiento y ajuste de pesos es muy costoso, un nuevo entrenamiento es requerido por
+ajuste de compartición de pesos, pero el modelo resultante
+es menos complejo y el tiempo en modo de evaluación o inferencia se ve reducido considerablemente.
 
-Aproximar softmax con matrices representando transformaciones a través de kernels.
+
 - linformer
 
 Simple and more tractable attention mechanisms whit additional constrains
 - Reformer
 
-Share attention weights
+
+
+Aproximar softmax con matrices representando transformaciones a través de kernels.
+
+\citeauthor*{DBLP:journals/corr/abs-2009-14794} por el contrario descomponen la operación de atención
+sobre los valores $head = softmax(\frac{QK^\top}{\sqrt{d_k} V})$ en una multiplicación matricial más simple
+$head = Q'k'^\top V$ con $Q'$ y $k'^\top \in \mathbb{R}^{n \times r}$ y $r<=n$.
+Para ello construyen $Q'$ y $k'$ como dos matrices usando kernels tal que su producto forma una
+aproximación a la función softmax. Notemos que con ello podemos reducir el costo computacional y en
+memoria simplemente reduciendo la operación de multiplicación $Q'(k'^\top V)$ de derecha a izquierda.
