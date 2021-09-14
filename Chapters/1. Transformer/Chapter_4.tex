@@ -414,6 +414,20 @@ calculado nuevamente desde cero, permitiendo reducir considerablemente el tiempo
     \label{fig:trans-xl}
 \end{figure}
 
+\citeauthor*{DBLP:journals/corr/abs-2001-04451} reducen el problema de realizar la operación de softmax
+sobre toda la matriz $Q_i K_i^\top$ a calcularlo individualmente por cada consulta $q_j$ guardando
+solo una vez en memoria el este valor en cada iteración y recalculándolo cuando se necesite de nuevo
+al utilizar \textit{Back-Propagation} a través de capas reversibles. Si bien, es más costoso computacionalmente permite usar mucho
+menos memoria que la solución original. Por otro lado, dado que el resultado de la función softmax
+depende en mucho mayor medida en los elementos dominantes de la matriz, solo es necesario fijarse en
+las llaves más cercanas a la consulta en cuestión. \textit{LSH} (\textit{Local Sensitive Hashing})
+resuelve este problema permitiendo encontrar rápidamente los vecinos más cercanos en espacios de altas
+dimensiones, con la  restricción de que $W_i^Q = W_i^K$ dado que se necesita conservar la
+similaridad entre consultas y llaves, algo que sería más dificil si sus matrices de proyección fuesen
+muy distintas.
+
+\textbf{Aproximaciones a la Atención original}:
+
 También \citeauthor{DBLP:journals/corr/abs-1906-11024} proponen un modelo para compartir pesos de capas
 adyacentes (Shared Attention Network - SAN).
 Cada $\pi$ capas continuas en el codificador comparten la misma matriz de atención y en el
@@ -428,8 +442,6 @@ proceso de entrenamiento y ajuste de pesos es muy costoso, un nuevo entrenamient
 ajuste de compartición de pesos, pero el modelo resultante
 es menos complejo y el tiempo en modo de evaluación o inferencia se ve reducido considerablemente.
 
-
-- linformer
 \citeauthor{DBLP:journals/corr/abs-2006-04768} bajo la hipótesis de que la matriz de atención tienen
 rango mucho menor que $n$ proponen obtener los valores de cada cabeza haciendo una aproximación a ella.
 Para ello usando dos matrices entrenables conjuntamente con el modelo, $E$ y $F$
@@ -439,14 +451,28 @@ tamaño de las secuencias se ve reducido bajo el principio que podemos represent
 secuencial en un espacio más pequeño sin gran pérdida de información.
 
 
-Simple and more tractable attention mechanisms whit additional constrains
-- Reformer
-
-Aproximar softmax con matrices representando transformaciones a través de kernels.
-
 \citeauthor*{DBLP:journals/corr/abs-2009-14794} por el contrario descomponen la operación de atención
 sobre los valores $head = softmax(\frac{QK^\top}{\sqrt{d_k} V})$ en una multiplicación matricial más simple
 $head = Q'k'^\top V$ con $Q'$ y $k'^\top \in \mathbb{R}^{n \times r}$ y $r<=n$.
 Para ello construyen $Q'$ y $k'$ como dos matrices usando kernels tal que su producto forma una
-aproximación a la función softmax. Notemos que con ello podemos reducir el costo computacional y en
+aproximación a la función softmax aplicada al producto de $Q$ y $K$. Notemos que con ello podemos
+reducir el costo computacional y en
 memoria simplemente reduciendo la operación de multiplicación $Q'(k'^\top V)$ de derecha a izquierda.
+
+Finalmente autores como \citeauthor*{DBLP:journals/corr/abs-2105-03824} remplazan completamente
+el bloque de \textit{Multihead Attention} con bloques que aplican operaciones de Transformada de
+Fourier o lo largo de la dimensión de los  embeddings y de las secuencias, probando que usando
+\textit{FFT} (Fast Fourier Transform) es suficiente para abstraer y modelar las relaciones. O
+\citeauthor*{DBLP:journals/corr/abs-2108-09084} quienes cambian la atención entre todas las consultas
+y llaves por una sola con todas las llaves. Para esto, a través de atención sumarizan todos las
+consultas en una consulta global. Este proceso es repetido con las llaves y valores como observa en
+la figura \ref{fig:fast-former}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.6 \textwidth]{Chapters/1. Transformer/Figures/transformer/fastformer.png}
+    \caption{Fast-Former. Remplaza la atención tradicional del  transformer por una iterativa. En
+             cada paso crea una consulta y clave global usando atención sobre estos mismos.
+             Figura obtenida de \cite{DBLP:journals/corr/abs-2108-09084}}
+    \label{fig:fast-former}
+\end{figure}
