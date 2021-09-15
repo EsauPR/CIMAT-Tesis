@@ -20,7 +20,7 @@ $W_x \in \mathbb{R}^{d \times k}$, $W_h \in \mathbb{R}^{k \times k}$ y $
 W_{out} \in \mathbb{R}^{k \times q}$ con $k$ como la dimensión del estado oculto, $q$ la dimensión
 de las salidas $o^{(t)}$, $b \in \mathbb{R} ^ {1 \times q}$ el parámetro de sesgo y $\phi$ es la
 función de activación. De esta manera, los pesos de los parámetros aprendidos en la matriz $W_h$
-determinan cómo será usada la información del pasado, codificada en $h^{(t-1)}$. Posteriormente
+determinan cómo será usada la información del pasado, codificada en $h^{(t-1)}$. Posteriormente,
 es incluida a la codificación de la información del tiempo actual $t$ calculada por $W_x$. La figura
 \ref{fig:rnn_cell} representa gráficamente la lógica usada para calcular los estados ocultos y las
 salidas de la red.
@@ -44,13 +44,13 @@ comúnmente se hace referencia a este problema como \textit{The Short-term Memor
 \cite{VanishinGradient2}.
 Aunado a problemas como el
 \textit{Desvanecimiento o Explosión del Gradiente} \cite{VanishinGradient} \cite{pmlr-v28-pascanu13},
-acentuándose aun más
-debido a las matrices de pesos compartidos en la recurrencia. Por ejemplo, podemos imaginar las
-multiplicaciones en la recurrencia como un problema simplificado en donde dicha matriz es
-multiplicada por si misma muchas veces (una similitud al método de potencia donde cualquier
+y acentuándose aun más
+debido a las matrices de pesos compartidos en la recurrencia. Dichas
+multiplicaciones en la recurrencia tienen similitud al método de potencia, en donde cualquier
 componente en la matriz inicial que no esté alineada con el vector propio asociado al mayor valor
-propio son eventualmente descartados \cite[pp.~390-392]{GoodBengCour16}), así los resultados de este producto
-tendrán a ser cercanos a cero (desvanecerse) o explotar dependiendo de la magnitud de la matriz de pesos.
+propio son eventualmente descartados \cite[pp.~390-392]{GoodBengCour16}), por ende, los resultados
+de este producto tendrán a ser cercanos a cero (desvanecerse) o explotar dependiendo de la magnitud
+de la matriz de pesos.
 
 Una manera de solventar los problemas anteriores son las \textbf{Redes Neuronales con Compuertas},
 creadas con la idea de crear conexiones a través del tiempo de tal manera de tener gradientes que no
@@ -60,11 +60,11 @@ decidiendo automáticamente cuándo y cuánto de la información debe prevalecer
 \subsubsection{LSTM}
 
 \textbf{Long Short-Term Memory}, \textbf{LSTM} por sus siglas en inglés, fue propuesta en 1997 por
-\textit{Hochreiter y Schmidhuber} \cite{LSTM}, como un método de preservar dependencias de información relevante
+\citeauthor*{LSTM}, como un método de preservar dependencias de información relevante
 distantes a corto plazo. Las \textit{LSTM} introducen un nuevo componente la
 \textit{Celda de Memoria} cuya función es guardar información a través del tiempo y es
-controlada por distintas compuertas, las cuales aprenden a distinguir que información es relevante y
-cual no. Contiene tres compuertas, la \textit{Compuerta de Entrada}, la \textit{Compuerta de Olvido}
+controlada por distintas compuertas. Las compuertas aprenden a distinguir que información es relevante y
+cual no. Hay 3 de ellas, la \textit{Compuerta de Entrada}, la \textit{Compuerta de Olvido}
 y la \textit{Compuerta de Salida}. La \textit{Compuerta de Entrada} $I^{(t)}$ (véase la figura
 \ref{fig:rnn_lstm}) determina cuanta información actual debe ser contemplada a través de la
 \textit{Memoria Candidata} $\tilde C^{(t)}$ para actualizar la \textit{Celda de Memoria} $C^{(t)}$.
@@ -123,11 +123,12 @@ respectivamente.
 \cite{GRU1} como una alternativa computacionalmente más rápida y con similar rendimiento que las
 \textit{LSTM} \cite{GRU2}. A diferencia de anteriores, las \textit{GRU} prescinden de la
 \textit{Celda de Memoria} y utilizan un par de compuertas (la \textit{Compuerta de Actualización} y
-la de \textit{Olvido}) para decidir que información aún es necesario que esté codificada dentro del
-estado oculto \ref{eq:gru_gates}.
+la de \textit{Olvido}) para decidir que información aún es necesaria que esté codificada dentro del
+estado oculto, véase la ecuación \ref{eq:gru_gates}.
 La \textit{Compuerta de Olvido} permite decidir que del pasado aún debe ser transmitido a futuros
 estados o de otro modo ser desechada. La \textit{Compuerta de Actualización} indica que información nueva es relevante y
-necesita ser incorporada al no estar codificada dentro del estado oculto \ref{eq:gru_out}.
+necesita ser incorporada al no estar codificada dentro del estado oculto,
+véase la ecuación \ref{eq:gru_out}.
 
 \begin{equation}
     \begin{split}

@@ -1,20 +1,21 @@
 \subsection{Redes Neuronales Recurrentes más comunes}
 
-Existen diversas formas como construir \textit{Redes neuronales Recurrentes}, pueden producir una
-salida en cada paso de tiempo o tener solo una al final de la recurrencia  y también pueden tener
+Existen diversas formas como construir \textit{Redes Neuronales Recurrentes}, estas pueden producir una
+salida en cada paso de tiempo o tener solo una al final de la recurrencia  o tener
 conexiones entre unidades ocultas. La manera más común de implementar una \textit{RNN} está ilustrada en la
-figura \ref{fig:rnn_cfga}. En eta figura, cada etapa de la recurrencia es retroalimentada por la
+figura \ref{fig:rnn_cfga}. En esta figura, cada etapa de la recurrencia es retroalimentada por la
 activación del estado oculto previo. Así, $h^{(t)}$ contiene información codificada de elementos
 previos de la secuencia que puede ser usada en el futuro para obtener una salida $O^{(t+1)}$. En la
 figura \ref{fig:rnn_cfgb} se
 cambia la retroalimentación de $h^{(t)}$ por $o^{(t)}$. Nótese que en este caso, la red es entrenada
 para obtener un valor en específico $o^{(t)}$ lo que provocaría que gran parte de la información de
-los estados ocultos pasados $h^{(t-1)}, h^{(t-2)}, ...$ no se transmita. En el esquema anterior
-\ref{fig:rnn_cfga} la red es entrenada para decidir que información debe transmitir en el futuro a través
+los estados ocultos pasados $h^{(t-1)}, h^{(t-2)}, ...$ no se transmita.
+La diferencia entre los dos esquemas anteriores es que
+la red \ref{fig:rnn_cfga} es entrenada para decidir que información debe transmitir en el futuro a través
 de los estados ocultos, en cambio, en la figura \ref{fig:rnn_cfgb} cada estado esta conectado con el
 pasado a través de la predicción del paso anterior, perdiendo así gran parte de la información
-codificada en los estados ocultos, a menos que la salida $O^{(t-1)}$ sea lo suficientemente rica y
-esté en altas dimensiones.
+codificada en cada estado oculto $h^{(t)}$. Este no sería un problema si la salida $O^{(t-1)}$ fuese
+lo suficientemente enriquecedora y en altas dimensiones.
 
 % \begin{figure}[!ht]
 % \centering
@@ -81,11 +82,11 @@ el tiempo $t$ con el valor objetivo $y^{(t)}$ pueden ser desacopladas. Por tanto
 puede ser paralelizado al calcular el gradiente para cada tiempo $t$ por separado, puesto que ya
 tenemos el valor ideal para esta salida.
 
-Finalmente, en la figura \ref{fig:rnn_cfge} la Red Neuronal Recurrente es modificada para esta vez
-no procesar una secuencia, sino que, procesa un solo vector en cada paso. El estado oculto
-previo $h^{(t-1)}$ retroalimenta al siguiente paso $t$ así como la predicción esperada $y^{(t)}$ que
-también es usada para calcular la función de costo del paso anterior $L^{(t-1)}$. Esta estructura de
-red puede ser usada en tareas como Image Captioning, en donde la entrada es una imagen y la salida
+Finalmente, en la figura \ref{fig:rnn_cfge} la \textit{Red Neuronal Recurrente} es modificada para esta vez
+no procesar una secuencia, sino, procesar un solo vector en cada paso. El estado oculto
+previo $h^{(t-1)}$ retroalimenta al siguiente paso $t$ así como la predicción esperada $y^{(t)}$, que
+a su vez, es usada para calcular la función de costo del paso anterior $L^{(t-1)}$. Esta estructura de
+red puede ser implementada en tareas como \textit{Image Captioning}, en donde la entrada es una imagen y la salida
 una secuencia de palabras que describen esta misma.
 
 \begin{figure}[!ht]
@@ -98,10 +99,10 @@ $y^{(t)}$ sirve como objetivo para la función de costo del paso anterior y como
 \end{figure}
 
 
-Si bien, los modelos ejemplificados anteriormente son construidos de forma \textit{causal}, es
+Los modelos ejemplificados anteriormente son construidos de forma \textit{causal}, es
 decir, la secuencia es procesada en un solo sentido en donde la información pasada es transmitida
-hacia el estados futuros, no siempre este flujo de información es suficientemente para resolver
-ciertas tareas. Un \textit{Modelo de Lenguaje} aprende la estructura estadística del lenguaje con el
+hacia estados futuros. Sin embargo, este flujo de información puede ser insuficiente para resolver
+todas las tareas. En \textit{Modelo de Lenguaje} se aprende la estructura estadística del lenguaje con el
 que fue entrenado y su meta es predecir la siguiente palabra, n-grama o letra dado un contexto antes
 visto. En otros términos, dada una secuencia de texto de longitud
 $T$ $x^{(1)}, x^{(2)}, ..., x^{(T)}$
@@ -137,10 +138,10 @@ la parte final de la oración, podemos deducir que de las 3 opciones la menos pr
 elegir es \textit{enojada}. Es decir, usamos información del futuro que no pudo haber sido vista por
 una red (que procesa la información en forma causal) para tomar la mejor elección. Una ligera
 modificación fácilmente aplicable a estos modelos es que las secuencias sean procesadas
-en ambas direcciones, a lo que llamamos \textbf{Redes Neuronales Recurrentes Bidireccionales}
+en ambas direcciones, las \textbf{Redes Neuronales Recurrentes Bidireccionales}
 \cite{Schuster}.
 
-Así una \textit{RNN Recurrente}  procesa la secuencia en ambos sentidos (una \textit{RNN} en un
+Una \textit{RNN Bidireccional} procesa la secuencia en ambos sentidos (una \textit{RNN} en un
 sentido y otra en el otro), capturando información del
 pasado en el estado oculto $\overrightarrow{h}^{(t)}$  cuando la recurrencia es del inicio al final
 de la secuencia e información del futuro en $\overleftarrow{h}  ^{(t)}$ cuando la recurrencia es del
