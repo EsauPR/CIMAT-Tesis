@@ -5,23 +5,31 @@
 La tarea de \textit{Estimación de Pose en Humanos} ha sido uno de los tópicos de gran importancia en
 el campo de Visión por Computadora. Debido a la búsqueda de automatización y entendimiento de
 diversas actividades humanas, sus utilidades causan impacto directo en las implementaciones
-tecnológicas del mundo real, tales como, la Predicción de Intención (vigilancia), Sistemas de
-Autónomos y de Asistencia en la conducción automóviles, Animación, Simulaciones y Videojuegos
+tecnológicas del mundo real, tales como, la predicción de intención (vigilancia), sistemas de
+autónomos y de asistencia en la conducción automóviles, animación, simulaciones, realidad virtual
+aumentada (VR y AR), videojuegos, salud.
 o hasta análisis de deportes. La tarea de \textit{Estimación de Pose} no solo se limita a el cuerpo
-humano, también, puede ser empleado en objetos como carros o animales, vease la imagen ,
+humano, también, puede ser empleado en objetos como carros o animales, vease la imagen \ref{fig:PE-track}.
 
+Con el crecimiento acelerado de \textit{Aprendizaje Profundo} en los últimos años gracias a las
+capacidades actuales de potencia de cómputo los métodos basados bajo este enfoque han sobrepasado
+a las métodos tradicionales, sin embargo aún existen distintos problemas y retos que siguen presentes
+como la oclusión y la ambiguedad de los datos o la dificultad de su obtención para realizar
+entrenamientos.
 
 \begin{figure}[ht!]
     \centering
-    \includegraphics[width=0.4 \textwidth]{Chapters/2. Transformer/Figures/transformer/t_seq2seq.jpg}
-    \caption{\cite{DBLP:journals/corr/abs-2103-02440}}
-    \label{fig:trans_seq2sqe}
+    \includegraphics[width=0.4 \textwidth]{Chapters/1. Pose Estimation/figures/openpifpaf.png}
+    \caption{OpenPifPaf: Escena del mundo real desde la perspectiva de un carro autónomo. Todos los actores
+             son detectados y seguidos, esto incluye a las personas, el carro y el perro. \cite{DBLP:journals/corr/abs-2103-02440}}
+    \label{fig:PE-track}
 \end{figure}
-
 
 
 Formally speaking, Pose Estimation is predicting the body part or joint positions of a person from
 an image or a video.
+
+
 
 The major challenges for tracking poses from the car perspective are
 (i) occlusions due to the viewing angle and (ii) prediction
