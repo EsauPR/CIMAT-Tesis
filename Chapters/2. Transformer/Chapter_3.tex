@@ -157,6 +157,7 @@ recopilación de funciones de alineamiento.
 
 \begin{table}[ht!]
 \begin{center}
+\resizebox{\textwidth}{!}{
 \begin{tabular}{@{}lll@{}}
 \toprule
 \textbf{Nombre} & \textbf{Función de Alineación} & \textbf{Cita} \\
@@ -175,9 +176,9 @@ Deep & $a(k_i, q) = v^\top E^{(L-1)} + b^L$ & \citeauthor*{Pavlopoulos} \\
 Location-based & $a(k_i, q) = act(W q)$ & \citeauthor*{DBLP:journals/corr/LuongPM15} \\ \\
 Feature-based & $a(k_i, q) = v^\top act(W_0 \phi(K) + W_1 \phi(K) + b)$ & \citeauthor*{DBLP:journals/corr/abs-1810-10126} \\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{center}
-\caption{Distintos tipos de funciones de alineación. (Tabla basada en \cite{DBLP:journals/corr/abs-1904-02874} \cite{weng2018attention}). \\
+\caption{Distintos tipos de funciones de alineación. (Tabla basada en \cite{DBLP:journals/corr/abs-1904-02874} y \cite{weng2018attention}). \\
 $a(k_i, q)$ representa la función de alineación entre $k_i$ y $q$ y $act$ es una función de activación. \\
 $sim$ es una función de similaridad, \citeauthor*{DBLP:journals/corr/GravesWD14} propone la función coseno.\\
 Los parámetros $v, W, W_1, W_2$ son parámetros aprendidos por la red neuronal.\\
