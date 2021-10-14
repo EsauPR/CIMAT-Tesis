@@ -2,7 +2,8 @@
 
 \subsection{Estimación de Pose en Humanos}
 
-La tarea de \textit{Estimación de Pose en Humanos} ha sido uno de los tópicos de gran importancia en
+La tarea de \textit{Estimación de Pose en Humanos} (HPE por sis siglas en inglés) ha sido uno de los
+tópicos de gran importancia en
 el campo de Visión por Computadora. Debido a la búsqueda de automatización y entendimiento de
 diversas actividades humanas, sus utilidades causan impacto directo en las implementaciones
 tecnológicas del mundo real, tales como, la predicción de intención (vigilancia), sistemas de
@@ -85,96 +86,147 @@ de capturar información temporal, específicamente enfocado en modelos \textit{
     \label{Tab:hpe-survey}
 \end{table}
 
-\subsubsection{Directrices de estimación de Pose 2D y 3D}
+\subsubsection{Taxonomía de Estimación de Pose 2D y 3D}
 
 
-\begin{tikzpicture}[
-    mindmap,
-    concept color = red!30,
-    every node/.style = {concept},
-    grow cyclic,
-    level 1/.append style = {
-        level distance = 4.5cm,
-        sibling angle = 120
-    },
-    level 2/.append style = {
-        level distance = 3cm,
-        sibling angle = 45}
-]
+\begin{figure}\begin{center}
+\begin{tikzpicture}[node distance=1.5cm,
+        every node/.style={fill=white, font=\sffamily, scale=0.7}, align=center,
+        >={Latex[width=2mm,length=2mm]},
+        % Specifications for style of nodes:
+        % base/.style = {rectangle, rounded corners, draw=black,
+        %                 minimum width=4cm, minimum height=1cm,
+        %                 text centered, font=\sffamily},
+        % activityStarts/.style = {base, fill=blue!30},
+        % startStop/.style = {base, fill=red!30},
+        % activityRuns/.style = {base, fill=green!30},
+        % process/.style = {base, minimum width=2.5cm, fill=blue!10, font=\ttfamily}
+        ]
+    % Specification of nodes (position, etc.)
+    \node (HPE)          []              {HPE};
+    \node (2D HPE)       [below of=HPE, left=6.5em of HPE]          {2D HPE};
+    \node (3D HPE)       [below of=HPE, right=6.5em of HPE]   {3D HPE};
 
-\node {Our root concept}
-    child {node [concept color = blue!30] {First idea}
-        child {node {Fact 1}}
-        child {node {Fact 2}}
-    }
-    child [concept color = green!30] {node {Second idea}
-        child {node {Sub-idea}}
-    }
-    child {node [concept color = magenta!30] {Third idea}
-            child [concept color = magenta!50!black] {node {Note 1}}
-            child [concept color = magenta!60!black] {node {Note 2}}
-            child [concept color = magenta!70!black] {node {Note 3}}
-    };
+    \node (2D Single)    [below of= 2D HPE, left=1.0em of 2D HPE]          {2D Single};
+    \node (2D Multiple)  [below of= 2D HPE, right=1.0em of 2D HPE]   {2D Multiple};
 
+    \node (3D Single)    [below of= 3D HPE, left=1.0em of 3D HPE]          {3D Single};
+    \node (3D Multiple)  [below of= 3D HPE, right=1.0em of 3D HPE]   {3D Multiple};
+
+    \node (2D-Regresion) [below of= 2D Single, left=-1.5em of 2D Single]   {Regresion};
+    \node (2D BPD)       [below of= 2D Single, right=-1.5em of 2D Single]   {Body Part \\ Detection};
+
+    \node (2D-TD)        [below of= 2D Multiple, left=-1.5em of 2D Multiple]   {Top-Down};
+    \node (2D-BU)        [below of= 2D Multiple, right=-1.5em of 2D Multiple]   {Bottom-Up};
+
+    \node (3D-MF)        [below of= 3D Single, left=-1.5em of 3D Single]   {Model-Free};
+    \node (3D-MB)        [below of= 3D Single, right=-1.5em of 3D Single]   {Model-Based};
+
+    \node (3D-TD)        [below of= 3D Multiple, left=-1.5em of 3D Multiple]   {Top-Down};
+    \node (3D-BU)        [below of= 3D Multiple, right=-1.5em of 3D Multiple]   {Bottom-Up};
+
+    % \node (onResumeBlock)     [process, below of=onStartBlock]   {onResume()};
+    % \node (activityRuns)      [activityRuns, below of=onResumeBlock]
+    %                                                     {Activity is running};
+    % \node (onPauseBlock)      [process, below of=activityRuns, yshift=-1cm]
+    %                                                             {onPause()};
+    % \node (onStopBlock)       [process, below of=onPauseBlock, yshift=-1cm]
+    %                                                                 {onStop()};
+    % \node (onDestroyBlock)    [process, below of=onStopBlock, yshift=-1cm]
+    %                                                             {onDestroy()};
+    % \node (onRestartBlock)    [process, right of=onStartBlock, xshift=4cm]
+    %                                                             {onRestart()};
+    % \node (ActivityEnds)      [startStop, left of=activityRuns, xshift=-4cm]
+    %                                                     {Process is killed};
+    % \node (ActivityDestroyed) [startStop, below of=onDestroyBlock]
+    %                                                 {Activity is shut down};
+    % Specification of lines between nodes specified above
+    % with additional nodes for description
+    \draw[-]             (HPE) -- (2D HPE);
+    \draw[-]             (HPE) -- (3D HPE);
+    \draw[-]             (2D HPE) -- (2D Single);
+    \draw[-]             (2D HPE) -- (2D Multiple);
+    \draw[-]             (3D HPE) -- (3D Single);
+    \draw[-]             (3D HPE) -- (3D Multiple);
+    \draw[-]             (2D Single) -- (2D-Regresion);
+    \draw[-]             (2D Single) -- (2D BPD);
+    \draw[-]             (2D Multiple) -- (2D-TD);
+    \draw[-]             (2D Multiple) -- (2D-BU);
+    \draw[-]             (3D Single) -- (3D-MF);
+    \draw[-]             (3D Single) -- (3D-MB);
+    \draw[-]             (3D Multiple) -- (3D-TD);
+    \draw[-]             (3D Multiple) -- (3D-BU);
+
+    % \draw[->]      (onStartBlock) -- (onResumeBlock);
+    % \draw[->]     (onResumeBlock) -- (activityRuns);
+    % \draw[->]      (activityRuns) -- node[text width=4cm]
+    %                                 {Another activity comes in
+    %                                 front of the activity} (onPauseBlock);
+    % \draw[->]      (onPauseBlock) -- node {The activity is no longer visible}
+    %                                 (onStopBlock);
+    % \draw[->]       (onStopBlock) -- node {The activity is shut down by
+    %                                 user or system} (onDestroyBlock);
+    % \draw[->]    (onRestartBlock) -- (onStartBlock);
+    % \draw[->]       (onStopBlock) -| node[yshift=1.25cm, text width=3cm]
+    %                                 {The activity comes to the foreground}
+    %                                 (onRestartBlock);
+    % \draw[->]    (onDestroyBlock) -- (ActivityDestroyed);
+    % \draw[->]      (onPauseBlock) -| node(priorityXMemory)
+    %                                 {higher priority $\rightarrow$ more memory}
+    %                                 (ActivityEnds);
+    % \draw           (onStopBlock) -| (priorityXMemory);
+    % \draw[->]     (ActivityEnds)  |- node [yshift=-2cm, text width=3.1cm]
+    %                                 {User navigates back to the activity}
+    %                                 (onCreateBlock);
+    % \draw[->] (onPauseBlock.east) -- ++(2.6,0) -- ++(0,2) -- ++(0,2) --
+    %     node[xshift=1.2cm,yshift=-1.5cm, text width=2.5cm]
+    %     {The activity comes to the foreground}(onResumeBlock.east);
 \end{tikzpicture}
+\caption{M1 caption for diagram} \label{fig:HPE-diagram}
+\end{center} \end{figure}
 
-Depending on the output dimension requirement, the Pose Estimation problem can be classified into
-2D Pose Estimation and 3D Pose Estimation. 2D Pose Estimation is predicting the location of body
-joints in the image (in terms of pixel values). On the other hand, 3D Pose Estimation is predicting
-a three-dimensional spatial arrangement of all the body joints as its final output.
+\textbf{Estimación de Pose en 2 y 3 dimensiones}
 
-2D Pose Estimation vs 3D Pose Estimation
-Most 3D Pose Estimation models first predict 2D Pose, and then try to lift it to 3D Pose. However,
-some end-to-end 3D Pose Estimation techniques also exist which directly predict 3D Pose.
+Existen dos grandes grupos que dividen las metodologías seguidas para la \textit{Estimación de Pose en
+Humanos}; estimación de pose en 2 y 3 dimensiones. Cómo el nombre lo sugiere, la \textit{Estimación
+de Pose 2D} (\textbf{2D HPE} por sus siglas en inglés) consiste en localizar articulaciones o partes del cuerpo
+directamente en imágenes, por tanto, el marco de referencia de las posiciones de cada articulación es la
+propia imagen. En la \textit{Estimación de Pose 3D} (\textbf{3D HPE}) las elementos detectados pasan a estar en 3D
+y se busca un marco de referencia que mejor se ajuste las dimensiones espaciales de las
+articulaciones y personas. Comúnmente se usa un cubo unitario cuyo centro corresponde a la
+articulación que indica la cadera o \textit{hip} como se encuentra en la literatura, véase la figura XXX.
 
+\textbf{Única o múltiples personas}.
 
-The major challenges for tracking poses from the car perspective are
-(i) occlusions due to the viewing angle and (ii) prediction
-speed to be able to react to real-time changes in the environ
+En muchos escenarios las imágenes contienen más de una persona o se necesita hacer seguimiento
+de multiples individuos. Por lo regular cuando aparecen más de un persona en una imagen
+(\textbf{MPPE}, Multiple Person Pose Estimation)
+se opta por identificar cada cuerpo en la imagen y posteriormente resolver individualmente
+la estimación de pose para cada una de las entidades identificadas (\textbf{SPPE}, Single Pose Estimation).
+La detección de los cuerpos se realiza en
+etapas previas usando modelos de detección de objetos y entrenados para detectar cuerpos
+humanos tales como \textit{MobileNet} \cite{DBLP:journals/corr/RenHG015}
+\cite{DBLP:journals/corr/HowardZCKWWAA17} \cite{DBLP:journals/corr/abs-1801-04381} o \textit{YOLO}
+(You Only Look Once) \cite{DBLP:journals/corr/RedmonDGF15} \cite{DBLP:journals/corr/abs-2004-10934}.
 
-Biased databases
-La mayoría de la bases de datos son obtenidas a través de algunos pocos sujetos de prueba.
-La estructura fisiológica de individuos no es perfecta y pueden variar debido a diversos factores
-como el sexo, la raza, edad, lugar de nacimiento y desarrollo, enfermedades, factores genéticos, entre
-otros, además de que los movimientos recreados entre sujetos no siempre son recreados de la misma manera
-aunque las circunstancias o ambiente esté controlado.
+\textbf{Tipos de datos}.
 
-Irregularidades en los datos reales.
-Si los datos son obtenidos bajo un ambiente controlado es posible obtener imágenes fieles para el
-entrenamiento. Por otro lodo, los modelos al ser desplegados y puestos en marcha en ambientes reales
-se enfrentan a imprevistos de los que no se puede tener control; oclusiones de diversas partes del
-cuerpo ya sea por el mismo sujeto o algún objeto extraño en la captura, movimientos extraños o rápidos
-como correr o dar una patada donde el modelo no puede los puede identificar o el equipo de captura
-no pueda obtener que se ven como fotogramas borrosos.
+La mayoría de los trabajos realizados sobre Estimación de Pose usan \textit{Imágenes RGB} debido
+a su alta popularidad y fácil captura y acceso, en estos últimos años y debido a la masificación
+de dispositivos inteligentes el acceso a una cámara digital no resulta un problema para la mayoria.
+Sin embargo, esto solo es cierto para la Estimación de Pose 2D puesto que el etiquetado de datos
+usando las coordenadas de la imagen como referencia no representa demasiado problema. En el caso
+de la Estimación de Pose 3D aún se necesita usar equipo costoso de captura de movimiento en
+acompañamiento de las cámaras de video. Existen dos tipos principales los ópticos y no ópticos.
+Los primeros en general el sujeto de prueba no necesita de aditamentos complejos como el uso de trajes
+(exoesqueleto) y solo un software y cámaras con sensores (infrarojos) se
+encarga de registrar e interpretar el movimiento a un modelo digital. Si bien
+aventajan en una reducción de coste su precisión es menor. El segundo tipo se
+puede dividir en dos clases; los mecánicos que usan giroscopios y acelerómetros para registrar el
+movimiento y electromagnéticos los cuales generan un campo electromagnético y capturan las alteraciones
+en este que realiza el sujeto al moverse.
 
-Monocular human pose estimation has some unique characteristics
-and challenges:
-
-Flexible body configuration indicates complex interdependent
-joints and high degree-of-freedom limbs, which may cause self occlusions or rare/complex poses.
-- Diverse body appearance includes different clothing and self similar parts.
-- Complex environment may cause foreground occlusion, occlusion
-or similar parts from nearby persons, various viewing angles, and
-truncation in the camera vie
-
-
-Problem Clasification by axes
-
-
-- Number of People Being Tracked
-
-Depending on the number of people being tracked, pose estimation can be classified into
-Single-person and Multi-person pose estimation
-
-Single-person pose estimation (SPPE) is the easier of the two, with the guarantee of only one person
-present in the frame. On the other hand, Multi-person pose estimation (MPPE) needs to handle the
-additional problem of inter-person occlusion. Initial approaches in pose estimation were mostly
-focused on SPPE, however with the availability of huge multi-person datasets, the MPPE problem has
-lately been getting increased attention.
-
-- Input Modality
-
-Red-Green-Blue (RGB) image : The images that we see around us on a daily basis, and the most common
+Red-Green-Blue (RGB) image: The images that we see around us on a daily basis, and the most common
 type of input for Pose Estimation. Models working on RGB-only input have a huge advantage over
 others in terms of the mobility of the input source. This is due to the ease of availability of
 common cameras (which capture RGB images), making them the models that can be used across a huge
@@ -211,6 +263,10 @@ Body Model
 Every pose estimation algorithm agrees upon a body model beforehand. It allows the algorithm to formalize the problem of human pose estimation into that of estimating the body model parameters. Most algorithms use a simple N-joint rigid kinematic skeleton model (N is typically between 13 to 30) as the final output. Formally, kinematic models can be represented as a graph, where each vertex V represents a joint. The edges E can encode constraints or prior beliefs about the structure of the body model.
 Such a model suffices for most applications. However, for many other applications such as character animation, a more elaborate model may be needed. Some techniques have considered a highly detailed mesh models, representing the whole body with a point cloud.
 Another rather primitive body model that was used in earlier Pose Estimation pipelines is a shape-based body model. In shape-based models, human body parts are approximated using geometric shapes like rectangles, cylinders, conics etc.
+
+2D Pose Estimation vs 3D Pose Estimation
+Most 3D Pose Estimation models first predict 2D Pose, and then try to lift it to 3D Pose. However,
+some end-to-end 3D Pose Estimation techniques also exist which directly predict 3D Pose.
 
 kinematic Model
 Planar Model
@@ -250,7 +306,34 @@ datasets
 
 Modern pose estimation algorithms are almost exclusively based on convolutional neural networks with hourglass architecture or its variants (see the image below). Such a network consists of two major parts: a convolutional encoder that compresses the input image into the so-called latent representation and decoder that constructs N heatmaps from the latent representation where N is the number of searched keypoints.
 
+The major challenges for tracking poses from the car perspective are
+(i) occlusions due to the viewing angle and (ii) prediction
+speed to be able to react to real-time changes in the environ
 
+Biased databases
+La mayoría de la bases de datos son obtenidas a través de algunos pocos sujetos de prueba.
+La estructura fisiológica de individuos no es perfecta y pueden variar debido a diversos factores
+como el sexo, la raza, edad, lugar de nacimiento y desarrollo, enfermedades, factores genéticos, entre
+otros, además de que los movimientos recreados entre sujetos no siempre son recreados de la misma manera
+aunque las circunstancias o ambiente esté controlado.
+
+Irregularidades en los datos reales.
+Si los datos son obtenidos bajo un ambiente controlado es posible obtener imágenes fieles para el
+entrenamiento. Por otro lodo, los modelos al ser desplegados y puestos en marcha en ambientes reales
+se enfrentan a imprevistos de los que no se puede tener control; oclusiones de diversas partes del
+cuerpo ya sea por el mismo sujeto o algún objeto extraño en la captura, movimientos extraños o rápidos
+como correr o dar una patada donde el modelo no puede los puede identificar o el equipo de captura
+no pueda obtener que se ven como fotogramas borrosos.
+
+Monocular human pose estimation has some unique characteristics
+and challenges:
+
+Flexible body configuration indicates complex interdependent
+joints and high degree-of-freedom limbs, which may cause self occlusions or rare/complex poses.
+- Diverse body appearance includes different clothing and self similar parts.
+- Complex environment may cause foreground occlusion, occlusion
+or similar parts from nearby persons, various viewing angles, and
+truncation in the camera vie
 
 
 \subsection{Lung Pathologies detection}
