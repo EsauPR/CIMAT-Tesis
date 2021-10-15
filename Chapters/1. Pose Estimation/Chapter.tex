@@ -196,7 +196,7 @@ y se busca un marco de referencia que mejor se ajuste las dimensiones espaciales
 articulaciones y personas. Comúnmente se usa un cubo unitario cuyo centro corresponde a la
 articulación que indica la cadera o \textit{hip} como se encuentra en la literatura, véase la figura XXX.
 
-\textbf{Única o múltiples personas}.
+\textbf{ Enfoques de Estimación de Pose en una única o múltiples personas}.
 
 En muchos escenarios las imágenes contienen más de una persona o se necesita hacer seguimiento
 de multiples individuos. Por lo regular cuando aparecen más de un persona en una imagen
@@ -208,6 +208,27 @@ etapas previas usando modelos de detección de objetos y entrenados para detecta
 humanos tales como \textit{MobileNet} \cite{DBLP:journals/corr/RenHG015}
 \cite{DBLP:journals/corr/HowardZCKWWAA17} \cite{DBLP:journals/corr/abs-1801-04381} o \textit{YOLO}
 (You Only Look Once) \cite{DBLP:journals/corr/RedmonDGF15} \cite{DBLP:journals/corr/abs-2004-10934}.
+
+% Mono  https://sci-hub.se/10.1109/access.2020.3010248 26-30
+% Multi https://sci-hub.se/10.1109/access.2020.3010248 31-35
+
+Top-Down El procesamiento se realiza primero detectando los personas individualmente en la imagen
+usando un bounding-box proporcionado por algun detector de objetos. [26, 27, 29].
+EL principal problema de este enfoque es que si la detección de la persona falla ya no hay nada más
+que hacer, y el costo computacional depende de la cantidad de personas en la imagen, puesto que para
+cada persona detectada es necesario correr un estimador de pose entrenado para detectar una sola
+persona.
+
+Bottom-Up: [31, 34] En este enfoque se inicia localizando entidades semánticas y luego agrupandolas
+para formar una persona. Claramente usando este procedimiento el problema de rendimiento de usar un
+estimador de pose por cada persona desaparece, pues todas las entidades de los cuerpos son detectados
+a la vez y posteriormente agrupados para formar cada persona. Sin embargo, el modelo generado tiende
+a presentar problemas cuando existen personas ocluyéndose unas a otras.
+
+
+Largely three kinds of loss functions applied in human pose estimation models, namely, Mean Absolute
+Error (MAE), Mean Squared Error (MSE), and Cross-Entropy loss
+
 
 \textbf{Tipos de datos}.
 
@@ -222,56 +243,48 @@ el proceso de captura de los datos es necesario usar equipo especializado y cost
 de movimiento en acompañamiento de las cámaras de video \cite{6682899}. Existen dos tipos principales de captura
 de movimiento, los ópticos y los no ópticos.
 Generalmente, en los primeros el sujeto de prueba no necesita de aditamentos complejos como el uso de trajes
-(exoesqueleto) y solo un software y cámaras con sensores se
-encarga de registrar e interpretar el movimiento a un modelo digital. Si bien
+(exoesqueleto) y solo un software con ayuda de cámaras, sensores y marcadores se
+encargan de registrar e interpretar el movimiento a un modelo digital. Si bien
 aventajan en una reducción de coste su precisión es menor que los no ópticos.
-El \textit{Kinect}, fabricado por \textit{Microsoft} es muy usado para generar imágenes de infrarrojos
-\textit{IR-image} y su bajo conste en el mercado permite un fácil acceso a este dispositivo
+El \textit{Kinect}, fabricado por \textit{Microsoft} es uno de los dispositivo más usados para
+para generar imágenes de infrarrojos (\textit{IR-image}) y gracias a su bajo conste en el mercado
+permite el fácil acceso y adquisición de este dispositivo
 \cite{6165146} \cite{Izadi11kinectfusion:real-time}.
-Además dispositivos basados en tecnologías como \textit{LIDAR} para generar imágenes de profundad
-cada vez son de más fácil acceso, bajo la comercialización de dispositivos inteligentes  por
-compañías como Apple \cite{DBLP:journals/corr/abs-1711-06396} .
-
-
-El segundo tipo se puede dividir en dos clases; los mecánicos los cuales usan giroscopios y acelerómetros para registrar el
+Por otro parte, existen dispositivos basados en tecnologías como \textit{LIDAR} cuya función es
+generar imágenes de profundad. Al igual que el \textit{Kinect}, cada vez son de más fácil acceso
+debido a su comercialización en dispositivos inteligentes en el último año por compañías como Apple
+\cite{DBLP:journals/corr/abs-1711-06396}. El segundo tipo se puede dividir en dos clases;
+los mecánicos los cuales usan giroscopios y acelerómetros para registrar el
 movimiento y los electromagnéticos, cuyo funcionamiento es a través de la generación un campo
-electromagnético y para posteriormente capturar las alteraciones en este que realiza el sujeto al moverse.
+electromagnético y para posteriormente capturar las alteraciones en este que realiza el sujeto al moverse
+\cite{articleMotion}.
 
-Depth (Time of Flight) image : In a Depth image, the value of a pixels relates to the distance from
-the camera as measured by time-of-flight. The introduction and popularity of low-cost devices
-like Microsoft Kinect has made it easier to obtain Depth data. Depth image can complement RGB image
-to create more complex and accurate Computer Vision models, whereas Depth-only models are vastly
-used where privacy is a concern.
 
-Infra-red (IR) image : In an , the value of a pixel is determined by the amount of infrared
-light reflected back to the camera. Experimentation in Computer Vision based on IR images are minimal,
-as compared to RGB and Depth images. Microsoft Kinect also provides IR image while recording.
-However, currently there are no datasets that contain IR images.
+2D Pose Estimation vs 3D Pose Estimation
+Most 3D Pose Estimation models first predict 2D Pose, and then try to lift it to 3D Pose. However,
+some end-to-end 3D Pose Estimation techniques also exist which directly predict 3D Pose.
 
-Static Image vs Video
-
-A video is nothing but a collection of images, where every two consecutive frames share a huge
-portion of the information present in them (which is the basis of most of the video compression
-techniques). These temporal (time based) dependence in videos can be exploited while performing
-Pose estimation.
-For a video, a series of poses need to be produced for the input video sequence. It is expected
-that the estimated poses should ideally be consistent across successive frames of video, and the
-algorithm needs to be computationally efficient to handle large number of frames. The problem of
-occlusion might be easier to solve for a video due to the availability of past or future frames
-where the body part is not occluded.
-
-If temporal features are not a part of the pipeline, it is possible to apply static pose estimation
-for each frame in a video. However, the results are generally not as good as desired due to jitters
-and inconsistency problems.
 
 Body Model
 Every pose estimation algorithm agrees upon a body model beforehand. It allows the algorithm to formalize the problem of human pose estimation into that of estimating the body model parameters. Most algorithms use a simple N-joint rigid kinematic skeleton model (N is typically between 13 to 30) as the final output. Formally, kinematic models can be represented as a graph, where each vertex V represents a joint. The edges E can encode constraints or prior beliefs about the structure of the body model.
 Such a model suffices for most applications. However, for many other applications such as character animation, a more elaborate model may be needed. Some techniques have considered a highly detailed mesh models, representing the whole body with a point cloud.
 Another rather primitive body model that was used in earlier Pose Estimation pipelines is a shape-based body model. In shape-based models, human body parts are approximated using geometric shapes like rectangles, cylinders, conics etc.
 
-2D Pose Estimation vs 3D Pose Estimation
-Most 3D Pose Estimation models first predict 2D Pose, and then try to lift it to 3D Pose. However,
-some end-to-end 3D Pose Estimation techniques also exist which directly predict 3D Pose.
+Skeleton base model or stick figure or kinematic model
+Es uno de los modelos más simples y mayormente usados. Consiste en grafo de nodos que representan
+las articulaciones del cuerpo humano, comúnmente entre 10 y 30 nodos \cite{Felzenszwalb2005}.
+Así, un hueso es representado
+como una conexión entre dos articulaciones. Al ser solo una representación de la estructura del cuerpo
+carece de demás información como texturas o formas.
+
+Contour base model
+Es uno de los primeros modelos usados para problemas de Estimación de Pose. Los miembros y torso del
+cuerpo humano son representados como un conjunto de rectángulos que proveen información tanto de los
+límites de cada miembros como sus longitudes y anchor \cite{557241} \cite{COOTES199538}
+
+Volumen base model
+Es usado para representar el cuerpo humano y su volumen, es decir es una representación 3D del
+cuerpo conseguida a través de mallas de figuras geométricas y capturados por escaner 3D.
 
 kinematic Model
 Planar Model
@@ -340,5 +353,78 @@ joints and high degree-of-freedom limbs, which may cause self occlusions or rare
 or similar parts from nearby persons, various viewing angles, and
 truncation in the camera vie
 
+
+
+\subsubsection{Métricas de Evaluación}
+
+% Percentage of Correct Parts (PCP): this metric measures
+% the detection rate of limbs. A limb (body part) is considered
+% detected if the distance between the two predicted joint
+% locations and the true limb joint locations is less than half of
+% the limb length [46]. PCP commonly referred also as
+% PCP-0.5. Recently, PCP has not been preferred as an
+% evaluation metric even though it was initially regarded as the
+% go-to metric. This is because PCP penalizes shorter limbs. The
+% higher the PCP the better the model.
+
+% Percentage of Detected Joints(PDJ): this metric is proposed
+% to address the limitations observed in PCP. This evaluation
+% metric defines a joint correctly detected if the distance
+% between the predicted joint location and the true joint location
+% is within a certain fraction of the torso diameter (the distance
+% between the right hip and left shoulder). For instance, for
+% PDJ-0.2, it means the distance between the predicted joint
+% location and the true joint location should be less than 0.2 *
+% torso diameter. By changing this fraction, detection rates are
+% obtained for different degrees of localization precision
+
+
+% Percentage of Correct Key-points(PCK): this also measures
+% the distance between the predicted joint location and the true
+% joint location. The PCK evaluation metric measures the body
+% joints’ localization accuracy. The criteria of PCK and PDJ are
+% very similar except to the fact that the torso diameter is
+% replaced with the maximum side length (or threshold) of the
+% external rectangle of ground truth body joints [62]. Thus,
+% detecting a joint is considered correct if the distance between
+% the predicted joint and the true joint is within a certain fraction
+% of the specified threshold. Again, the higher the PCK the better
+% the model
+
+% PCKh is a modified version of PCK. PCKhs matching
+% threshold is 50% of the head segment length (a portion of the
+% head length is used as a reference at 50%). PCKh is also
+% defined as the head-normalized probability of the correct
+% keypoint metric [63]. In PCKh, joint detection is considered
+% correct if the predicted joint location is with a certain threshold
+% from the true joint location. But the threshold should be
+% adaptively selected based on the individual’s size. It should
+% fall within αl pixels of the ground-truth position, where α is a
+% constant and l is the head size that corresponds to 60% of the
+% diagonal length of the ground-truth head bounding box. The
+% PCKh@0.5 (α = 0.5) score is reported [63]. To make the
+% metric articulation independent, one probably better chooses
+% to use the head size.
+
+
+% Area Under the Curve (AUC) measures the different range
+% PCK thresholds (E.g., when α varies from 0 to 0.5) entirely. It
+% informs how the model is capable of distinguishing each
+% body's joints. The higher the AUC, the better the model
+
+
+% Area Under the Curve (AUC) measures the different range
+% PCK thresholds (E.g., when α varies from 0 to 0.5) entirely. It
+% informs how the model is capable of distinguishing each
+% body's joints. The higher the AUC, the better the model
+
+% Object Keypoint Similarity (OKS) gives a measure of how
+% a predicted keypoint is close to ground truth. OKS is much
+% similar to IoU (Intersection over Union) in keypoint detection
+% performance. So, when a model gets higher OKS, it means the
+% overlap between the predicted keypoint and the truth is higher.
+
+% Besidesthe above evaluation metrics, Average Precision (AP)
+% and mean Average Precision (mAP) are also used [64, 65]
 
 \subsection{Lung Pathologies detection}
