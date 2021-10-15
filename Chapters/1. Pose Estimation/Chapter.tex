@@ -211,26 +211,31 @@ humanos tales como \textit{MobileNet} \cite{DBLP:journals/corr/RenHG015}
 
 \textbf{Tipos de datos}.
 
-La mayoría de los trabajos realizados sobre Estimación de Pose usan \textit{Imágenes RGB} debido
-a su alta popularidad y fácil captura y acceso, en estos últimos años y debido a la masificación
-de dispositivos inteligentes el acceso a una cámara digital no resulta un problema para la mayoria.
-Sin embargo, esto solo es cierto para la Estimación de Pose 2D puesto que el etiquetado de datos
-usando las coordenadas de la imagen como referencia no representa demasiado problema. En el caso
-de la Estimación de Pose 3D aún se necesita usar equipo costoso de captura de movimiento en
-acompañamiento de las cámaras de video. Existen dos tipos principales los ópticos y no ópticos.
-Los primeros en general el sujeto de prueba no necesita de aditamentos complejos como el uso de trajes
-(exoesqueleto) y solo un software y cámaras con sensores (infrarojos) se
+En los últimos años, debido a la masificación
+de dispositivos inteligentes, el acceso a una cámara digital no resulta un problema para la mayoria
+de las personas, así, la mayoría de los trabajos realizados sobre Estimación de Pose usan
+\textit{Imágenes RGB} debido a su alto uso, fácil captura y acceso.
+Sin embargo, esto solo es cierto en el contexto de la Estimación de Pose 2D, puesto que el etiquetado de datos
+usando las coordenadas de la imagen como referencia no representa demasiado problema. En la
+Estimación de Pose 3D, la complejidad de la obtención de los datos se incrementa. Para llevar a cabo
+el proceso de captura de los datos es necesario usar equipo especializado y costoso para la captura
+de movimiento en acompañamiento de las cámaras de video \cite{6682899}. Existen dos tipos principales de captura
+de movimiento, los ópticos y los no ópticos.
+Generalmente, en los primeros el sujeto de prueba no necesita de aditamentos complejos como el uso de trajes
+(exoesqueleto) y solo un software y cámaras con sensores se
 encarga de registrar e interpretar el movimiento a un modelo digital. Si bien
-aventajan en una reducción de coste su precisión es menor. El segundo tipo se
-puede dividir en dos clases; los mecánicos que usan giroscopios y acelerómetros para registrar el
-movimiento y electromagnéticos los cuales generan un campo electromagnético y capturan las alteraciones
-en este que realiza el sujeto al moverse.
+aventajan en una reducción de coste su precisión es menor que los no ópticos.
+El \textit{Kinect}, fabricado por \textit{Microsoft} es muy usado para generar imágenes de infrarrojos
+\textit{IR-image} y su bajo conste en el mercado permite un fácil acceso a este dispositivo
+\cite{6165146} \cite{Izadi11kinectfusion:real-time}.
+Además dispositivos basados en tecnologías como \textit{LIDAR} para generar imágenes de profundad
+cada vez son de más fácil acceso, bajo la comercialización de dispositivos inteligentes  por
+compañías como Apple \cite{DBLP:journals/corr/abs-1711-06396} .
 
-Red-Green-Blue (RGB) image: The images that we see around us on a daily basis, and the most common
-type of input for Pose Estimation. Models working on RGB-only input have a huge advantage over
-others in terms of the mobility of the input source. This is due to the ease of availability of
-common cameras (which capture RGB images), making them the models that can be used across a huge
-number of devices.
+
+El segundo tipo se puede dividir en dos clases; los mecánicos los cuales usan giroscopios y acelerómetros para registrar el
+movimiento y los electromagnéticos, cuyo funcionamiento es a través de la generación un campo
+electromagnético y para posteriormente capturar las alteraciones en este que realiza el sujeto al moverse.
 
 Depth (Time of Flight) image : In a Depth image, the value of a pixels relates to the distance from
 the camera as measured by time-of-flight. The introduction and popularity of low-cost devices
@@ -238,7 +243,7 @@ like Microsoft Kinect has made it easier to obtain Depth data. Depth image can c
 to create more complex and accurate Computer Vision models, whereas Depth-only models are vastly
 used where privacy is a concern.
 
-Infra-red (IR) image : In an IR image, the value of a pixel is determined by the amount of infrared
+Infra-red (IR) image : In an , the value of a pixel is determined by the amount of infrared
 light reflected back to the camera. Experimentation in Computer Vision based on IR images are minimal,
 as compared to RGB and Depth images. Microsoft Kinect also provides IR image while recording.
 However, currently there are no datasets that contain IR images.
