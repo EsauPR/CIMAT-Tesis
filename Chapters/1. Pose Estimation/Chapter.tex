@@ -104,13 +104,13 @@ de capturar información temporal, específicamente enfocado en modelos \textit{
         ]
     % Specification of nodes (position, etc.)
     \node (HPE)          []              {HPE};
-    \node (2D HPE)       [below of=HPE, left=6.5em of HPE]          {2D HPE};
-    \node (3D HPE)       [below of=HPE, right=6.5em of HPE]   {3D HPE};
+    \node (2D HPE)       [below of=HPE, left=7.5em of HPE]          {2D HPE};
+    \node (3D HPE)       [below of=HPE, right=7.5em of HPE]   {3D HPE};
 
     \node (2D Single)    [below of= 2D HPE, left=1.0em of 2D HPE]          {2D Single};
     \node (2D Multiple)  [below of= 2D HPE, right=1.0em of 2D HPE]   {2D Multiple};
 
-    \node (3D Single)    [below of= 3D HPE, left=1.0em of 3D HPE]          {3D Single};
+    \node (3D Single)    [below of= 3D HPE, left=1.0em of 3D HPE]          {3D Single \\ Mono/Multi-view};
     \node (3D Multiple)  [below of= 3D HPE, right=1.0em of 3D HPE]   {3D Multiple};
 
     \node (2D-Regresion) [below of= 2D Single, left=-1.5em of 2D Single]   {Regresion};
@@ -194,11 +194,10 @@ directamente en imágenes, por tanto, el marco de referencia de las posiciones d
 propia imagen. En la \textit{Estimación de Pose 3D} (\textbf{3D HPE}) las elementos detectados pasan a estar en 3D
 y se busca un marco de referencia que mejor se ajuste las dimensiones espaciales de las
 articulaciones y personas. Comúnmente se usa un cubo unitario cuyo centro corresponde a la
-articulación que indica la cadera o \textit{hip} como se encuentra en la literatura, véase la figura XXX.
+articulación que indica la cadera o \textit{hip} como se encuentra en la literatura, véase la figura
+\ref{fig:HPE-diagram}.
 
-\textbf{ Enfoques de Estimación de Pose en una única o múltiples personas}.
-
-En muchos escenarios las imágenes contienen más de una persona o se necesita hacer seguimiento
+Por otro lado, en muchos escenarios las imágenes contienen más de una persona o se necesita hacer seguimiento
 de multiples individuos. Por lo regular cuando aparecen más de un persona en una imagen
 (\textbf{MPPE}, Multiple Person Pose Estimation)
 se opta por identificar cada cuerpo en la imagen y posteriormente resolver individualmente
@@ -208,6 +207,34 @@ etapas previas usando modelos de detección de objetos y entrenados para detecta
 humanos tales como \textit{MobileNet} \cite{DBLP:journals/corr/RenHG015}
 \cite{DBLP:journals/corr/HowardZCKWWAA17} \cite{DBLP:journals/corr/abs-1801-04381} o \textit{YOLO}
 (You Only Look Once) \cite{DBLP:journals/corr/RedmonDGF15} \cite{DBLP:journals/corr/abs-2004-10934}.
+
+Además, el proceso de estimación de pose puede ser realizado en multiples etapas. Es decir, un modelo
+end-to-end puede realizar la tarea completamente o en caso contrario, dividir la tarea en multiples
+etapas y usar modelos especializados para resolver cada etapa. Por ejemplo en estimación de pose 3D
+es común predecir la pose 2 dimensiones usando una red entrenada para esta tarea y posteriormente
+pasar a 3 dimensiones usando la información previa \cite{DBLP:journals/corr/MartinezHRL17}.
+
+\textbf{Estimación de Pose 2D Single}.
+Para la estimación de pose en 2D dónde solo es involucrada una sola personas se usan dos enfoques,
+los métodos basado en regresión (\textit{Regresion-Based}) y los métodos basados en detección de
+partes del cuerpo humano ((\textit{Detection-Based o Body Part Detection})). Los métodos basados en
+regresión estiman las posiciones relacionando directamente la imagen con las coordenadas de las
+articulaciones del modelo de cuerpo humano usado. En cambio, los métodos basados de detección
+identifican primeramente las partes del cuerpo ya sea a través de marcas como recuadros de las
+posiciones o usando mapas de calor que indican las posiciones de las articulaciones.
+
+\textbf{Estimación de Pose 3D Single}.
+Existen dos métodos generales para la estimación de pose 3D en una sola personas, los
+\textit{Generativos} y los \textit{Discriminativos}. Los métodos Generativos
+también conocidos como (\textit{model-based}, basado en modelos) usan alguna representación de modelos
+del cuerpo humano en conjunto con información apriori como los movimientos y el contexto en el que se
+ejecutan. Las poses son predecidas usando la imágen un conjunto de representaciones obtenidos de establecer un
+función de probabilidad usando información tal como descriptores de la imagen, la estructura del cuerpo
+humano, los parámetros de las cámaras y y un conjunto de restricciones derivadas del contexto. Los
+modelos Discriminativos simplemente aprenden a predecir directamente la pose usando la datos de entrada
+sin usar información de modelos humanos.
+
+\textbf{Estimación de Pose 2D-3D Multiple}.
 
 % Mono  https://sci-hub.se/10.1109/access.2020.3010248 26-30
 % Multi https://sci-hub.se/10.1109/access.2020.3010248 31-35
@@ -226,6 +253,15 @@ a la vez y posteriormente agrupados para formar cada persona. Sin embargo, el mo
 a presentar problemas cuando existen personas ocluyéndose unas a otras.
 
 
+La estimación de pose en 3d también puede ser realizado en dos dos marcos, \textit{monocular}
+cuando solo se tiene una imagen de reference del sujeto de prueba en un tiempo o pose exacta y
+multi-vista cuando se tienen imágenes desde diferentes perspectivas del sujeto de prueba en misma
+la pose y tiempo exacto. La ventaja de usar técnicas que puedan aprovechar la información contenida
+en diferentes perspectivas es que ayuda a reducir en gran medida la ambigüedad ocasionada por las
+oclusiones, una parte puede no ser visible desde un ángulo pero desde otro si. Sin embargo, la
+cantidad de conjunto de datos existentes para estimación de pose multi-vista es reducida.
+
+
 Largely three kinds of loss functions applied in human pose estimation models, namely, Mean Absolute
 Error (MAE), Mean Squared Error (MSE), and Cross-Entropy loss
 
@@ -233,24 +269,24 @@ Error (MAE), Mean Squared Error (MSE), and Cross-Entropy loss
 \textbf{Tipos de datos}.
 
 En los últimos años, debido a la masificación
-de dispositivos inteligentes, el acceso a una cámara digital no resulta un problema para la mayoria
+de dispositivos inteligentes, el acceso a una cámara digital no resulta un problema mayor para la muchas
 de las personas, así, la mayoría de los trabajos realizados sobre Estimación de Pose usan
-\textit{Imágenes RGB} debido a su alto uso, fácil captura y acceso.
+\textit{Imágenes RGB} gracias a su fácil captura y acceso.
 Sin embargo, esto solo es cierto en el contexto de la Estimación de Pose 2D, puesto que el etiquetado de datos
 usando las coordenadas de la imagen como referencia no representa demasiado problema. En la
 Estimación de Pose 3D, la complejidad de la obtención de los datos se incrementa. Para llevar a cabo
-el proceso de captura de los datos es necesario usar equipo especializado y costoso para la captura
-de movimiento en acompañamiento de las cámaras de video \cite{6682899}. Existen dos tipos principales de captura
-de movimiento, los ópticos y los no ópticos.
-Generalmente, en los primeros el sujeto de prueba no necesita de aditamentos complejos como el uso de trajes
+el proceso de obtención de los datos es necesario usar equipo especializado y costoso para la captura
+de movimiento en acompañamiento de las cámaras de video \cite{6682899}. Hay dos mecanismos de captura
+de movimiento, los ópticos y los no ópticos. Generalmente, en los primeros el sujeto de prueba no
+necesita de aditamentos complejos como el uso de trajes
 (exoesqueleto) y solo un software con ayuda de cámaras, sensores y marcadores se
 encargan de registrar e interpretar el movimiento a un modelo digital. Si bien
 aventajan en una reducción de coste su precisión es menor que los no ópticos.
-El \textit{Kinect}, fabricado por \textit{Microsoft} es uno de los dispositivo más usados para
-para generar imágenes de infrarrojos (\textit{IR-image}) y gracias a su bajo conste en el mercado
-permite el fácil acceso y adquisición de este dispositivo
-\cite{6165146} \cite{Izadi11kinectfusion:real-time}.
-Por otro parte, existen dispositivos basados en tecnologías como \textit{LIDAR} cuya función es
+El \textit{Kinect}, fabricado por \textit{Microsoft} es uno de los dispositivos más usados
+para generar imágenes de infrarrojos (\textit{IR-image}) siendo de fácil encontrarlo y adquirirlo
+gracias a su bajo conste. \cite{6165146} \cite{Izadi11kinectfusion:real-time}.
+
+Por otra parte, existen dispositivos basados en tecnologías como \textit{LIDAR} cuya función es
 generar imágenes de profundad. Al igual que el \textit{Kinect}, cada vez son de más fácil acceso
 debido a su comercialización en dispositivos inteligentes en el último año por compañías como Apple
 \cite{DBLP:journals/corr/abs-1711-06396}. El segundo tipo se puede dividir en dos clases;
@@ -259,10 +295,6 @@ movimiento y los electromagnéticos, cuyo funcionamiento es a través de la gene
 electromagnético y para posteriormente capturar las alteraciones en este que realiza el sujeto al moverse
 \cite{articleMotion}.
 
-
-2D Pose Estimation vs 3D Pose Estimation
-Most 3D Pose Estimation models first predict 2D Pose, and then try to lift it to 3D Pose. However,
-some end-to-end 3D Pose Estimation techniques also exist which directly predict 3D Pose.
 
 
 Body Model
@@ -277,22 +309,16 @@ Así, un hueso es representado
 como una conexión entre dos articulaciones. Al ser solo una representación de la estructura del cuerpo
 carece de demás información como texturas o formas.
 
-Contour base model
+Contour base model or Planar Model
 Es uno de los primeros modelos usados para problemas de Estimación de Pose. Los miembros y torso del
 cuerpo humano son representados como un conjunto de rectángulos que proveen información tanto de los
 límites de cada miembros como sus longitudes y anchor \cite{557241} \cite{COOTES199538}
 
 Volumen base model
 Es usado para representar el cuerpo humano y su volumen, es decir es una representación 3D del
-cuerpo conseguida a través de mallas de figuras geométricas y capturados por escaner 3D.
+cuerpo conseguida a través de un mallado de figuras geométricas y capturados por escaner 3D
+\cite{840661}.
 
-kinematic Model
-Planar Model
-Volumetric Model
--> https://viso.ai/deep-learning/pose-estimation-ultimate-overview/
-
-Number of cameras
-A major portion of research involves solving the pose estimation problem using input from a single camera. However, there are certain algorithms which try to use data from multiple viewpoints/cameras, combining them to generate more accurate poses and handle occlusions better. The research on multi-camera pose estimation is currently somewhat limited, primarily due to lack of good datasets.
 
 Mapa de tipos de estimación de pose 3D
 -> https://sci-hub.se/10.1016/j.cviu.2019.102897 pp 4
