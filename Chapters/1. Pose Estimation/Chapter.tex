@@ -292,22 +292,17 @@ debido a su comercialización en dispositivos inteligentes en el último año po
 \cite{DBLP:journals/corr/abs-1711-06396}. El segundo tipo se puede dividir en dos clases;
 los mecánicos los cuales usan giroscopios y acelerómetros para registrar el
 movimiento y los electromagnéticos, cuyo funcionamiento es a través de la generación un campo
-electromagnético y para posteriormente capturar las alteraciones en este que realiza el sujeto al moverse
-\cite{articleMotion}.
+electromagnético y para posteriormente capturar las alteraciones en este que realiza el sujeto al
+moverse \cite{articleMotion}.
 
 
-
-Body Model
-Every pose estimation algorithm agrees upon a body model beforehand. It allows the algorithm to formalize the problem of human pose estimation into that of estimating the body model parameters. Most algorithms use a simple N-joint rigid kinematic skeleton model (N is typically between 13 to 30) as the final output. Formally, kinematic models can be represented as a graph, where each vertex V represents a joint. The edges E can encode constraints or prior beliefs about the structure of the body model.
-Such a model suffices for most applications. However, for many other applications such as character animation, a more elaborate model may be needed. Some techniques have considered a highly detailed mesh models, representing the whole body with a point cloud.
-Another rather primitive body model that was used in earlier Pose Estimation pipelines is a shape-based body model. In shape-based models, human body parts are approximated using geometric shapes like rectangles, cylinders, conics etc.
+\textbf{Modelación del Cuerpo Humano}
 
 Skeleton base model or stick figure or kinematic model
 Es uno de los modelos más simples y mayormente usados. Consiste en grafo de nodos que representan
 las articulaciones del cuerpo humano, comúnmente entre 10 y 30 nodos \cite{Felzenszwalb2005}.
-Así, un hueso es representado
-como una conexión entre dos articulaciones. Al ser solo una representación de la estructura del cuerpo
-carece de demás información como texturas o formas.
+Así, un hueso es representado como una conexión entre dos articulaciones. Al ser solo una
+representación de la estructura del cuerpo carece de demás información como texturas o formas.
 
 Contour base model or Planar Model
 Es uno de los primeros modelos usados para problemas de Estimación de Pose. Los miembros y torso del
@@ -320,35 +315,41 @@ cuerpo conseguida a través de un mallado de figuras geométricas y capturados p
 \cite{840661}.
 
 
-Mapa de tipos de estimación de pose 3D
--> https://sci-hub.se/10.1016/j.cviu.2019.102897 pp 4
+\textbf{Conjuntos de Datos más usados}
+
+MPII: The MPII human pose dataset is a multi-person 2D Pose Estimation dataset comprising of nearly
+500 different human activities, collected from Youtube videos. MPII was the first dataset to contain
+such a diverse range of poses and the first dataset to launch a 2D Pose estimation challenge in 2014
+
+COCO: The COCO keypoints dataset is a multi-person 2D Pose Estimation dataset with images collected
+from Flickr. COCO is the largest 2D Pose Estimation dataset, to date, and is considering a benchmark
+for testing 2D Pose Estimation algorithms.
+
+HumanEva : HumanEva is a single-person 3D Pose Estimation dataset, containing video sequences
+recorded using multiple RGB and grayscale cameras. Ground truth 3D poses are captured using
+marker-based motion capture (mocap) cameras. HumanEva was the first 3D Pose Estimation dataset of
+substantial size.
+
+Human3.6M : Human3.6M is a single-person 2D/3D Pose Estimation dataset, containing video sequences
+in which 11 actors are performing 15 different possible activities were recorded using RGB and
+time-of-flight (depth) cameras. 3D poses are obtained using 10 mocap cameras. Human3.6M is the
+biggest real 3D Pose Estimation dataset, to date.
+
+SURREAL : SURREAL is a single-person 2D/3D Pose Estimation dataset, containing virtual video
+animations created using mocap data recorded in the lab. SURREAL is the biggest 3D Pose Estimation
+dataset, but is not yet accepted as a benchmark for comparing 3D Pose Estimation algorithms. This
+is mainly because it is a synthetic dataset.
+
+Modern pose estimation algorithms are almost exclusively based on convolutional neural networks
+with hourglass architecture or its variants (see the image below). Such a network consists of two
+major parts: a convolutional encoder that compresses the input image into the so-called latent
+representation and decoder that constructs N heatmaps from the latent representation where N is the
+number of searched keypoints.
 
 Why is it hard?
-Strong articulations, small and barely visible joints, occlusions, clothing, and lighting changes make this a difficult problem.
+Strong articulations, small and barely visible joints, occlusions, clothing, and lighting changes
+make this a difficult problem.
 Main challenges -> https://viso.ai/deep-learning/pose-estimation-ultimate-overview/
-
-Pipelines
-
--> https://towardsdatascience.com/human-pose-estimation-simplified-6cfd88542ab3
-
-Approaches
-
-- Classical approaches
-- Deep Learning based approaches
--> https://nanonets.com/blog/human-pose-estimation-2d-guide/
-- Bottom-up
-- Top-Down
--> https://viso.ai/deep-learning/pose-estimation-ultimate-overview/
-
-
-Most popular pose estimation methods
--> https://viso.ai/deep-learning/pose-estimation-ultimate-overview/
-
-
-datasets
--> https://sci-hub.se/10.1016/j.cviu.2016.09.002
-
-Modern pose estimation algorithms are almost exclusively based on convolutional neural networks with hourglass architecture or its variants (see the image below). Such a network consists of two major parts: a convolutional encoder that compresses the input image into the so-called latent representation and decoder that constructs N heatmaps from the latent representation where N is the number of searched keypoints.
 
 The major challenges for tracking poses from the car perspective are
 (i) occlusions due to the viewing angle and (ii) prediction
@@ -358,7 +359,7 @@ Biased databases
 La mayoría de la bases de datos son obtenidas a través de algunos pocos sujetos de prueba.
 La estructura fisiológica de individuos no es perfecta y pueden variar debido a diversos factores
 como el sexo, la raza, edad, lugar de nacimiento y desarrollo, enfermedades, factores genéticos, entre
-otros, además de que los movimientos recreados entre sujetos no siempre son recreados de la misma manera
+otros, además de que los movimientos recreados entre sujetos no siempre son hechos de la misma manera
 aunque las circunstancias o ambiente esté controlado.
 
 Irregularidades en los datos reales.
@@ -377,8 +378,7 @@ joints and high degree-of-freedom limbs, which may cause self occlusions or rare
 - Diverse body appearance includes different clothing and self similar parts.
 - Complex environment may cause foreground occlusion, occlusion
 or similar parts from nearby persons, various viewing angles, and
-truncation in the camera vie
-
+truncation in the camera view
 
 
 \subsubsection{Métricas de Evaluación}
