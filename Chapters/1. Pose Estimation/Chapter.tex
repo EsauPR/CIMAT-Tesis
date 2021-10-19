@@ -105,12 +105,12 @@ de capturar información temporal, específicamente enfocado en modelos \textit{
     % Specification of nodes (position, etc.)
     \node (HPE)          []              {HPE};
     \node (2D HPE)       [below of=HPE, left=7.5em of HPE]          {2D HPE};
-    \node (3D HPE)       [below of=HPE, right=7.5em of HPE]   {3D HPE};
+    \node (3D HPE)       [below of=HPE, right=7.5em of HPE]   {3D HPE \\ Mono/Multi-view};
 
     \node (2D Single)    [below of= 2D HPE, left=1.0em of 2D HPE]          {2D Single};
     \node (2D Multiple)  [below of= 2D HPE, right=1.0em of 2D HPE]   {2D Multiple};
 
-    \node (3D Single)    [below of= 3D HPE, left=1.0em of 3D HPE]          {3D Single \\ Mono/Multi-view};
+    \node (3D Single)    [below of= 3D HPE, left=1.0em of 3D HPE]          {3D Single};
     \node (3D Multiple)  [below of= 3D HPE, right=1.0em of 3D HPE]   {3D Multiple};
 
     \node (2D-Regresion) [below of= 2D Single, left=-1.5em of 2D Single]   {Regresion};
@@ -125,21 +125,6 @@ de capturar información temporal, específicamente enfocado en modelos \textit{
     \node (3D-TD)        [below of= 3D Multiple, left=-1.5em of 3D Multiple]   {Top-Down};
     \node (3D-BU)        [below of= 3D Multiple, right=-1.5em of 3D Multiple]   {Bottom-Up};
 
-    % \node (onResumeBlock)     [process, below of=onStartBlock]   {onResume()};
-    % \node (activityRuns)      [activityRuns, below of=onResumeBlock]
-    %                                                     {Activity is running};
-    % \node (onPauseBlock)      [process, below of=activityRuns, yshift=-1cm]
-    %                                                             {onPause()};
-    % \node (onStopBlock)       [process, below of=onPauseBlock, yshift=-1cm]
-    %                                                                 {onStop()};
-    % \node (onDestroyBlock)    [process, below of=onStopBlock, yshift=-1cm]
-    %                                                             {onDestroy()};
-    % \node (onRestartBlock)    [process, right of=onStartBlock, xshift=4cm]
-    %                                                             {onRestart()};
-    % \node (ActivityEnds)      [startStop, left of=activityRuns, xshift=-4cm]
-    %                                                     {Process is killed};
-    % \node (ActivityDestroyed) [startStop, below of=onDestroyBlock]
-    %                                                 {Activity is shut down};
     % Specification of lines between nodes specified above
     % with additional nodes for description
     \draw[-]             (HPE) -- (2D HPE);
@@ -157,30 +142,6 @@ de capturar información temporal, específicamente enfocado en modelos \textit{
     \draw[-]             (3D Multiple) -- (3D-TD);
     \draw[-]             (3D Multiple) -- (3D-BU);
 
-    % \draw[->]      (onStartBlock) -- (onResumeBlock);
-    % \draw[->]     (onResumeBlock) -- (activityRuns);
-    % \draw[->]      (activityRuns) -- node[text width=4cm]
-    %                                 {Another activity comes in
-    %                                 front of the activity} (onPauseBlock);
-    % \draw[->]      (onPauseBlock) -- node {The activity is no longer visible}
-    %                                 (onStopBlock);
-    % \draw[->]       (onStopBlock) -- node {The activity is shut down by
-    %                                 user or system} (onDestroyBlock);
-    % \draw[->]    (onRestartBlock) -- (onStartBlock);
-    % \draw[->]       (onStopBlock) -| node[yshift=1.25cm, text width=3cm]
-    %                                 {The activity comes to the foreground}
-    %                                 (onRestartBlock);
-    % \draw[->]    (onDestroyBlock) -- (ActivityDestroyed);
-    % \draw[->]      (onPauseBlock) -| node(priorityXMemory)
-    %                                 {higher priority $\rightarrow$ more memory}
-    %                                 (ActivityEnds);
-    % \draw           (onStopBlock) -| (priorityXMemory);
-    % \draw[->]     (ActivityEnds)  |- node [yshift=-2cm, text width=3.1cm]
-    %                                 {User navigates back to the activity}
-    %                                 (onCreateBlock);
-    % \draw[->] (onPauseBlock.east) -- ++(2.6,0) -- ++(0,2) -- ++(0,2) --
-    %     node[xshift=1.2cm,yshift=-1.5cm, text width=2.5cm]
-    %     {The activity comes to the foreground}(onResumeBlock.east);
 \end{tikzpicture}
 \caption{M1 caption for diagram} \label{fig:HPE-diagram}
 \end{center} \end{figure}
@@ -215,6 +176,7 @@ es común predecir la pose 2 dimensiones usando una red entrenada para esta tare
 pasar a 3 dimensiones usando la información previa \cite{DBLP:journals/corr/MartinezHRL17}.
 
 \textbf{Estimación de Pose 2D Single}.
+
 Para la estimación de pose en 2D dónde solo es involucrada una sola personas se usan dos enfoques,
 los métodos basado en regresión (\textit{Regresion-Based}) y los métodos basados en detección de
 partes del cuerpo humano ((\textit{Detection-Based o Body Part Detection})). Los métodos basados en
@@ -224,6 +186,7 @@ identifican primeramente las partes del cuerpo ya sea a través de marcas como r
 posiciones o usando mapas de calor que indican las posiciones de las articulaciones.
 
 \textbf{Estimación de Pose 3D Single}.
+
 Existen dos métodos generales para la estimación de pose 3D en una sola personas, los
 \textit{Generativos} y los \textit{Discriminativos}. Los métodos Generativos
 también conocidos como (\textit{model-based}, basado en modelos) usan alguna representación de modelos
@@ -239,32 +202,99 @@ sin usar información de modelos humanos.
 % Mono  https://sci-hub.se/10.1109/access.2020.3010248 26-30
 % Multi https://sci-hub.se/10.1109/access.2020.3010248 31-35
 
-Top-Down El procesamiento se realiza primero detectando los personas individualmente en la imagen
-usando un bounding-box proporcionado por algun detector de objetos. [26, 27, 29].
-EL principal problema de este enfoque es que si la detección de la persona falla ya no hay nada más
+Bottom-Up: En este enfoque se inicia localizando entidades semánticas y luego agrupandolas
+para formar una persona \cite{DBLP:journals/corr/abs-1804-06208} \cite{8578840}
+\cite{DBLP:journals/corr/InsafutdinovPAA16}.
+Claramente, usando este procedimiento el problema de rendimiento de usar un
+estimador de pose por cada persona desaparece, pues todas las entidades de los cuerpos son detectados
+a la vez y posteriormente agrupados para formar cada persona, véase la figura \ref{fig:Openpose}.
+Sin embargo, el modelo generado tiende
+a presentar problemas cuando existen personas ocluyéndose unas a otras. Uno de los trabajos
+más conocidos que siguen este marco es OpenPose \cite{8765346}, el cual se ha convertido en una
+completa herramienta de referencia para la estimación de pose logrando realizar tareas como
+seguimiento en tiempo real y detección de articulaciones en 3D en formato single-person con
+opción de triangularizar desde distintas vistas de cámaras, también es posible detectar en tiempo
+real la pose en 2 dimensiones tanto el cuerpo humano como gestos con manos y rostros.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8 \textwidth]{Chapters/1. Pose Estimation/figures/openpose.png}
+    \caption{OpenPose: Trabaja bajo un marco Bottom-Pp. Primero predice los mapas de confianza para
+             cada parte del cuerpo $b)$ y codifican la orientación y ubicación de las extremidades
+             a través $b)$ y $c)$ y finalmente asocian cada miembro identificado y reconstruyen la
+             pose del cuerpo $d)$ y $e)$ \cite{8765346}.}
+    \label{fig:Openpose}
+\end{figure}
+
+Top-Down: El procesamiento se realiza primero detectando los personas individualmente en la imagen
+usando un bounding-box proporcionado por algun detector de objetos
+\cite{DBLP:journals/corr/NewellYD16} \cite{DBLP:journals/corr/WeiRKS16},
+véase la figura \ref{fig:alphapose}.
+El principal problema de este enfoque es que si la detección de la persona falla ya no hay nada más
 que hacer, y el costo computacional depende de la cantidad de personas en la imagen, puesto que para
 cada persona detectada es necesario correr un estimador de pose entrenado para detectar una sola
-persona.
+persona. En contraparte a Openpose, Alpha-Pose \cite{DBLP:journals/corr/FangXL16} sigue el un marco
+top-down a través de 3 componentes esenciales; \textit{Symmetric Spatial Transformer Network} (SSTN),
+\textit{Parametric Pose Non-Maximum-Suppression}(NMS) y \textit{Pose-Guided Proposals Generator}
+(PGPG) que les permiten minimizar el problema de la detección incorrecta o redundante de
+bounding-boxes de las personas.
 
-Bottom-Up: [31, 34] En este enfoque se inicia localizando entidades semánticas y luego agrupandolas
-para formar una persona. Claramente usando este procedimiento el problema de rendimiento de usar un
-estimador de pose por cada persona desaparece, pues todas las entidades de los cuerpos son detectados
-a la vez y posteriormente agrupados para formar cada persona. Sin embargo, el modelo generado tiende
-a presentar problemas cuando existen personas ocluyéndose unas a otras.
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8 \textwidth]{Chapters/1. Pose Estimation/figures/alpha-pose.png}
+    \caption{AlphaPose (RMPE): Trabaja bajo un marco Up-Down. Consiste en 3 principales componentes;
+            El primero, \textit{Symmetric Spatial Transformer Network} (SSTN) recibe los imágenes de
+            las poses a procesar y genera propuestas de poses el
+            \textit{Parametric Pose Non-Maximum-Suppression}(NMS) se encarga de eliminar las
+            redundancias e inconsistencias y finalmente el \textit{Pose-Guided Proposals Generator}
+            (PGPG) es usado como un modelo de aumentación de datos
+            \cite{DBLP:journals/corr/FangXL16}.}
+    \label{fig:alphapose}
+\end{figure}
 
-
-La estimación de pose en 3d también puede ser realizado en dos dos marcos, \textit{monocular}
-cuando solo se tiene una imagen de reference del sujeto de prueba en un tiempo o pose exacta y
-multi-vista cuando se tienen imágenes desde diferentes perspectivas del sujeto de prueba en misma
-la pose y tiempo exacto. La ventaja de usar técnicas que puedan aprovechar la información contenida
+La estimación de pose en 3d también puede ser realizado en dos marcos, \textit{monocular}
+cuando solo se tiene una imagen de reference del sujeto de prueba en un tiempo y pose exacta
+\cite{DBLP:journals/corr/MartinezHRL17} \cite{8954163} \cite{DBLP:journals/corr/abs-2002-10322}
+\cite{DBLP:journals/corr/abs-1711-08585} \cite{DBLP:journals/corr/abs-2004-11822}
+y multi-vista cuando se tienen imágenes desde diferentes perspectivas del sujeto de prueba en misma
+la pose y tiempo exacto \cite{DBLP:journals/corr/abs-1905-05754} \cite{DBLP:journals/corr/abs-1901-04111}
+\cite{DBLP:journals/corr/abs-2004-06239}.
+La ventaja de usar técnicas que puedan aprovechar la información contenida
 en diferentes perspectivas es que ayuda a reducir en gran medida la ambigüedad ocasionada por las
 oclusiones, una parte puede no ser visible desde un ángulo pero desde otro si. Sin embargo, la
 cantidad de conjunto de datos existentes para estimación de pose multi-vista es reducida.
 
 
-Largely three kinds of loss functions applied in human pose estimation models, namely, Mean Absolute
-Error (MAE), Mean Squared Error (MSE), and Cross-Entropy loss
+\textbf{Modelación del Cuerpo Humano}
 
+En la solución de los problemas de Estimación de Pose se plantea una arquitectura base para el
+cuerpo humano a partir de la cual se adecuarán las estimaciones. Los modelos usados para la
+representación del cuerpo humano son 3: \textit{kinematic model}, \textit{Planar Model} y
+\textit{Volumetric Model}. véase la figura
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.7 \textwidth]{Chapters/1. Pose Estimation/figures/body_model.png}
+    \caption{Representaciones de la arquitectura del cuerpo humano. Imagen obtenida de \citeauthor{DBLP:journals/corr/FangXL16}}
+    \label{fig:alphapose}
+\end{figure}
+
+
+Skeleton base model, stick figure o kinematic model:
+Es uno de los modelos más simples y mayormente usados. Consiste en grafo de nodos que representan
+las articulaciones del cuerpo humano, comúnmente entre 10 y 30 nodos \cite{Felzenszwalb2005}.
+Así, un hueso es representado como una conexión entre dos articulaciones. Al ser solo una
+representación de la estructura del cuerpo carece de demás información como texturas o formas.
+
+Contour-base model o Planar Model:
+Es uno de los primeros modelos usados para problemas de Estimación de Pose. Los miembros y torso del
+cuerpo humano son representados como un conjunto de rectángulos que proveen información tanto de los
+límites de cada miembros como sus longitudes y anchor \cite{557241} \cite{COOTES199538}.
+
+Volumen base model:
+Es usado para representar el cuerpo humano y su volumen, es decir es una representación 3D del
+cuerpo conseguida a través de un mallado de figuras geométricas y capturados por escaner 3D
+\cite{840661}.
 
 \textbf{Tipos de datos}.
 
@@ -295,26 +325,6 @@ movimiento y los electromagnéticos, cuyo funcionamiento es a través de la gene
 electromagnético y para posteriormente capturar las alteraciones en este que realiza el sujeto al
 moverse \cite{articleMotion}.
 
-
-\textbf{Modelación del Cuerpo Humano}
-
-Skeleton base model or stick figure or kinematic model
-Es uno de los modelos más simples y mayormente usados. Consiste en grafo de nodos que representan
-las articulaciones del cuerpo humano, comúnmente entre 10 y 30 nodos \cite{Felzenszwalb2005}.
-Así, un hueso es representado como una conexión entre dos articulaciones. Al ser solo una
-representación de la estructura del cuerpo carece de demás información como texturas o formas.
-
-Contour base model or Planar Model
-Es uno de los primeros modelos usados para problemas de Estimación de Pose. Los miembros y torso del
-cuerpo humano son representados como un conjunto de rectángulos que proveen información tanto de los
-límites de cada miembros como sus longitudes y anchor \cite{557241} \cite{COOTES199538}
-
-Volumen base model
-Es usado para representar el cuerpo humano y su volumen, es decir es una representación 3D del
-cuerpo conseguida a través de un mallado de figuras geométricas y capturados por escaner 3D
-\cite{840661}.
-
-
 \textbf{Conjuntos de Datos más usados}
 
 MPII: The MPII human pose dataset is a multi-person 2D Pose Estimation dataset comprising of nearly
@@ -324,21 +334,46 @@ such a diverse range of poses and the first dataset to launch a 2D Pose estimati
 COCO: The COCO keypoints dataset is a multi-person 2D Pose Estimation dataset with images collected
 from Flickr. COCO is the largest 2D Pose Estimation dataset, to date, and is considering a benchmark
 for testing 2D Pose Estimation algorithms.
+- COCO2017
 
 HumanEva : HumanEva is a single-person 3D Pose Estimation dataset, containing video sequences
 recorded using multiple RGB and grayscale cameras. Ground truth 3D poses are captured using
 marker-based motion capture (mocap) cameras. HumanEva was the first 3D Pose Estimation dataset of
 substantial size.
+It is actually composed of two datasets, HumanEva I & HumanEva II, both in controlled indoor environments.
+The HumanEva I dataset consists of:
+RGB views: 3 standard ones
+60 Hz 3D joint positions from mocap
+HumanEva II is similar, but with the addition of another camera, as well as multi action scenarios
+including running around a loop performing actions. These datasets have more natural clothes, but
+this comes with the cost of moving sensors, and less accurate mocap data
 
 Human3.6M : Human3.6M is a single-person 2D/3D Pose Estimation dataset, containing video sequences
 in which 11 actors are performing 15 different possible activities were recorded using RGB and
 time-of-flight (depth) cameras. 3D poses are obtained using 10 mocap cameras. Human3.6M is the
 biggest real 3D Pose Estimation dataset, to date.
+This is the standard in 3d pose estimation. A dataset of 11 people doing 17 common poses in an
+indoor environment, resulting in a total of 3.6 million frames. The following measurements are included:
+RGB views: 4 standard ones, one with depth
+Exact 3D joint positions from mocap
+Pixel-level body part labels for a subset of the data
+3D laser scans of the actors (done once, not throughout the videos)
+This dataset mostly includes everyday poses, not anything sports specific. natural scenarios, but no
+specific sports, etc.
 
-SURREAL : SURREAL is a single-person 2D/3D Pose Estimation dataset, containing virtual video
+
+SURREAL (Synthetic hUmans foR REAL tasks) : SURREAL is a single-person 2D/3D Pose Estimation dataset, containing virtual video
 animations created using mocap data recorded in the lab. SURREAL is the biggest 3D Pose Estimation
 dataset, but is not yet accepted as a benchmark for comparing 3D Pose Estimation algorithms. This
 is mainly because it is a synthetic dataset.
+Contains synthetically generated data rendered from 3D sequences of motion capture data. The original data is from Human3.6M.
+The idea is that you can randomly sample the person’s pose, appearance, lighting, camera position and background, creating a massive dataset from only a few annotated models. The SMPL model is used to decompose the body into pose and shape parameters, so we can sample these independently to produce an image. To generate realistic shapes, they use the CAESAR dataset to train SMPL, and then randomly select a participant and perturb the shape components slightly.
+Once the person is generated from the random shape and pose parameters, sample camera, texture, light and background to get the full scene
+
+
+JTA Dataset (2018)
+Massive simulated dataset created from Grand Theft Auto V. Consists of about 500 000 frames with
+almost 10 million body poses labeled with full 3D annotation.
 
 Modern pose estimation algorithms are almost exclusively based on convolutional neural networks
 with hourglass architecture or its variants (see the image below). Such a network consists of two
