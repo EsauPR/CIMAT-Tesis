@@ -325,70 +325,66 @@ movimiento y los electromagnéticos, cuyo funcionamiento es a través de la gene
 electromagnético y para posteriormente capturar las alteraciones en este que realiza el sujeto al
 moverse \cite{articleMotion}.
 
-\textbf{Conjuntos de Datos más usados}
+\textbf{Conjuntos de Datos más usados para estimación de pose 2D y 3D}
 
-MPII: The MPII human pose dataset is a multi-person 2D Pose Estimation dataset comprising of nearly
-500 different human activities, collected from Youtube videos. MPII was the first dataset to contain
-such a diverse range of poses and the first dataset to launch a 2D Pose estimation challenge in 2014
+\textbf{MPII Human Pose Dataset}: Es un dataset para estimación de pose en modalidades de
+single-person o multi-person en 2 dimensiones \cite{andriluka14cvpr}. Incluye al rededor de 25 mil
+imágenes conteniendo
+40 mil de ellas de personas con anotaciones de las articulaciones del cuerpo realizando diversas
+actividades. En total se agrupan en en 410 actividades recolectadas de videos de \textit{YouTube}.
 
-COCO: The COCO keypoints dataset is a multi-person 2D Pose Estimation dataset with images collected
-from Flickr. COCO is the largest 2D Pose Estimation dataset, to date, and is considering a benchmark
-for testing 2D Pose Estimation algorithms.
-- COCO2017
+\textbf{Microsoft COCO Dataset}: Es un dataset publicado por \textit{Microsoft} para tareas de
+detección de objetos, segmentación y subtitulado de imágenes (image captioning), su última version
+disponible corresponde a la del año 2017 \cite{DBLP:journals/corr/LinMBHPRDZ14}. Contiene al rededor
+de 80 categorías de imágenes y de estas 66,808 mil son de personas con un aproximado de 250 mil
+con total de aproximado de 273,469 anotaciones de cuerpos humanos. Sin embargo, No todas las
+imágenes contienen anotaciones de las 17 articulaciones, por lo que los modelos tienen que predecir
+cuales y cuántas articulaciones están presentes. Ambas modalidades single-person y multi-person en 2
+dimensiones están disponibles en las imágenes.
 
-DensePose
-Number of images: 50K
-Number of annotated correspondences: 5M
-Year: 2018
-DensePose is a large-scale ground-truth dataset with image-to-surface correspondences manually
-annotated on 50K COCO images. To build this dataset Facebook AI Research team involved human
-annotators, who were establishing dense correspondences from 2D images to surface-based
-representations of the human body using a specifically developed annotation pipeline.
-
-HumanEva : HumanEva is a single-person 3D Pose Estimation dataset, containing video sequences
-recorded using multiple RGB and grayscale cameras. Ground truth 3D poses are captured using
-marker-based motion capture (mocap) cameras. HumanEva was the first 3D Pose Estimation dataset of
-substantial size.
-It is actually composed of two datasets, HumanEva I & HumanEva II, both in controlled indoor environments.
-The HumanEva I dataset consists of:
-RGB views: 3 standard ones
-60 Hz 3D joint positions from mocap
-HumanEva II is similar, but with the addition of another camera, as well as multi action scenarios
-including running around a loop performing actions. These datasets have more natural clothes, but
-this comes with the cost of moving sensors, and less accurate mocap data
-
-Human3.6M : Human3.6M is a single-person 2D/3D Pose Estimation dataset, containing video sequences
-in which 11 actors are performing 15 different possible activities were recorded using RGB and
-time-of-flight (depth) cameras. 3D poses are obtained using 10 mocap cameras. Human3.6M is the
-biggest real 3D Pose Estimation dataset, to date.
-This is the standard in 3d pose estimation. A dataset of 11 people doing 17 common poses in an
-indoor environment, resulting in a total of 3.6 million frames. The following measurements are included:
-RGB views: 4 standard ones, one with depth
-Exact 3D joint positions from mocap
-Pixel-level body part labels for a subset of the data
-3D laser scans of the actors (done once, not throughout the videos)
-This dataset mostly includes everyday poses, not anything sports specific. natural scenarios, but no
-specific sports, etc.
+% DensePose
+% Number of images: 50K
+% Number of annotated correspondences: 5M
+% Year: 2018
+% DensePose is a large-scale ground-truth dataset with image-to-surface correspondences manually
+% annotated on 50K COCO images. To build this dataset Facebook AI Research team involved human
+% annotators, who were establishing dense correspondences from 2D images to surface-based
+% representations of the human body using a specifically developed annotation pipeline.
 
 
-SURREAL (Synthetic hUmans foR REAL tasks) : SURREAL is a single-person 2D/3D Pose Estimation dataset, containing virtual video
-animations created using mocap data recorded in the lab. SURREAL is the biggest 3D Pose Estimation
-dataset, but is not yet accepted as a benchmark for comparing 3D Pose Estimation algorithms. This
-is mainly because it is a synthetic dataset.
-Contains synthetically generated data rendered from 3D sequences of motion capture data. The original data is from Human3.6M.
-The idea is that you can randomly sample the person’s pose, appearance, lighting, camera position and background, creating a massive dataset from only a few annotated models. The SMPL model is used to decompose the body into pose and shape parameters, so we can sample these independently to produce an image. To generate realistic shapes, they use the CAESAR dataset to train SMPL, and then randomly select a participant and perturb the shape components slightly.
-Once the person is generated from the random shape and pose parameters, sample camera, texture, light and background to get the full scene
+\textbf{HumanEva Dataset}: Dataset usado para estimación de pose en 3 dimensiones en modalidad de
+single-person. Contiene diversos secuencias de videos grabadas con cámaras en formato RGB y escala
+de grises. Está compuesto de dos sub-datasets \textit{HumanEva I} y \textit{HumanEva II} la principal
+diferencia es el sistema de captura, el primero fue a través de software marcadores con 6 cámaras
+y el segundo a través de hardware con 8 cámaras, ambos dentro de un ambiente controlado.
 
+\textbf{Human3.6M Dataset}: Contiene aproximadamente 3.6 millones de imágenes de poses humanas
+correspondientes a la cantidad de frames de secuencias de videos sobre 11 diferentes actores, 6
+hombres y 3 mujeres realizando
+17 distintas actividades \cite{6682899}. Cada video fue realizado a usando un total de 10 cámaras de
+motion capture en un ambiente controlado interno.
 
-JTA Dataset (2018)
-Massive simulated dataset created from Grand Theft Auto V. Consists of about 500 000 frames with
-almost 10 million body poses labeled with full 3D annotation.
+\textbf{TotalCapture Dataset}: Similar a Human3.6M, contiene contiene aproximadamente 1.9 millones
+de frames en videos en modalidad single-person y multi-vista calibrado a través de 8 cámaras.
 
-Modern pose estimation algorithms are almost exclusively based on convolutional neural networks
-with hourglass architecture or its variants (see the image below). Such a network consists of two
-major parts: a convolutional encoder that compresses the input image into the so-called latent
-representation and decoder that constructs N heatmaps from the latent representation where N is the
-number of searched keypoints.
+\textbf{Conjuntos de Datos Sinteticos}
+
+\textbf{SURREAL (Synthetic hUmans foR REAL tasks)} (2017): Es un dataset en modalidad single-person para
+estimación de pose 2D y 3D. Los datos originales son tomados del dataset Human3.6M y aleatoreamente
+muestreados (pose de la persona, apariencia, luz ambiental, posición de la cámara, tipos de fondos
+en las imágenes, texturas, etc.) para crear sintéticamente personas y escenas
+\cite{DBLP:journals/corr/Varol0MMBLS17}.
+
+\textbf{JTA Dataset} (2018): Dataset sumamente grande creado a partir de simulaciones de
+\textit{Grand Theft Auto V} desarrollado por \textit{Rockstar North} \cite{fabbri2018learning}
+para estimación de poses 2D y 3D. Contiene al
+rededor de 500 mil frames y 10 millones de poses de poses en escenarios urbanos todos ellos con
+anotaciones completas de posiciones en 3D.
+
+A pesar de que los datasets anteriores son bastante grandes, actualmente no son tan aceptados en la
+comunidad y su uso benchmark como benchmark no es visto principalmente dado que son datos sinteticos.
+Sin embargo abre las posibilidades de la futura adopción de este tipo de datasets debido a su gran
+flexibilidad de generación y casos de uso.
 
 Why is it hard?
 Strong articulations, small and barely visible joints, occlusions, clothing, and lighting changes
@@ -424,6 +420,11 @@ joints and high degree-of-freedom limbs, which may cause self occlusions or rare
 or similar parts from nearby persons, various viewing angles, and
 truncation in the camera view
 
+Modern pose estimation algorithms are almost exclusively based on convolutional neural networks
+with hourglass architecture or its variants (see the image below). Such a network consists of two
+major parts: a convolutional encoder that compresses the input image into the so-called latent
+representation and decoder that constructs N heatmaps from the latent representation where N is the
+number of searched keypoints.
 
 \subsubsection{Métricas de Evaluación}
 
