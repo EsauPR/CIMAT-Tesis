@@ -381,74 +381,77 @@ para estimación de poses 2D y 3D. Contiene al
 rededor de 500 mil frames y 10 millones de poses de poses en escenarios urbanos todos ellos con
 anotaciones completas de posiciones en 3D.
 
-A pesar de que los datasets anteriores son bastante grandes, actualmente no son tan aceptados en la
-comunidad y su uso benchmark como benchmark no es visto principalmente dado que son datos sinteticos.
-Sin embargo abre las posibilidades de la futura adopción de este tipo de datasets debido a su gran
-flexibilidad de generación y casos de uso.
+A pesar de que los datasets sintéticos son mucho grandes que los otros, actualmente no son tan
+aceptados en la comunidad y su uso benchmark como benchmark no es visto principalmente dado que son
+datos sinteticos. Sin embargo puesto que en los datos sintéticos se tiene mucho mayor control
+del ambiente puede solventar varias de las debilidades de los otros datasets como oclusiones, cambios
+de luz, tipos y colores de ropa, distintos contextos de fondos de imagen llevando modelos más robustos
+y con mejor generalización. La mayoría de la bases de datos son obtenidas a través de algunos pocos
+sujetos de prueba y la estructura fisiológica de individuos no es perfecta. Esta variación es causada
+por diversos diversos factores como el sexo, la raza, edad, lugar de nacimiento y desarrollo,
+enfermedades, factores genéticos, entre otros, además de que los movimientos recreados entre sujetos
+no siempre son hechos de la misma manera aunque las circunstancias o ambiente esté controlado.
 
-Why is it hard?
-Strong articulations, small and barely visible joints, occlusions, clothing, and lighting changes
-make this a difficult problem.
-Main challenges -> https://viso.ai/deep-learning/pose-estimation-ultimate-overview/
-
-The major challenges for tracking poses from the car perspective are
-(i) occlusions due to the viewing angle and (ii) prediction
-speed to be able to react to real-time changes in the environ
-
-Biased databases
-La mayoría de la bases de datos son obtenidas a través de algunos pocos sujetos de prueba.
-La estructura fisiológica de individuos no es perfecta y pueden variar debido a diversos factores
-como el sexo, la raza, edad, lugar de nacimiento y desarrollo, enfermedades, factores genéticos, entre
-otros, además de que los movimientos recreados entre sujetos no siempre son hechos de la misma manera
-aunque las circunstancias o ambiente esté controlado.
-
-Irregularidades en los datos reales.
-Si los datos son obtenidos bajo un ambiente controlado es posible obtener imágenes fieles para el
-entrenamiento. Por otro lodo, los modelos al ser desplegados y puestos en marcha en ambientes reales
+Con los datos son obtenidos bajo un ambiente controlado es posible obtener imágenes fieles para el
+entrenamiento. Aún así, los modelos al ser desplegados en ambientes reales
 se enfrentan a imprevistos de los que no se puede tener control; oclusiones de diversas partes del
-cuerpo ya sea por el mismo sujeto o algún objeto extraño en la captura, movimientos extraños o rápidos
-como correr o dar una patada donde el modelo no puede los puede identificar o el equipo de captura
-no pueda obtener que se ven como fotogramas borrosos.
+cuerpo que no fueron provistas durante el entrenamiento ya sea por el mismo sujeto o algún objeto
+extraño en la captura, movimientos extraños o rápidos como correr o dar una patada donde el modelo
+no puede los puede identificar o el equipo de captura no pueda obtener que se ven como fotogramas
+borrosos.
 
-Monocular human pose estimation has some unique characteristics
-and challenges:
-
-Flexible body configuration indicates complex interdependent
-joints and high degree-of-freedom limbs, which may cause self occlusions or rare/complex poses.
-- Diverse body appearance includes different clothing and self similar parts.
-- Complex environment may cause foreground occlusion, occlusion
-or similar parts from nearby persons, various viewing angles, and
-truncation in the camera view
-
-Modern pose estimation algorithms are almost exclusively based on convolutional neural networks
-with hourglass architecture or its variants (see the image below). Such a network consists of two
-major parts: a convolutional encoder that compresses the input image into the so-called latent
-representation and decoder that constructs N heatmaps from the latent representation where N is the
-number of searched keypoints.
+% Modern pose estimation algorithms are almost exclusively based on convolutional neural networks
+% with hourglass architecture or its variants (see the image below). Such a network consists of two
+% major parts: a convolutional encoder that compresses the input image into the so-called latent
+% representation and decoder that constructs N heatmaps from the latent representation where N is the
+% number of searched keypoints.
 
 \subsubsection{Métricas de Evaluación}
 
-% Percentage of Correct Parts (PCP): this metric measures
-% the detection rate of limbs. A limb (body part) is considered
-% detected if the distance between the two predicted joint
-% locations and the true limb joint locations is less than half of
-% the limb length [46]. PCP commonly referred also as
-% PCP-0.5. Recently, PCP has not been preferred as an
-% evaluation metric even though it was initially regarded as the
-% go-to metric. This is because PCP penalizes shorter limbs. The
-% higher the PCP the better the model.
+\textbf{Percentage of Correct Parts (PCP)}: Mide la tasa de detección de extremidades. Una extremidad
+o parte de un cuerpo es considerada detectada si el promedio de la distancia de las posiciones entre dos
+articulaciones predichas y la distancia de las posiciones de las articulaciones de la extremidad real
+es menor que cierto umbral \cite{4587468}. El umbral comúnmente tomado corresponde al 50\% de la distancia de la
+longitud de la extremidad real en cuestion:
 
-% Percentage of Detected Joints(PDJ): this metric is proposed
-% to address the limitations observed in PCP. This evaluation
-% metric defines a joint correctly detected if the distance
-% between the predicted joint location and the true joint location
-% is within a certain fraction of the torso diameter (the distance
-% between the right hip and left shoulder). For instance, for
-% PDJ-0.2, it means the distance between the predicted joint
-% location and the true joint location should be less than 0.2 *
-% torso diameter. By changing this fraction, detection rates are
-% obtained for different degrees of localization precision
+\begin{equation}
+    \frac{||c_s^{(n)} - \hat{c}_s^{(n)}|| + ||c_e^{(n)} - \hat{c}_e^{(n)}||}{2} \le \alpha\ || c_s^{(n)} - c_e^{(n)} ||
+    \label{eq:PCP}
+\end{equation}
 
+$||c_s^{(n)}$ y $||c_e^{(n)}$ representan las coordenadas de las dos articulaciones (inicial y final
+respectivamente) de la n-ésima extremidad. $||\hat c_s^{(n)}$ y $||\hat c_e^{(n)}$ son las coordenadas
+inicial y final de las dos articulaciones predichas de la n-ésima extremidad. $\alpha$ funciona como
+el umbral de error. Actualmente, ya no se usa esta métrica debido a que penaliza mayormente las partes
+del cuerpo más pequeñas. Mientras mayor es su \textit{PCP} mejor es el modelo.
+
+
+\textbf{Percentage of Detected Joints(PDJ)}: Esta métrica fue propuesta para sobrellevar la
+limitante antes mencionada de \textit{PCP}. Mide la tasa de detección de articulaciones del cuerpo.
+Una articulación es correctamente detectada si la distancia entre la posición de la articulación
+detectada y la posición real de la articulación está dentro de cierta fracción del diámetro del torso,
+es decir la distancia entre la cadera derecha (right hip) y el hombro izquierdo (left shoulder)
+\cite{6619315} \cite{DBLP:journals/corr/ToshevS13}:
+
+\begin{equation}
+    ||c^{(n)} - \hat{c}^{(n)}|| \le \alpha\ || c_{rh} - c_{ls} ||
+    \label{eq:PDJ}
+\end{equation}
+
+$c^{(n)}$ es la coordenada de la n-ésima articulación y $\hat c^{(n)}$ es la coordenada de la
+articulación predicha correspondiente. $c_{rh}$ es la coordenada de la cadera derecha y $c_{ls}$
+es la coordenada del hombro izquierdo. El problema con esta métrica es que cuando la persona se es
+capturada de lado en una imagen 2D el diámetro del torso tiende a ser cero así como la distancia
+entre la cadera derecha e izquierda.
+
+\textbf{Percentage of Correct Key-points(PCK)}: Es similar a la métrica \textit{PDJ} pero en vez de
+tomar el diámetro del torso se toma la distancia de la diagonal del rectangulo externo que rodea
+todas las articulaciones del cuerpo \cite{6380498}:
+
+\begin{equation}
+    ||c^{(n)} - \hat{c}^{(n)}|| \le \alpha\ diag_{bbox}
+    \label{eq:PCK}
+\end{equation}
 
 % Percentage of Correct Key-points(PCK): this also measures
 % the distance between the predicted joint location and the true
@@ -477,6 +480,11 @@ number of searched keypoints.
 % metric articulation independent, one probably better chooses
 % to use the head size.
 
+
+MJAE
+The Mean Joint Angle Error (MJAE) is the mean (over all angles)
+absolute difference between the true and estimated joint
+angles in degrees, and is given by:
 
 % Area Under the Curve (AUC) measures the different range
 % PCK thresholds (E.g., when α varies from 0 to 0.5) entirely. It
