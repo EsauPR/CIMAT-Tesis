@@ -426,7 +426,7 @@ el umbral de error. Actualmente, ya no se usa esta métrica debido a que penaliz
 del cuerpo más pequeñas. Mientras mayor es su \textit{PCP} mejor es el modelo.
 
 
-\textbf{Percentage of Detected Joints(PDJ)}: Esta métrica fue propuesta para sobrellevar la
+\textbf{Percentage of Detected Joints (PDJ)}: Esta métrica fue propuesta para sobrellevar la
 limitante antes mencionada de \textit{PCP}. Mide la tasa de detección de articulaciones del cuerpo.
 Una articulación es correctamente detectada si la distancia entre la posición de la articulación
 detectada y la posición real de la articulación está dentro de cierta fracción del diámetro del torso,
@@ -444,53 +444,78 @@ es la coordenada del hombro izquierdo. El problema con esta métrica es que cuan
 capturada de lado en una imagen 2D el diámetro del torso tiende a ser cero así como la distancia
 entre la cadera derecha e izquierda.
 
-\textbf{Percentage of Correct Key-points(PCK)}: Es similar a la métrica \textit{PDJ} pero en vez de
+\textbf{Percentage of Correct Key-points (PCK)}: Es similar a la métrica \textit{PDJ} pero en vez de
 tomar el diámetro del torso se toma la distancia de la diagonal del rectangulo externo que rodea
-todas las articulaciones del cuerpo \cite{6380498}:
+todas las articulaciones del cuerpo \cite{6380498}.
 
 \begin{equation}
     ||c^{(n)} - \hat{c}^{(n)}|| \le \alpha\ diag_{bbox}
     \label{eq:PCK}
 \end{equation}
 
-% Percentage of Correct Key-points(PCK): this also measures
-% the distance between the predicted joint location and the true
-% joint location. The PCK evaluation metric measures the body
-% joints’ localization accuracy. The criteria of PCK and PDJ are
-% very similar except to the fact that the torso diameter is
-% replaced with the maximum side length (or threshold) of the
-% external rectangle of ground truth body joints [62]. Thus,
-% detecting a joint is considered correct if the distance between
-% the predicted joint and the true joint is within a certain fraction
-% of the specified threshold. Again, the higher the PCK the better
-% the model
+La ecuación \ref{eq:PCK} correspondiente al cálculo de la detección correcta de articulación para la
+métrica de \textit{PCK} es similar a \textit{PDJ}. Una tercer variación es considerando una
+proporción de la longitud del segmente de la cabeza como umbral \cite{6909866},
+\textit{head-normalized probability of the correct keypoint} o \textit{PCKh}, con la finalidad
+de tener un umbral independiente de las distancias de las articulaciones y una posible elección
+es usar el tamaño de la cabeza del sujeto a prueba.
 
-% PCKh is a modified version of PCK. PCKhs matching
-% threshold is 50% of the head segment length (a portion of the
-% head length is used as a reference at 50%). PCKh is also
-% defined as the head-normalized probability of the correct
-% keypoint metric [63]. In PCKh, joint detection is considered
-% correct if the predicted joint location is with a certain threshold
-% from the true joint location. But the threshold should be
-% adaptively selected based on the individual’s size. It should
-% fall within αl pixels of the ground-truth position, where α is a
-% constant and l is the head size that corresponds to 60% of the
-% diagonal length of the ground-truth head bounding box. The
-% PCKh@0.5 (α = 0.5) score is reported [63]. To make the
-% metric articulation independent, one probably better chooses
-% to use the head size.
+\textbf{Average Precision (AP) y Average Recall (AR)}: Inicialmente introducido
+como  \textit{Average Precision of Keypoints (APK)} \cite{6380498} mide la exactitud y rendimiento
+de la detección de las articulaciones de acuerdo a la proporción de verdaderos positivos sobre el
+total de positivos detectados (precision) $\frac{TP}{TP + FP}$ y la proporción
+de verdaderos positivos sobre el total de positivos (recall) $\frac{TP}{TP + FN}$ penalizando tanto
+detecciones no encontradas como falsas detecciones. Al igual que los anteriores hay variantes
+como Mean Average Precision (mAP) que es la media de la precisión del modelo para todas las
+clase. Todos basados en alguna medida de similaridad como la propuesta en
+\textit{Object Key-points Similarity (OKS)} que mide el promedio de cercania de las articulaciones
+predichas y las reales. Definen una similaridad entre articulaciones (Keypoint Similarity)
+\cite{DBLP:journals/corr/LinMBHPRDZ14}
+como la distancia entre las articulaciones predichas normalizadas por la escala del
+área que forma la persona y una constante de regularización determinada para cada articulación:
 
+\begin{equation}
+    KS = \exp(- \frac{||c^{(n)} - \hat{c}^{(n)}||^2}{2s^2 k^2_n})
+    \label{eq:KS}
+\end{equation}
+
+$s$ y $k_n$ corresponden al factor de escala equivalente a la raíz cuadrada del área segmentada del
+objeto y a la constante de regularización por cada tipo de articulación cuya su función conjunta
+es regular la importancia de cada articulación.
 
 MJAE
 The Mean Joint Angle Error (MJAE) is the mean (over all angles)
 absolute difference between the true and estimated joint
 angles in degrees, and is given by:
 
-% Area Under the Curve (AUC) measures the different range
-% PCK thresholds (E.g., when α varies from 0 to 0.5) entirely. It
-% informs how the model is capable of distinguishing each
-% body's joints. The higher the AUC, the better the model
+\textbf{Mean Per Joint Position Error (MPJPE)}: Calcula el error en milímetros determinado por la distancia
+euclidiana entre los articulaciones predichas y las reales sobre cada tipo de articulación de la
+imagen o imágenes en caso de videos. Para distintos datasets de predicción de pose en 3D existen
+más de un pre-procesamiento antes calcular el error \textit{MPJPE} conocidos como protocolos.
+Por ejemplo para \textit{Human3.6M} el Protocolo \#1 consiste en alinear las coordenadas de las
+articulaciones con respecto a la raíz, generalmente la que corresponde al centro de la cadera (hip).
+El Protocolo \#2 calcula el error después de realizar un alineamiento mediante una transformación
+rígida usando \textit{Procrustes Analysis} \cite{Gower1975}, también abreviado como \textit{P-MPJPE}.
 
+Al igual que en estimación de pose 2D la métrica de PCK o 3DPKC para estimación de pose en 3D es
+usada \cite{DBLP:journals/corr/MehtaRCSXT16}. También el Área bajo la Curva (AUC) considerando
+típicamente un umbral de 150mm que se aproxima a la mitad del tamaño de la cabeza.
+
+In addition to the evaluation metrics for 3D joint coordinates, there
+is another evaluation measurement Mean Per-vertex Error to report
+the results of 3D body shape which report the error between predicted
+and ground truth meshes (Varol et al., 2018; Pavlakos et al., 2018b).
+
+Protocol 3 with MPJVE (mm/s): Velocity error over the 3D poses.
+we evaluate the dynamic quality of predicted 3D pose sequences by Mean per Joint Velocity
+Error(MPJVE). This metric measures the
+smoothness of predicted pose sequences. As shown in Table 7, with motion loss,
+our method significantly reduces the MPJVE by 32% (from 3.4mm to 2.3mm)
+and outperforms other baselines.
+Absolute position errors do not measure the smoothness
+of predictions over time, which is important for video. To
+evaluate this, we measure joint velocity errors (MPJVE),
+corresponding to the MPJPE of the first derivative of the 3D pose sequences. \cite{8954163}
 
 % Area Under the Curve (AUC) measures the different range
 % PCK thresholds (E.g., when α varies from 0 to 0.5) entirely. It
