@@ -1,0 +1,34 @@
+\section{Detección de Patologías en Pulmones Mediante Imágenes de Rayos-X}
+
+A pesar de diversos esfuerzos para desarrollar métodos basados en aprendizaje máquina basados en
+análisis de imágenes de Rayos-X y Tomografías Computarizadas aún no están listos para uso clínico.
+Limitaciones como sesgos debido a bases de datos pequeñas o recopilaciones de diversas fuentes sin
+un tratamiento o normalización entre estos, así como enfoques de detección en enfermedades
+específicas dejando de lado la posible contribución a los modelos la inclusión de otras enfermedades.
+Por ello el trabajo presentado en este escrito se concentra en desarrollar un modelo basado en
+aprendizaje profundo atacando estás problemas. El modelo desarrollado es entrenado para la detección
+de 15 patologías de pulmones, incluyendo \textit{COVID-19}.
+
+El padecimiento por \textit{COVID-19} es una enfermedad contagiosa causada por el \textit{Síndrome
+Respiratorio Agudo Severo Coronavirus 2} o \textit{SARS-CoV-2} por sus siglas en inglés
+(\textit{Severe Acute Respiratory Syndrome Coronavirus 2}) reportada por primera vez en diciembre
+del año 2019 como un nuevo tipo de pneumonia viral \cite{huang2020clinical}. Pocos meses después,
+en marzo del 2020 el \textit{COVID-19} fue declarado como pandemia a nivel mundial por la
+Organización Mundial de la Salud (\textit{WHO}) \cite{world2020director}. Los métodos más eficaces
+de detección de \textit{COVID-19} son la prueba clínica de Reacción en Cadena de Polimerasa con
+Transcripción Inversa
+(\textit{RT-PCR}) también llamada genéricamente \textit{molecular photocopying test} pues es usada
+para amplificar-copiar pequeños
+segmente de \textit{DNA} y detectar material genético de un organismo en específico como el virus
+\textit{SARS-CoV-2} y mediante la búsqueda de anticuerpos desarrollados por el organismo como
+respuesta a la enfermedad con la Prueba Rápida de Anticuerpos (\textit{RAT})
+\cite{Gupta2021, Apra2021, pub.1136450856, LIU2021112817}. Puesto que los
+anticuerpos tardan en generarse entre los 10 y 20 días después de la infección
+\cite{lou2020serology,o2021age,VABRET2020910}, la pruebas tipo \textit{PCR} es preferida como
+método de detección temprana. En la ausencia de prueba \textit{PCR}, los pacientes con sintomatología
+similar a la provocada por \textit{COVID-19} solo pueden ser diagnosticados con pneumonia atípica
+como padecimiento. Por ello, diversos métodos de análisis de imágenes basados en técnicas
+de Inteligencia Artificial han sido desarrollados para la detección de \textit{COVID-19} usando
+imágenes de Rayos X y Tomografías Computarizadas. La principal motivación es desarrollar métodos
+alternativos que ayuden a la detección de \textit{COVID-19} dada la limitada disponibilidad y
+creciente demanda en la aplicación de técnicas como \textit{PCR} en todo el mundo.

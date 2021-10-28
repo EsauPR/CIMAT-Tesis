@@ -1,6 +1,12 @@
-\section{Problemas}
+\section{Estimación de Pose en Humanos}
 
-\subsection{Estimación de Pose en Humanos}
+%  https://nanonets.com/blog/human-pose-estimation-2d-guide/
+%  https://viso.ai/deep-learning/pose-estimation-ultimate-overview/
+%  https://arxiv.org/pdf/2012.13392.pdf
+%  https://sci-hub.se/10.1016/j.cviu.2019.102897
+%  https://sci-hub.se/10.1109/access.2020.3010248
+%  https://sci-hub.se/10.1016/j.cviu.2016.09.002
+%  https://stasiuk.medium.com/pose-estimation-metrics-844c07ba0a78
 
 La tarea de \textit{Estimación de Pose en Humanos} (HPE por sis siglas en inglés) ha sido uno de los
 tópicos de gran importancia en
@@ -21,13 +27,12 @@ entrenamientos.
 
 \begin{figure}[ht!]
     \centering
-    \includegraphics[width=0.4 \textwidth]{Chapters/1. Pose Estimation/figures/openpifpaf.png}
+    \includegraphics[width=0.4 \textwidth]{Chapters/1. HPE_LUNG/figures/openpifpaf.png}
     \caption{OpenPifPaf: Escena del mundo real desde la perspectiva de un carro autónomo. Todos los
              actores son detectados y seguidos, esto incluye a las personas, el carro y el perro.
              \cite{DBLP:journals/corr/abs-2103-02440}}
     \label{fig:PE-track}
 \end{figure}
-
 
 El problema de \textit{Estimación de Pose Humanos} consiste en predecir las partes del cuerpo o las
 posiciones de las articulaciones de una persona a través de una imagen, video. Este problema ha sido
@@ -87,8 +92,7 @@ de capturar información temporal, específicamente enfocado en modelos \textit{
     \label{Tab:hpe-survey}
 \end{table}
 
-\subsubsection{Taxonomía de Estimación de Pose 2D y 3D}
-
+\subsection{Taxonomía de Estimación de Pose 2D y 3D}
 
 \begin{figure}\begin{center}
 \begin{tikzpicture}[node distance=1.5cm,
@@ -147,7 +151,7 @@ de capturar información temporal, específicamente enfocado en modelos \textit{
 \caption{M1 caption for diagram} \label{fig:HPE-diagram}
 \end{center} \end{figure}
 
-\textbf{Estimación de Pose en 2 y 3 dimensiones}
+\subsubsection{Estimación de Pose en 2 y 3 dimensiones}
 
 Existen dos grandes grupos que dividen las metodologías seguidas para la \textit{Estimación de Pose en
 Humanos}; estimación de pose en 2 y 3 dimensiones. Cómo el nombre lo sugiere, la \textit{Estimación
@@ -176,7 +180,7 @@ etapas y usar modelos especializados para resolver cada etapa. Por ejemplo en es
 es común predecir la pose 2 dimensiones usando una red entrenada para esta tarea y posteriormente
 pasar a 3 dimensiones usando la información previa \cite{DBLP:journals/corr/MartinezHRL17}.
 
-\textbf{Estimación de Pose 2D Single}.
+\subsubsection{Estimación de Pose 2D Single}
 
 Para la estimación de pose en 2D dónde solo es involucrada una sola personas se usan dos enfoques,
 los métodos basado en regresión (\textit{Regresion-Based}) y los métodos basados en detección de
@@ -186,7 +190,7 @@ articulaciones del modelo de cuerpo humano usado. En cambio, los métodos basado
 identifican primeramente las partes del cuerpo ya sea a través de marcas como recuadros de las
 posiciones o usando mapas de calor que indican las posiciones de las articulaciones.
 
-\textbf{Estimación de Pose 3D Single}.
+\subsubsection{Estimación de Pose 3D Single}
 
 Existen dos métodos generales para la estimación de pose 3D en una sola personas, los
 \textit{Generativos} y los \textit{Discriminativos}. Los métodos Generativos
@@ -198,7 +202,7 @@ humano, los parámetros de las cámaras y y un conjunto de restricciones derivad
 modelos Discriminativos simplemente aprenden a predecir directamente la pose usando la datos de entrada
 sin usar información de modelos humanos.
 
-\textbf{Estimación de Pose 2D-3D Multiple}.
+\subsubsection{Estimación de Pose 2D-3D Multiple}
 
 % Mono  https://sci-hub.se/10.1109/access.2020.3010248 26-30
 % Multi https://sci-hub.se/10.1109/access.2020.3010248 31-35
@@ -219,7 +223,7 @@ real la pose en 2 dimensiones tanto el cuerpo humano como gestos con manos y ros
 
 \begin{figure}[ht!]
     \centering
-    \includegraphics[width=0.8 \textwidth]{Chapters/1. Pose Estimation/figures/openpose.png}
+    \includegraphics[width=0.8 \textwidth]{Chapters/1. HPE_LUNG/figures/openpose.png}
     \caption{OpenPose: Trabaja bajo un marco Bottom-Pp. Primero predice los mapas de confianza para
              cada parte del cuerpo $b)$ y codifican la orientación y ubicación de las extremidades
              a través $b)$ y $c)$ y finalmente asocian cada miembro identificado y reconstruyen la
@@ -242,7 +246,7 @@ bounding-boxes de las personas.
 
 \begin{figure}[ht!]
     \centering
-    \includegraphics[width=0.8 \textwidth]{Chapters/1. Pose Estimation/figures/alpha-pose.png}
+    \includegraphics[width=0.8 \textwidth]{Chapters/1. HPE_LUNG/figures/alpha-pose.png}
     \caption{AlphaPose (RMPE): Trabaja bajo un marco Up-Down. Consiste en 3 principales componentes;
             El primero, \textit{Symmetric Spatial Transformer Network} (SSTN) recibe los imágenes de
             las poses a procesar y genera propuestas de poses el
@@ -266,7 +270,7 @@ oclusiones, una parte puede no ser visible desde un ángulo pero desde otro si. 
 cantidad de conjunto de datos existentes para estimación de pose multi-vista es reducida.
 
 
-\textbf{Modelación del Cuerpo Humano}
+\subsection{Modelado del Cuerpo Humano}
 
 En la solución de los problemas de Estimación de Pose se plantea una arquitectura base para el
 cuerpo humano a partir de la cual se adecuarán las estimaciones. Los modelos usados para la
@@ -275,7 +279,7 @@ representación del cuerpo humano son 3: \textit{kinematic model}, \textit{Plana
 
 \begin{figure}[ht!]
     \centering
-    \includegraphics[width=0.7 \textwidth]{Chapters/1. Pose Estimation/figures/body_model.png}
+    \includegraphics[width=0.7 \textwidth]{Chapters/1. HPE_LUNG/figures/body_model.png}
     \caption{Representaciones de la arquitectura del cuerpo humano. Imagen obtenida de \citeauthor{DBLP:journals/corr/FangXL16}}
     \label{fig:alphapose}
 \end{figure}
@@ -297,7 +301,7 @@ Es usado para representar el cuerpo humano y su volumen, es decir es una represe
 cuerpo conseguida a través de un mallado de figuras geométricas y capturados por escaner 3D
 \cite{840661}.
 
-\textbf{Tipos de datos}.
+\subsection{Tipos de datos}
 
 En los últimos años, debido a la masificación
 de dispositivos inteligentes, el acceso a una cámara digital no resulta un problema mayor para la muchas
@@ -326,7 +330,7 @@ movimiento y los electromagnéticos, cuyo funcionamiento es a través de la gene
 electromagnético y para posteriormente capturar las alteraciones en este que realiza el sujeto al
 moverse \cite{articleMotion}.
 
-\textbf{Conjuntos de Datos más usados para estimación de pose 2D y 3D}
+\subsubsection{Conjuntos de Datos más usados para estimación de pose 2D y 3D}
 
 \textbf{MPII Human Pose Dataset}: Es un dataset para estimación de pose en modalidades de
 single-person o multi-person en 2 dimensiones \cite{andriluka14cvpr}. Incluye al rededor de 25 mil
@@ -368,7 +372,7 @@ motion capture en un ambiente controlado interno.
 \textbf{TotalCapture Dataset}: Similar a Human3.6M, contiene contiene aproximadamente 1.9 millones
 de frames en videos en modalidad single-person y multi-vista calibrado a través de 8 cámaras.
 
-\textbf{Conjuntos de Datos Sinteticos}
+\subsubsection{Conjuntos de Datos Sinteticos}
 
 \textbf{SURREAL (Synthetic hUmans foR REAL tasks)} (2017): Es un dataset en modalidad single-person para
 estimación de pose 2D y 3D. Los datos originales son tomados del dataset Human3.6M y aleatoreamente
@@ -519,5 +523,3 @@ entre la articulación estimada y la real de acuerdo a su posición angular:
     MPJPE = \frac{1}{M} \sum_{i=1}^M |(c^{(i)} - \hat{c}^{(i)}) \mod \pm 180^{\circ}|
     \label{eq:MJAE}
 \end{equation}
-
-\subsection{Lung Pathologies detection}
