@@ -22,8 +22,9 @@ entrenamientos.
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=0.4 \textwidth]{Chapters/1. Pose Estimation/figures/openpifpaf.png}
-    \caption{OpenPifPaf: Escena del mundo real desde la perspectiva de un carro autónomo. Todos los actores
-             son detectados y seguidos, esto incluye a las personas, el carro y el perro. \cite{DBLP:journals/corr/abs-2103-02440}}
+    \caption{OpenPifPaf: Escena del mundo real desde la perspectiva de un carro autónomo. Todos los
+             actores son detectados y seguidos, esto incluye a las personas, el carro y el perro.
+             \cite{DBLP:journals/corr/abs-2103-02440}}
     \label{fig:PE-track}
 \end{figure}
 
@@ -434,11 +435,11 @@ es decir la distancia entre la cadera derecha (right hip) y el hombro izquierdo 
 \cite{6619315} \cite{DBLP:journals/corr/ToshevS13}:
 
 \begin{equation}
-    ||c^{(n)} - \hat{c}^{(n)}|| \le \alpha\ || c_{rh} - c_{ls} ||
+    ||c^{(i)} - \hat{c}^{(i)}|| \le \alpha\ || c_{rh} - c_{ls} ||
     \label{eq:PDJ}
 \end{equation}
 
-$c^{(n)}$ es la coordenada de la n-ésima articulación y $\hat c^{(n)}$ es la coordenada de la
+$c^{(i)}$ es la coordenada de la i-ésima articulación y $\hat c^{(i)}$ es la coordenada de la
 articulación predicha correspondiente. $c_{rh}$ es la coordenada de la cadera derecha y $c_{ls}$
 es la coordenada del hombro izquierdo. El problema con esta métrica es que cuando la persona se es
 capturada de lado en una imagen 2D el diámetro del torso tiende a ser cero así como la distancia
@@ -449,7 +450,7 @@ tomar el diámetro del torso se toma la distancia de la diagonal del rectangulo 
 todas las articulaciones del cuerpo \cite{6380498}.
 
 \begin{equation}
-    ||c^{(n)} - \hat{c}^{(n)}|| \le \alpha\ diag_{bbox}
+    ||c^{(i)} - \hat{c}^{(i)}|| \le \alpha\ diag_{bbox}
     \label{eq:PCK}
 \end{equation}
 
@@ -483,10 +484,6 @@ $s$ y $k_n$ corresponden al factor de escala equivalente a la raíz cuadrada del
 objeto y a la constante de regularización por cada tipo de articulación cuya su función conjunta
 es regular la importancia de cada articulación.
 
-MJAE
-The Mean Joint Angle Error (MJAE) is the mean (over all angles)
-absolute difference between the true and estimated joint
-angles in degrees, and is given by:
 
 \textbf{Mean Per Joint Position Error (MPJPE)}: Calcula el error en milímetros determinado por la distancia
 euclidiana entre los articulaciones predichas y las reales sobre cada tipo de articulación de la
@@ -497,38 +494,30 @@ articulaciones con respecto a la raíz, generalmente la que corresponde al centr
 El Protocolo \#2 calcula el error después de realizar un alineamiento mediante una transformación
 rígida usando \textit{Procrustes Analysis} \cite{Gower1975}, también abreviado como \textit{P-MPJPE}.
 
-Al igual que en estimación de pose 2D la métrica de PCK o 3DPKC para estimación de pose en 3D es
-usada \cite{DBLP:journals/corr/MehtaRCSXT16}. También el Área bajo la Curva (AUC) considerando
-típicamente un umbral de 150mm que se aproxima a la mitad del tamaño de la cabeza.
+\begin{equation}
+    MPJPE = \frac{1}{M} \sum_{i=1}^M ||c^{(i)} - \hat{c}^{(i)}||
+    \label{eq:MPJPE}
+\end{equation}
 
-In addition to the evaluation metrics for 3D joint coordinates, there
-is another evaluation measurement Mean Per-vertex Error to report
-the results of 3D body shape which report the error between predicted
-and ground truth meshes (Varol et al., 2018; Pavlakos et al., 2018b).
+$M$ corresponde a el total de articulaciones. Generalmente el error es calculado por tipo, clase o
+acción representado en los videos.
 
-Protocol 3 with MPJVE (mm/s): Velocity error over the 3D poses.
-we evaluate the dynamic quality of predicted 3D pose sequences by Mean per Joint Velocity
-Error(MPJVE). This metric measures the
-smoothness of predicted pose sequences. As shown in Table 7, with motion loss,
-our method significantly reduces the MPJVE by 32% (from 3.4mm to 2.3mm)
-and outperforms other baselines.
-Absolute position errors do not measure the smoothness
-of predictions over time, which is important for video. To
-evaluate this, we measure joint velocity errors (MPJVE),
-corresponding to the MPJPE of the first derivative of the 3D pose sequences. \cite{8954163}
+Al igual que en estimación de pose 2D la métrica de PCK o 3DPKC es usada para estimación de pose en
+3D, al igual que su area bajo la Curva (AUC) considerando típicamente un umbral de 150mm que se
+aproxima a la mitad del tamaño de la cabeza \cite{DBLP:journals/corr/MehtaRCSXT16}. Por otro lado,
+datasets usados para estimación de pose 3D son basados en secuencias de videos y una variante a
+\textit{MPJPE} es introducida \cite{8954163} para considerar la suavidad de las transiciones entre
+poses midiendo la velocidad de las articulaciones (en milímetros por segundo),
+\textit{Mean Per Join Velocity Error (MPJVE)}, que corresponde al error \textit{MPJPE} primer
+derivada de las secuencias de pose 3D.
 
-% Area Under the Curve (AUC) measures the different range
-% PCK thresholds (E.g., when α varies from 0 to 0.5) entirely. It
-% informs how the model is capable of distinguishing each
-% body's joints. The higher the AUC, the better the model
+\textbf{Mean Joint Angle Error (MJAE)}: Es similar al error \textit{MPJPE} pero usando los ángulos de
+cada articulación. Mide el error como promedio sobre todos los ángulos de la diferencia absoluta
+entre la articulación estimada y la real de acuerdo a su posición angular:
 
-% Object Keypoint Similarity (OKS) gives a measure of how
-% a predicted keypoint is close to ground truth. OKS is much
-% similar to IoU (Intersection over Union) in keypoint detection
-% performance. So, when a model gets higher OKS, it means the
-% overlap between the predicted keypoint and the truth is higher.
-
-% Besidesthe above evaluation metrics, Average Precision (AP)
-% and mean Average Precision (mAP) are also used [64, 65]
+\begin{equation}
+    MPJPE = \frac{1}{M} \sum_{i=1}^M |(c^{(i)} - \hat{c}^{(i)}) \mod \pm 180^{\circ}|
+    \label{eq:MJAE}
+\end{equation}
 
 \subsection{Lung Pathologies detection}
