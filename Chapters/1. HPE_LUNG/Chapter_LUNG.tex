@@ -29,6 +29,46 @@ método de detección temprana. En la ausencia de prueba \textit{PCR}, los pacie
 similar a la provocada por \textit{COVID-19} solo pueden ser diagnosticados con pneumonia atípica
 como padecimiento. Por ello, diversos métodos de análisis de imágenes basados en técnicas
 de Inteligencia Artificial han sido desarrollados para la detección de \textit{COVID-19} usando
-imágenes de Rayos X y Tomografías Computarizadas. La principal motivación es desarrollar métodos
-alternativos que ayuden a la detección de \textit{COVID-19} dada la limitada disponibilidad y
-creciente demanda en la aplicación de técnicas como \textit{PCR} en todo el mundo.
+imágenes de Rayos X y Tomografías Computarizadas. Reportes clínicos indican que imagenes de Rayos X
+y Tomografías Computarizadas de pecho pueden mostrar efectos de afectaciones por \textit{COVID-19}.
+Dichos efectos pueden ser apreciados en los pulmones incluso en casos donde la prueba PCR resulta
+en Falso Negativo \cite{ai2020correlation, wong2020frequency}. Así, la principal motivación es
+desarrollar métodos alternativos que ayuden a la detección de \textit{COVID-19} dada la limitada
+disponibilidad, creciente demanda, costo asociado y la obtención de resultados inmediatos de la
+aplicación de técnicas como \textit{PCR} en todo el mundo.
+
+Un práctico y exitoso enfoque en la implementación de Redes Neuronales Profundas (DNNs) de dominio
+específico \cite{liu2017survey} basados en técnicas de clasificación es usar Transferencia de
+Conocimiento (Deep Transfer Learning, DTL) \cite{long2016unsupervised,oquab2014learning,tan2018survey}.
+Esta técnica fue inicialmente desarrollada para implementar modelos de dominio en específico en
+situaciones en las que se cuenta con una cantidad de datos limitada, pero también se ha visto que
+usar técnicas de DTL resulta en un método efectivo para entrenar modelos de dominio en específico aún
+cuando se tiene suficientes datos. Particularmente, en problemas de clasificación, la Transferencia
+de Conocimiento consiste en reusar modelos de Aprendizaje Profundo entrenados en problemas de
+dominio general en donde los conjuntos de datos son lo suficientemente grandes. Dado que la tarea de
+clasificación contiene un gran número de clases y datos, los modelos entrenados pueden generalizar y
+extraer mejores características de bajo nivel. Por lo que, el uso de Transferencia de Conocimiento
+también ha sido efectivo en el desarrollo de modelos específicos para el análisis de imágenes médicas
+\cite{deniz2018transfer,litjens2017survey, sufian2020survey}, tales como la detección de
+\textit{COVID-19} a partir de imágenes de Rayos X, problema atacado ampliamente por la comunidad
+usando Transferencia de Conocimiento en Modelos basados en Aprendizaje Profundo
+\cite{agrawal2021focuscovid,ai2020correlation,sufian2020survey}.
+
+A pesar de los esfuerzos en desarrollar diversos métodos de aprendizaje máquina para la detección de
+\textit{COVID-19} basados en Rayos X y Tomografías Computarizadas, los resultados obtenidos y
+reportados hasta el momento aún no están listos para uso clínico \cite{roberts2021common}.
+\citeauthor*{shuja2021covid} presenta una relación de los conjuntos de datos abiertos de
+\textit{COVID-19} categorizándolos por tipo (imágenes biomédicas,
+datos textuales y de audio), aplicaciones y métodos aplicados de \textit{IA}, \textit{Big Data} y
+estadísticos. Sin embargo, las imagenes en los datasets mencionados son reducidos y limitados a
+regiones específicas alrededor del mundo. Por otro lado, \citeauthor{greenspan2020position} mencionan
+que la mayoria de los modelos reportados fueron probados en bajo en esquema de diagnóstico bastante
+estrecho, puesto que los modelos deberían ser capaces de detectar \textit{COVID-19} en conjunto
+con una amplia variedad de patologías. De acuerdo a \citeauthor{roberts2021common} los fallos comunes
+son, entre otros, el sesgo en datasets pequeños o datasets no normalizados recolectados de una larga
+variedad de fuentes. \citeauthor{roberts2021common} también argumenta la importancia de desarrollar
+modelos no solo para la clasificación binaria de \textit{COVID-19}, sino además poder distinguirlo
+de otros tipos de neumonías virales y bacteriales. El trabajo descrito a continuación se centra en
+atacar el problema en los términos anteriores, no solamente haciendo la distinción entre
+\textit{COVID-19} y otros tipos de neumonías sino a través de diversas enfermedades en afán de ayudar
+a clínicos en el diagnóstico de otras patologías mas allá de neumonía.
