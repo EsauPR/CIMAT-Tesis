@@ -54,6 +54,34 @@ también ha sido efectivo en el desarrollo de modelos específicos para el anál
 usando Transferencia de Conocimiento en Modelos basados en Aprendizaje Profundo
 \cite{agrawal2021focuscovid,ai2020correlation,sufian2020survey}.
 
+Un popular método par la detección de \textit{COVID-19} es \textit{CoroNet} \cite{wang2020covid}, un
+modelo con arquitectura basado en redes neuronales profundas. \textit{CoroNet} clasifica imagenes de
+radiografías de Rayos X en 4 clases: COVID-19, neumonía bacterial, neumonía viral e imágenes sin
+ninguno de los tres padecimientos anteriores. \citeauthor*{bressem2020comparing} presenta un estudio
+sobre cuales arquitecturas usadas como configuración inicial de la red \textit{backbone} encargada
+de tareas principalmente de extracción de características es más adecuada para desarrollar modelos
+de clasificación con imágenes radiográficas. Limitan el estudio a la detección de solo 5 patologías:
+cardiomegalia, edema, consolidación, atelectasia y derrame pleural encontrado que es mucho más
+importante el tamaño de lote que la red usada como \textit{backbone}, es decir, la mejoria de los
+modelos dependían mucho más del proceso de entrenamiento que de los datos y la arquitectura.
+En \cite{zhong2021deep} se reporta un ejemplo de clasificador de \textit{COVID-19}, neumonía y
+no \textit{COVID-19}. Otro reciente estudio compara redes neuronales para la clasificación de
+radiografías de pecho entre \textit{COVID-19} y neumonía \cite{shazia2021comparative}. Para ello
+construyen clasificadores binarios usando redes pre-entrenadas con la base de datos ImageNet,
+considerando los modelos VGG16 y VGG19, DenseNet121, Inception-ResNet-V2, InceptionV3, ResNet50 y
+Xception. Con base a los resultados los modelos basados en DenseNet121 121 tuvieron el mejor
+accuracy ($99.48\%$) seguidos muy creca por ResNet50 y VGG19 con $99.32\%$ y $99.18\%$
+respectivamente. Los resultados anteriores son muy cercanos a los reportados por
+\textit{InstaCovNet-19}, un clasificador binario de \textit{COVID-19} y no \textit{COVID-19}
+\cite{gupta2021instacovnet}. Por otro lado, \citeauthor*{bassi2021deep} proponen una estrategia de
+Transferencia de Conocimiento que tomas los modelos DenseNet121 y DenseNet201 (los sufijos 121, y 201
+hacen referencia a el número de capas del modelo DenseNet) como backbone, posteriormente reemplazan
+las neuronas correspondientes a la capa de salida para clasificar radiografías de Rayos X entre
+\textit{COVID-19}, neumonía, y sin ninguna de las patologías anteriores. De acuerdo a
+\citeauthor{shoeibi2020automated} la mayoria de los modelos de redes neuronales basados en aprendizaje
+profundo tienen un accuracy dentro del $90\%$ al $100\%$ para clasificación binaria entre
+\textit{COVID-19} y no \textit{COVID-19}.
+
 A pesar de los esfuerzos en desarrollar diversos métodos de aprendizaje máquina para la detección de
 \textit{COVID-19} basados en Rayos X y Tomografías Computarizadas, los resultados obtenidos y
 reportados hasta el momento aún no están listos para uso clínico \cite{roberts2021common}.
@@ -72,3 +100,9 @@ de otros tipos de neumonías virales y bacteriales. El trabajo descrito a contin
 atacar el problema en los términos anteriores, no solamente haciendo la distinción entre
 \textit{COVID-19} y otros tipos de neumonías sino a través de diversas enfermedades en afán de ayudar
 a clínicos en el diagnóstico de otras patologías mas allá de neumonía.
+
+
+\subsection{Datos}
+
+
+\subsection{Métricas}
