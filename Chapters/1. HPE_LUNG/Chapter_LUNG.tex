@@ -104,5 +104,68 @@ a clínicos en el diagnóstico de otras patologías mas allá de neumonía.
 
 \subsection{Datos}
 
+\subsubsection{CXR8 Dataset}
+
+El dataset es extraído de las bases de datos del hospital clínico de investigación \textit{NIH
+Clinical Center} perteneciente al instituto \textit{National Institutes of Health}. Está formado por
+alrededor del 60 por ciento de imágenes de Rayos X frontales de pecho capturas en dicho hospital y
+es considerado como uno de los conjuntos de datos más representativos. Contiene
+112,120 imágenes de Rayos X frontales (frontal-view) de un total de 30,805 pacientes únicos. Cada
+imágen contiene etiquetas correspondientes a 14 enfermedades (más de una etiqueta puede estar
+asociada a una imágen) extraídas usando técnicas de
+Procesamiento de Lenguaje Natural (NLP) de los reportes médicos realizados por radiólogos asociados
+con un accuracy mayor al 90 por ciento \cite{8099852}. Las 14 patologías incluídas son las
+siguientes: Atelectasis, Consolidation, Infiltration, Pneumothorax, Edema, Emphysema, Fibrosis,
+Effusion, Pneumonia, Pleural-thickening, Cardiomegaly, Nodule, Mass y Hernia.
+
+\subsubsection{COVIDx  Dataset}
+
+Es una base de datos de uso público construida a través de las contribuciones de la comunidad
+científica con la finalidad de construir método que ayuden a combatir el padecimiento y propagación
+de COVID-19 \cite{Wang2020}. Contiene 13,975 imágenes de Rayos X de un total de 13,870 casos de
+pacientes (las cifras pueden variar dado a su constante actualización) recopiladas a través de 5
+repositorios de datos; \textit{COVID-19 Image Data Collection} \cite{cohen2020covid19},
+\textit{Figure 1 COVID-19 Chest X-ray Dataset Initiative} \cite{figure1_2020covid19},
+\textit{ActualMed COVID-19 Chest X-ray Dataset Initiative} \cite{actualmed_2020covid19},
+\textit{RSNA Pneumonia Detection Challenge dataset} \cite{rsna_det_challlenge},
+\textit{COVID-19 radiography database} y \cite{rsna_det_challenge2}. Los conjuntos de datos
+contienen casos de pacientes con y sin padecimientos de pulmonia causada por \textit{COVID-19}.
+
+\subsubsection{SIIM-FISABIO-RSNA COVID-19 Detection Dataset}
+
+Es un conjunto de datos creado, organizado y liberado por la \textit{Society for Imaging Informatics
+in Medicine (SIIM)} en conjunto con la
+\textit{Foundation for the Promotion of Health and Biomedical Research of Valencia Region (FISABIO)},
+\textit{Medical Imaging Databank of the Valencia Region (BIMCV)}, y
+\textit{Radiological Society of North America (RSNA)} \cite{siim_det_challenge} a través de un
+concurso en la plataforma de \textit{Kaggle}. Esta competición está enfocada en localizar
+e identificar anormalidades en radiografías de pecho y clasificarlas en cuatro casos de neumonía
+causada por \textit{COVID-19} \cite{00005382-202011000-00004}:
+
+\begin{itemize}
+    \item \textit{Typical appearance}: Contiene observaciones típicas a neumonía causada por
+          \textit{COVID-19}. Sin embargo, estas pueden presentarse en conjunto con otros infecciones,
+          reacciones a medicamentos, u otras causas de lesiones agudas en los pulmones.
+    \item \textit{Indeterminate appearance}: Presenta observaciones indeterminadas a neumonía
+          causada por \textit{COVID-19} y que pueden ocurrir en conjunto con a una variedad de
+          condiciones infecciosas y no infecciosas.
+    \item \textit{Atypical appearance}: Observaciones atípicas a las reportadas a neumonía causada
+          por \textit{COVID-19} y otros diagnósticos alternativos deben ser considerados.
+    \item \textit{Negative for pneumonia}: No se encuentran observaciones de neumonía causada por
+          \textit{COVID-19}. Sin embargo, las radiografías pueden no presentar aún elementos visibles
+          en etapas tempranas de neumonía por \textit{COVID-19}.
+\end{itemize}
+
+\subsubsection{Tuberculosis X-ray (TBX11K) dataset}
+
+Es uno de los datasets más grandes actualmente con imágenes de Rayos X con Tuberculosis. Este
+dataset contiene 11200 imágenes de Rayos X con anotaciones marcando los bounding boxes de las
+áreas donde con observaciones de este padecimiento. Se clasifican en 4 distintas categorías;
+saludable, Tuberculosis activa (active TB), Tuberculosis latente (latent TB), con padecimientos otros a
+Tuberculosis (unhealthy but non-TB). Las imágenes son de calidad mucho mayor a la mayoría de los
+datasets anteriores con una resolución de 3000x3000 pixeles, \citeauthor{9156613} mencionan que
+usar una resolución de 500x500 es suficiente para entrenar modelos de aprendizaje profundo de
+detección y clasificación de Tuberculosis.
+
 
 \subsection{Métricas}

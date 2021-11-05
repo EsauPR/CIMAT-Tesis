@@ -1,0 +1,180 @@
+\section{Detección de Patologías en Pulmones con Rayos X}
+
+Diferentes trabajos se han limitado a clasificar \textit{COVID-2019} y \textit{no COVID-2019} (o
+neumonía), es por ello que durante este trabajo desarrollamos un sistemas más completo para {
+distinguir 15 diferentes enfermedades pulmonares.
+
+We experimentally evaluated the proposed model for diagnosis of the 15 lung diseases, obtaining
+competitive results, in particular for COVID-19. We compare it with several recent works that classify
+14 pathologies (excluding COVID-19); the results in terms of Area Under Curve of the Receiver Operator
+Characteristic show a competitive performance of the proposed method for the ChestX-Ray14 pathologies
+and a remarkable performance in detecting pneumonia from COVID-19.
+
+In this work we developed a deep learning method that uses as BKN the ResNet50 network, a wildly
+used network by the community for implementing different image analysis methods. We extend the
+ChestX-Ray14 dataset by including radiographs of Normal and COVID-19 infected patients. Our training
+consists of three stages, DTL from the ResNet50 pretrained in ImageNet by replacing the classification
+stage by a 15 pathologies classifier, a fine-tuning stage to adjust the last convolutional layers,
+and a full-tuning stage that adjusts the weights of the entire network. We demonstrate with experiments
+that our proposal is able to preserve the performance of the state of the art 14 pathologies classifiers,
+and at the same time achieve the state of the art performance of binaries classifiers for COVID-19.
+Additionally, in order to demonstrate that the proposed model can be easily extended for other
+pathologies, we implemented a binary classifier for Tuberculosis, a particular bacterial pneumonia
+\cite{stirenko2018chest}, with performance comparable to \emph{ad hoc} deep learning models
+\cite{puttagunta2021detection}.
+
+in our work we also use the ChestX database \cite{wang2017chestx} and include X-rays of COVID-19 and
+healthy (images of persons without known lung diseases) classes. The ChestX-ray14 contains 112,120
+frontal-view (both postero-anterior and antero-posterior) chest radiographs of 30,805 unique patients.
+Each image is annotated with 14 thoracic pathology labels. We enriched such a dataset with COVID-19,
+pneumonia, and healthy chest radiographs. Table~\ref{table_dataset} summarizes the composition of
+the dataset used in our work.
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{| r |l | c | c | c |}
+     \hline
+     Class & Disease & Source & Train & Test  \\
+     \hline\hline
+     1  & Cardiomegaly       & 1 & 5897  & 1069 \\
+     2  & Emphysema          & 1 & 3496  & 1093 \\
+     3  & Effusion           & 1 & 13737 & 4658 \\
+     4  & Hernia             & 1 & 4470  & 86   \\
+     5  & Infiltration       & 1 & 17122 & 6112 \\
+     6  & Mass               & 1 & 7862  & 1748 \\
+     7  & Nodule             & 1 & 9250  & 1623 \\
+     8  & Atelectasis        & 1 & 13762 & 3279 \\
+     9  & Pneumothorax       & 1 & 6303  & 2665 \\
+     10 & Pleural-Thick.     & 1 & 8022  & 1143 \\
+     11 & Pneumonia          & 1 & 6031  & 555  \\
+     12 & Fibrosis           & 1 & 9072  & 435  \\
+     13 & Edema              & 1 & 6953  & 925  \\
+     14 & Consolidation      & 1 & 9796  & 1815 \\
+     ---&  Healthy           & 1 & 35645 & 9861 \\
+     \hline
+     11 & Pneumonia          & 2 & 5475  & 594  \\
+     15 & COVID-19           & 2 & 2873  & 1904 \\
+     ---&  Healthy           & 2 & 8661  & 1926 \\
+     \hline
+    \end{tabular}
+    \caption{Number of chest radiography's per case in the dataset. Sources (DS): (1) ChestX-ray14,
+             (2) Internet datasets compilation. Pleural-Thick. means Pleural-Thickening.}
+    \label{table_dataset}
+\end{table}
+
+\subsubsection{Data Relabelling}
+\label{ssec_relabelling}
+
+In order to train our model, we use the relabelled version of the ChestX-ray14 database proposed by
+the authors of CheXNet \cite{rajpurkar2018deep}.  According to \cite{rajpurkar2018deep}, the
+relabelled data allows to improve the training process significantly. Such relabelling consists of
+training multiple times a  neural network with the original training data set and keeping those
+models with the best accuracy on the original validation set. Then, the predictions of the individual
+models are averaged, and a binary detector of each pathology is computed by using a threshold that
+maximizes the F1-score in all the pathologies (see Section~\ref{sec_metrics} for the F1-score
+definition). Finally, each training and test datum is relabeled as positive for pathology, if it was
+initially labeled as positive or the ensemble prediction is positive. However,  we define the train,
+validation, and test data sets according to the original problem; \emph{i.e.}, for the original list and
+only use the new labels in the training stage. Thus, we report two results: the first one on the
+original test dataset and, just for reference,  with the updated labels in the Appendix.
+
+\subsubsection{Data Preprocessing}
+
+We keep as simple as possible the preprocessing of the radiography, we only perform a histogram
+equalization and resize the data to $1024 \times 1024$ pixels.
+
+La datos de entrada son imágenes de 1024
+columnas y 1024 filas con 3 canales idénticos. Siguiente la propuesta de \textit{CheXNet}, se hace uso
+de multiples funciones de perdida tipo \textit{Binary Cross-Entropy} con distintos pesos
+para solventar el desbalanceamiento de clases.
+
+\begin{equation} \label{eq:loss}
+    L(\hat y, y) = \sum_{c=0}^{15} \left[ w_c^{(p)} y_c \log \hat y_c  + w_c^{(n)}  (1-y_c) \log  (1- \hat y_c)  \right],
+\end{equation}
+
+donde $y$ es el vector de etiquetas reales, $\hat y$ es el vector de etiquetas predichas,
+$w_c^{(p)}$ y $w_c^{(n)}$ son los pesos para los casos positivos y negativos de cada clase $c$
+respectivamente. Dichos pesos son calculados como sigue:
+
+\begin{equation}\label{eq:weights}
+    w_c^{(n)} = \frac{n_c}{N} \;\;\;\;\text{and}\;\;\;\;   w_c^{(p)} = 1-  w_c^{(n)};
+\end{equation}
+
+donde $N$ es el tamaño del conjunto de datos, y $n_c$ el número de imágenes radiográficas con
+etiquetas $c$ (el número elementos del vector de la $c$-ésima clase iguales a 1). Nótese que los
+pesos son inversamente proporcional al número de casos en la clase.
+
+
+\section{Arquitecturas usadas}
+\subsection{Vision Transformers}
+\subsection{ViT con cabezas de atención Flexibles}
+\section{Alternativa: CNN y Transfer Learning}
+
+El modelo desarrollado es construido tomando \textit{CheXNet} como referencia
+\cite{rajpurkar2018deep}, el cual clasifica entre 14 enfermedades
+usando el conjunto de datos \textit{ChestX-Ray14} \cite{wang2017chestx}. El modelo propuesto es
+construido desde cero y extiende la propuesta de \textit{CheXNet} para incluir la clasificación de
+imágenes con \textit{COVID-19}.
+
+\textit{CheXNet} es un modelo basado en redes neuronales para detectar la presencia de 14 diferentes
+enfermedades de pulmón. \textit{CheXNet} Usas imagenes de Rayos X de vista frontal como entrada y
+un modelo convolucional pre-entrenado como backbone \cite{rajpurkar2018deep}. El modelo backbone usado
+por \textit{CheXNet} es la red \textit{DenseNet121} \cite{huang2017densely} que contiene 121 capas
+convolucionales entrenadas con la base de datos de \textit{ImageNet} \cite{ILSVRC15}. Las imágenes
+analizadas por el modelo pueden corresponder a vistas anterior-posterior o posterior-anterior. La
+implementación de Transferencia de Conocimiento es lograda removiendo la etapa de clasificación
+(formada por capas densas) mientras que la etapa convolucional previa permanece intacta funcionando
+como un extractor de características. Posteriormente, una nueva etapa de clasificación construida
+para la detección de 14 enfermedades es colocada en su lugar. Finalmente, la nueva red compuesta
+es entrenada usando la base de datos \textit{ChestX-Ray14} manteniendo fijos los pesos
+correspondientes a la etapa convolucional de la red.
+
+Así como en \textit{CheXNet}, un modelo usado como backbone y entrenado con la base de datos de
+\textit{ImageNet} define la red entrenada para detectar patologías toráxicas. Motivados por
+\citeauthor{bressem2020comparing, shazia2021comparative} que muestran que una red backbone en
+particular no es un elemento definitivo en el rendimiento de detección del modelo, sino el proceso
+de entrenamiento. Adicionalmente \citeauthor{huang2017densely, luo2020comparison} presentan
+comparaciones de modelos evaluados en la clasificación de ImageNet donde \textit{ResNet50} y
+\textit{DenseNet201} obtienen un accuracy de $76\%$ y $74\%$ respectivamente. Por ello, se realiza
+la elección del modelo \textit{ResNet50} como backbone en la implementación de la red convolucional.
+\textit{ResNet50} fue propuesta por \citeauthor{he2016deep} y es una opción popular en la
+implementación de sistemas de reconocimiento generales dado su eficiencia computacional y relativamente
+sencillez de entrenamiento (por su grafo de gradientes con poco caminos) en comparación del candidato
+natural \textit{DenseNet121} usando en \textit{CheXNet}, aque versiones alternativas de
+\textit{CheXNet} estan disponibles \cite{chexnet_code}. A pesar de lo anterior, no se descarta el uso
+e investigación en un futuro de otros modelos como backbone ya sea inclusive \textit{DenseNet} o
+\textit{efficientNet} \cite{tan2019efficientnet}. Sabiendo que este mismo procedimiento puede
+guiarnos a incluir nuevas patologias tales como Tuberculosis Pulmonar \cite{stirenko2018chest}; un
+tipo de neumonia bacterial mayormente común en países en vías de desarrollo y también frecuentemente
+reportado en pacientes con sindrome de inmunodeficiencia adquirida (AIDS) \cite{matsuura2018tuberculous}.
+
+En la red detectora, la etapa clasificadora del modelo \textit{ResNet50} es remplazada con dos capas
+densas y una operación de \textit{Dropout} intermedia con probabilidad de $25\%$. La tabla
+\ref{table_resnet50} resume la arquitectura de la red.
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{| l|c | c | r |}
+    \hline
+                 &     Input   &  Output    &  \\
+    Layer        &   dimension & dimension  & Parameters \\
+    \hline\hline
+    ResNet50     &     3,1000,1000 &     2048,1,1 & 24,036,431 \\
+    Flatten      &     2048        &     2048     &  --        \\
+    Dense        &     2048        &     256      & 524,544    \\
+    ReLU         &     256         &     256      & --         \\
+    Drop-0.25  &     256         &     256      & --         \\
+    Dense        &     256         &     15       &  3,855     \\
+    Sigmoid      &     15          &     15       & --         \\
+    \hline
+    \end{tabular}
+    \caption{Deep neural network architecture used in the proposed model. The Dense layers include the bias term. Drop-0.25 means a Dropout layer with a probability of 0.25.}
+    \label{table_resnet50}
+\end{table}
+
+\subsubsection{Proceso de Entrenamiento}
+
+we present the procedure to train our models to detect the 15 pathology's (including COVID-19) from a network pre-trained with ImageNet.
+
+
+\section{Evaluación y comparativas con otros modelos}
