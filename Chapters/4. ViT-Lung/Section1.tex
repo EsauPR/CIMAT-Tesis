@@ -174,7 +174,66 @@ densas y una operación de \textit{Dropout} intermedia con probabilidad de $25\%
 
 \subsubsection{Proceso de Entrenamiento}
 
-we present the procedure to train our models to detect the 15 pathology's (including COVID-19) from a network pre-trained with ImageNet.
+% we present the procedure to train our models to detect the 15 pathology's (including COVID-19) from a network pre-trained with ImageNet.
+\begin{enumerate}
+    \item \textbf{Entrenamiento inicial}. Una vez seleccionada la red convolucional pre-entrenada
+          con la base de datos de ImageNet, se reemplaza la etapa de clasificacion con por una nueva
+          compuesta por dos capas densas. En la tabla \ref{table_resnet50} se presentan los detalles
+          de la red \textit{ResNet50} usada en este modelo. De esta forma, la red convolucional
+          \textit{ResNet50} funciona como un extractor de características; se transforma los datos
+          originales (las imágenes de radiografías) en una nueva representación que contiene las
+          características que permiten distinguir entre las distintas patologías. El clasificador es
+          implementado agregando dos capas densas a esta red base. En la etapa de entrenamiento la
+          red se comporta como como una red Perceptrón Multicapa (\textit{Multilayer Perceptron},
+          MLP) donde la entrada es el tensor de características calculados por la red base o
+          backbone. Para entrenar el clasificador, los pesos que corresponden a la red base son
+          congelados y solamente son actualizados los pesos que pertenecen a la etapa de
+          clasificación (las capas densas descritas en la tabla \ref{table_resnet50}). El
+          entrenamiento se realiza durante 35 épocas conservando el mejor modelo de acuerdo al
+          accuracy obtenido usando el conjunto de validación.
 
+    \item \textbf{Fine-tuning}. Hasta este punto, el enfoque usado es un \textit{aprendizaje superficial}
+          y la etapa de extracción de características está completamente desasociado de la etapa de
+          clasificación. La ventaja de implementar el sistema a través de dos redes neuronales (la
+          red backbone y la red MLP) es que podemos mejorar la extracción de características en
+          términos de la tarea de interés. Para ello, se procede a descongelar las últimas capas
+          convolucionales de la red backbone y continuar el entrenamiento en conjunto con las capas
+          densas de la etapa clasificadora. Las capas a descongelar corresponden al último bloque
+          construido de de la 5° etapa convolucional (\textit{layer conv5\_3}) \cite{he2016deep}.
+          Así, permitimos que el tensor obtenido a la salida de la red backbone sea particularizado
+          a la tarea de clasificación actual. El procedimiento de \textit{Fine-tuning} es realizado
+          por 25 épocas más.
+
+    \item \textbf{Full-tuning}. Las razones por las cuales solamente son reentrenadas las últimas
+          capas convolucionales son que tenemos que lidiar con el problema del desvanecimiento del
+          gradiente y el sistema completo puede terminar sobre ajustando sus parámetros a la base de
+          datos de entrenamiento. El primer problema no es tan relevante en este punto, el
+          rendimiento obtenido por el modelo es satisfactorio y si no fuese posible mejorar las
+          mejorar los parámetros de las capas convolucionales tampoco sufren un deterioro. El segundo
+          problema es de importancia si la muestra de imágenes radiográficas son suficientemente
+          representativas de las patologías de interés. Puesto que el sistema es suficientemente
+          general para predecir el conjunto de imágenes de prueba correctamente. En este trabajo
+          consideramos que tenemos suficientes datos y por lo tanto, como etapa final del entrenamiento
+          se realiza una afinación completa del modelo. Esto es, entrenando completamente la red,
+          la etapa de extracción de características (backbone) y la etapa de clasificación (MLP).
+          Para evitar el over-fitting, el entrenamiento es continuado solamente por 10 épocas
+          conservando el mejor modelo de acuerdo al accuracy obtenido en el conjunto de validación.
+
+\end{enumerate}
+
+Similar a \citeauthor{rajpurkar2018deep}, usamos, al inicio de cada etapa de entrenamiento, las
+imágenes de entrenamiento son volteadas horizontalmente con 0.5 de probabilidad como técnica de
+augmentation de datos.
+
+The output of the network is a vector of size equal to the number of pathologies to detect (15).
+Each entry $\tilde y_i \in [0,1]$ can be understood as the probability that the $i$--th.\ pathology
+is present in the analyzed image. The vector $\tilde y$ does not have to sum one, since several
+pathologies may be present in a radiography. Positive detection of $i$--th.\ pathology is indicated
+if $\tilde y > \theta$; where $\theta$ is a threshold. A typical value for this threshold is $0.5$
+and can be modified depending on an analysis of the receiver operator characteristic (ROC) curves.
+We use \emph{Adam} \cite{kingma15adam} as training algorithm with a \emph{learning rate} (LR) equal
+to $1\times 10^{-4}$, inertia parameters $\beta_1=0.9$, $\beta_2=0.999$, with LR-decay of $0.1$ if
+after ten iteration there in not loss reduction larger than $1\times 10^{-4}$ (plateau escape). We
+do not use extra optimization strategies.
 
 \section{Evaluación y comparativas con otros modelos}
