@@ -108,6 +108,7 @@ pesos son inversamente proporcional al número de casos en la clase.
 \section{Arquitecturas usadas}
 \subsection{Vision Transformers}
 \subsection{ViT con cabezas de atención Flexibles}
+
 \section{Alternativa: CNN y Transfer Learning}
 
 El modelo desarrollado es construido tomando \textit{CheXNet} como referencia
@@ -173,6 +174,7 @@ densas y una operación de \textit{Dropout} intermedia con probabilidad de $25\%
 \end{table}
 
 \subsubsection{Proceso de Entrenamiento}
+\label{ss:archiecture}
 
 % we present the procedure to train our models to detect the 15 pathology's (including COVID-19) from a network pre-trained with ImageNet.
 \begin{enumerate}
@@ -225,15 +227,173 @@ Similar a \citeauthor{rajpurkar2018deep}, usamos, al inicio de cada etapa de ent
 imágenes de entrenamiento son volteadas horizontalmente con 0.5 de probabilidad como técnica de
 augmentation de datos.
 
-The output of the network is a vector of size equal to the number of pathologies to detect (15).
-Each entry $\tilde y_i \in [0,1]$ can be understood as the probability that the $i$--th.\ pathology
-is present in the analyzed image. The vector $\tilde y$ does not have to sum one, since several
-pathologies may be present in a radiography. Positive detection of $i$--th.\ pathology is indicated
-if $\tilde y > \theta$; where $\theta$ is a threshold. A typical value for this threshold is $0.5$
-and can be modified depending on an analysis of the receiver operator characteristic (ROC) curves.
-We use \emph{Adam} \cite{kingma15adam} as training algorithm with a \emph{learning rate} (LR) equal
-to $1\times 10^{-4}$, inertia parameters $\beta_1=0.9$, $\beta_2=0.999$, with LR-decay of $0.1$ if
-after ten iteration there in not loss reduction larger than $1\times 10^{-4}$ (plateau escape). We
-do not use extra optimization strategies.
+La salida de la red es un vector de tamaño igual a el número de patologias detectadas, 15. Cada
+elemento del vector $\tilde y_i \in [0,1]$ puede ser interpretado como la probabilidad que la
+i-ésima patología esta presente en la imagen analizada. El vector $\tilde y$ no necesariamente tiene
+que sumar 1, puesto que varias patologias pueden estar presentes en la radiografía. Una patologias
+detectada como positiva ocurre si  $\tilde y > \theta$, donde $\theta$ es el umbral. El valor típico
+para este umbral es de $0.5$ y puede ser modificado dependiendo del análisis de la curva del \textit{Receiver
+Operator Characteristic}, o \textit{Curva ROC}. Como algoritmo de entrenamiento se usa \emph{Adam}
+\cite{kingma15adam} con un factor de aprendizaje (LR) de $1\times 10^{-4}$, parámetros de inercia
+$\beta_1=0.9$ y $\beta_2=0.999$ con un descaimiento (LR-decay) de $0.1$ si después de 10 iteraciones
+no se detecta una reducción en el valor de la función de pérdida mayor a $1\times 10^{-4}$ (plateau
+escape).
 
-\section{Evaluación y comparativas con otros modelos}
+\subsubsection{Transfer Learning para la detección de Neumonía por Tuberculosis}
+
+El propósito de esta sección es demostrar que el backbone (el modelo ResNet50) del modelo propuesto
+y entrenado con las 15 patologías mencionadas anteriormente, puede ser la base para desarrollar
+detectores para otras enfermedades de pulmón. La idea en esta etapa es no repetir el proceso
+completo de entrenamiento sino usar en vez una simple estrategia de Transfer Learning. Así, se
+procede a extender el modelo para detectar (junto con las otras enfermedades) neumonía causada por
+Tuberculosis \cite{stirenko2018chest}, un tipo de neumonía bacterial común en paises en estado vias
+de desarrollo y también frecuentemente reportado en pacientes con sindrome de inmunodeficiencia
+adquirida (AIDS) \cite{matsuura2018tuberculous}. El dataset considerado incluye casos de
+\textit{Tuberculosis} y \textit{no Tuberculosis} pero es
+importante aclarar que la condición en particular de los casos de \textit{no Tuberculosis} no es
+especificada por completo, es decir, incluyen tanto pacientes saludables como pacientes con otras
+afecciones.
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{| r |l | c | c | c |}
+     \hline
+     Class & Disease & Source & Train & Test  \\
+     \hline\hline
+     16  & Tuberculosis        & 3 & 888   & 488  \\
+     ---&  Non-Tuberculosis     & 3 & 6000  & 1600 \\
+     \hline
+    \end{tabular}
+    \caption{Number of chest radiography's from patients with and without Tuberculosis.}
+\label{table_dataset_tb}
+\end{table}
+
+La base de datos (indicada proveniente de la fuente 3 en la tabla \ref{table_dataset_tb}) está
+compuesta por radiografías provenientes de: TBX11K dataset \cite{liu2020rethinking},
+India (DA and DB) dataset \cite{chauhan2014role}, Montgomery County dataset \cite{jaeger2014two}, y
+Shenzhen Hospital dataset \cite{jaeger2014two}. En este trabajo se usa las listas originales para el
+entrenamiento y Evaluación definidos para este dataset.
+
+Para poder detectar Tuberculosis, se realiza la implementación de un clasificador binario usando como
+backbone la red ResNet50 entrenada previamente para la detección de las 15 patologías anteriores.
+La nueva rama de clasificación incluye dos nuevas capas densas (con sus respectivas funciones de
+activación). Conservamos los parámetros correspondientes al backbone no entrenables y solo se entrena
+las nuevas capas densas usando la estrategia mencionada en la subsección de {\bf Initial Training}
+\ref{ss:archiecture} con el optimizador, factor de aprendizaje y otros parámetros sin cambios y
+\textit{Weighted Binary Cross-Entropy} como función de pérdida similar a \eqref{eq:loss}. Este modelo
+extendido aún detecta las 15 enfermedades comentadas previamente con una salida binaria extra para
+Tuberculosis. La arquitectura extendida incluyendo la nueva rama está descrita en la tabla
+\ref{table_resnet50_tb}.
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{| l| c | c | r |}
+     \hline
+                 &  Input       & Output           &   \\
+    Layer        &  dimension    & dimension        & Parameters \\
+    \hline\hline
+    Initial Backbone & & & \\ \hline
+    ResNet50     &  3,1000,1000 &     2048,1,1     & 24,036,431 \\
+    Flatten      &     2048     &     2048         &  --        \\
+    Dense        &     2048     &     256          & 524,544    \\
+    ReLU         &     256      &     256          & --         \\
+    Drop-0.25    &     256      &     256          & --         \\
+    \hline
+    Additional Branch & & & \\ \hline
+    Dense$^\ast$ &     256      &     128          &  38,896     \\
+    ReLU         &     128      &     128          & --         \\
+    Drop-0.20    &     128      &     128          & --         \\
+    Dense$^\ast$ &     128      &      1           &  129       \\
+    Sigmoid      &      1       &      1           & --         \\
+     \hline
+    \end{tabular}
+    \caption{Deep neural network architecture used in the extended model with the Tuberculosis branch. Dense layers include the bias term and $^\ast$ indicates trainable layers.}
+\label{table_resnet50_tb}
+\end{table}
+
+\begin{figure}[htp]
+    \centering
+    {\includegraphics[width=0.5\textwidth]{Chapters/4. ViT-Lung/images/tb_net.pdf}}
+\caption{Scheme of the extension of the 15 pathology detector including a new branch for Tuberculosis detection.}
+\label{net_tb}
+\end{figure}
+
+
+\subsubsection{Métricas de Evaluación}
+
+Considerando un problema de clasificación binario donde cada radiografia tiene una etiqueta
+$y = \{1, 0\}$ con $1$ indicando la presencia del padecimiento en el paciente y $0$ significando
+que se encuentra sano, el detector puede tener dos posibles resultados: una detección positiva (P)
+para la enfermedad o una detección negativa (N). La tabla \ref{table_cm} muestra la caracterización
+de la etiqueta predicha de acuerdo a los valores reales (Ground Truth, GT). Si un paciente enfermo
+es correctamente detectado, tenemos un \textit{Verdadero Positivo} (True Positive, TP) y si la
+predicción falla, es una \textit{Falso Positivo} (False Negativo, FN). Por otro lado, si una etiqueta
+positiva es erroneamente predicha en un paciente saludable entonces tenemos un \textit{Falso Positivo}
+(False Positive, FP), y si el paciente saludable es correctamente predicho es un
+\textit{Verdadero Negativo} (True Negative, TN). La tabla \ref{table_cm} muestra la \textit{Matiz de
+Confusión} con el conteo de cada tipo de predicción en el conjunto de prueba.
+
+\begin{table*}[!ht]
+    \centering
+    \begin{tabular}{ccccl}
+    %\cline{3-4}
+    &  & \multicolumn{2}{ c }{Prediction} \\
+    %\cline{3-4}
+    \multicolumn{1}{c}{}& & Positive & Negative &    \\
+    \cline{3-4}
+    \multicolumn{1}{c}{\multirow{6}{*}{GT} } &
+    \\
+    \multicolumn{1}{c}{} & Disease & TP & FN   &  $ \longrightarrow  R = \frac{TP}{TP+FN}$  \\
+    \\
+    \cline{3-4}
+    \multicolumn{1}{ c }{}                    &
+    \\
+    \multicolumn{1}{c}{} & No-Disease & FP & TN   &  $ \longrightarrow S = \frac{TN}{FP+TN}$   \\
+    \\
+    \cline{3-4}
+    \\
+    & & $\downarrow$ & $\downarrow$ & \\
+    \multicolumn{1}{c}{} &       & $P = \frac{TP}{FP+FP}$  & $NPV = \frac{TN}{FN+TN}$ &
+    \end{tabular}
+    \caption{
+    Interpretation of the test results (prediction) according to the ground truth (GT). Metrics are calculated as the ratio between the diagonal element and the sum per row or column, as the case may be.  R, recall or sensitivity; S, specificity; P, precision; NPV, negative prediction value}
+    \label{table_cm}
+\end{table*}
+
+Para este trabajo asumimos que una patología en particular es correctamente detectada si su
+correspondiente puntaje en el vector de predicho es más significante que cierto umbral. En particular,
+asumimos un umbral igual para todas las patologías de $0.5$. Usando la Matriz de Confusión podemos
+definir varias métricas de rendimiento.
+
+\begin{enumerate}
+    \item Accuracy ($A$). Esta métrica es quizás la más obvia. Corresponde al razón de los datos
+          predichos correctamente sobre el total.
+    \begin{equation}
+        \label{eq:accuracy}
+        A = \frac{TP+TN}{TP+TN+FP+FN}.
+    \end{equation}
+
+    \item Recall o Sensibility ($R$). Es la fracción de pacientes con enfermedades conrrectamente
+          detectados. Esta metrica también es conocida como Tasa de Verdaderos Positivos (True
+          Positive Rate, TPR), la tasa de detecciones correctas.
+
+    \item Specificity ($S$). It is the fraction of patients without the disease that are correctly detected.
+
+    \item False Positive Rate ($FPR$). The rate of false detections of the disease can be calculated with
+    \begin{equation}
+        \label{eq:FPR}
+        FPR = 1- S,
+    \end{equation}
+    where $S$ is the Specificity.
+
+    \item Precision ($P$). This is the fraction of the predicted as positives that really have the disease, also known as the True Positive Rate ($TPR$).
+
+    \item $F_1$--score ($F_1$). The Recall metric can be bypassed if all the data tested are predicted positive regardless of the evidence. In such a case, $ FN = 0 $  and it result in $ R = 1 $; see the formula for Precision in Table \ref{table_cm}. Similarly, the Precision metric is mocked if all the tested data are predicted as negative. In this other case we will have $FPs = 0$, which implies $P = 1$. Since it is unfeasible to simultaneously cheat both metrics, then an imbalance between them indicates a bias in any of the ways described above. Therefore, it is more informative as a performance measure to use the geometric mean of both metrics.
+    \begin{equation}
+        \label{eq:f1}
+        F_1 = \frac{2\; P \, R}{P + R}.
+    \end{equation}
+
+    \item Area Under Curve of Receiver Operator Characteristic (AUC-ROC). The receiver operator characteristic curve is a graph showing the diagnostic capabilities of binary classifiers. We have said that a particular pathology is positively detected if its predicted score is more significant than a given threshold. Then, adjusting such a threshold down allows, in general, to increase the TPR, although the FPR may also be increased. The ROC results of plotting values of TPR vs. FPR  by varying the threshold in the interval $[0,1]$. The AUC corresponds to the area under this ROC curve.
+
+\end{enumerate}

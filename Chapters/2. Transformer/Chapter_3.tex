@@ -62,7 +62,7 @@ del \textit{decodificador} \ref{eq:sqs_s}.
 Sin embargo, cuando las secuencias son bastante largas el \textit{vector de contexto} emitido por el
 \textit{codificador} no es lo suficientemente grande como para resumir correctamente la secuencia y
 por tanto, la información inicial de la entrada es olvidada, teniendo escasa presencia en estados
-ocultos más lejanos. En 2015 \citeauthor*{bahdanau2016neural} observaron estos efectos y
+ocultos más lejanos. En 2015 \citeauthor{bahdanau2016neural} observaron estos efectos y
 propusieron una forma de minimizarlos, los \textbf{Mecanismos de Atención}.
 
 La función principal de los \textbf{Mecanismos de Atención} es permitir que el \textit{decodificador}
@@ -116,7 +116,7 @@ representa una concatenación de los estados ocultos del \textit{codificador} y 
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=0.8 \textwidth]{Chapters/2. Transformer/Figures/rnn/attention.png}
-    \caption{Modelo seq2seq propuesto por \citeauthor*{bahdanau2016neural} con \textit{Additive/Concat Attention}}
+    \caption{Modelo seq2seq propuesto por \citeauthor{bahdanau2016neural} con \textit{Additive/Concat Attention}}
     \label{fig:att}
 \end{figure}
 
@@ -139,9 +139,9 @@ función de alineación $a$ a pesos de atención. Comúnmente se usan las funcio
 \textit{logistic sigmoid} puesto que nos aseguran que los pesos de atención producidos estarán dentro
 del rango $[0,1]$ y la suma de ellos es igual a $1$, por lo que los pesos pueden ser interpretados como
 una probabilidad que indica que tan relevante es cierto elemento. Algunas variaciones en donde se
-consideran solo los términos relevantes como \textit{sparsemax} \citeauthor*{DBLP:journals/corr/MartinsA16}
-o \textit{sparse entmax} \citeauthor*{DBLP:journals/corr/abs-2006-07214} permiten trabajar y enfocarse
-en solo algunas relaciones de alineamiento. \citeauthor*{NEURIPS2019_16fc18d7} proponen una función de
+consideran solo los términos relevantes como \textit{sparsemax} \citeauthor{DBLP:journals/corr/MartinsA16}
+o \textit{sparse entmax} \citeauthor{DBLP:journals/corr/abs-2006-07214} permiten trabajar y enfocarse
+en solo algunas relaciones de alineamiento. \citeauthor{NEURIPS2019_16fc18d7} proponen una función de
 distribución de pesos $M = \tanh(E) \odot sigmoid(N)$ con $E$ como una matrix en donde cada entrada
 representa la similaridad entre estados ocultos y $N$ una medida negativa (disimilaridad), por lo que
 podemos usar
@@ -162,33 +162,33 @@ recopilación de funciones de alineamiento.
 \toprule
 \textbf{Nombre} & \textbf{Función de Alineación} & \textbf{Cita} \\
 \midrule
-Similarity / Content-Base & $a(k_i, q) = sim(k_i, q)$ & \citeauthor*{DBLP:journals/corr/GravesWD14} \\ \\
-Dot Product\textsuperscript{1} & $a(k_i, q) = q^\top k_i$ & \citeauthor*{DBLP:journals/corr/LuongPM15} \\ \\
-Scaled Dot Product & $a(k_i, q) = \frac{q^\top k_i}{\sqrt{d_k}}$ & \citeauthor*{DBLP:journals/corr/VaswaniSPUJGKP17} \\ \\
-General & $a(k_i, q) = q^\top W k_i$ & \citeauthor*{DBLP:journals/corr/LuongPM15} \\ \\
-Biased General & $a(k_i, q) = k_i (Wq + b )$ & \citeauthor*{DBLP:journals/corr/SordoniBB16} \\ \\
-Activated General & $a(k_i, q) = act(q^\top W k_i + b)$ & \citeauthor*{DBLP:journals/corr/abs-1709-00893} \\ \\
-Generalized Kernel & $a(k_i, q) = \phi(q)^\top \phi(k_i)$ & \citeauthor*{DBLP:journals/corr/abs-2009-14794} \\ \\
-Additive\textbackslash Concat \textsuperscript{2} & $a(k_i, q) = v^\top act(W[q;k_i]+ b)$ & \citeauthor*{bahdanau2016neural}, \citeauthor*{DBLP:journals/corr/LuongPM15} \\ \\
-Deep & $a(k_i, q) = v^\top E^{(L-1)} + b^L$ & \citeauthor*{Pavlopoulos} \\
+Similarity / Content-Base & $a(k_i, q) = sim(k_i, q)$ & \citeauthor{DBLP:journals/corr/GravesWD14} \\ \\
+Dot Product\textsuperscript{1} & $a(k_i, q) = q^\top k_i$ & \citeauthor{DBLP:journals/corr/LuongPM15} \\ \\
+Scaled Dot Product & $a(k_i, q) = \frac{q^\top k_i}{\sqrt{d_k}}$ & \citeauthor{DBLP:journals/corr/VaswaniSPUJGKP17} \\ \\
+General & $a(k_i, q) = q^\top W k_i$ & \citeauthor{DBLP:journals/corr/LuongPM15} \\ \\
+Biased General & $a(k_i, q) = k_i (Wq + b )$ & \citeauthor{DBLP:journals/corr/SordoniBB16} \\ \\
+Activated General & $a(k_i, q) = act(q^\top W k_i + b)$ & \citeauthor{DBLP:journals/corr/abs-1709-00893} \\ \\
+Generalized Kernel & $a(k_i, q) = \phi(q)^\top \phi(k_i)$ & \citeauthor{DBLP:journals/corr/abs-2009-14794} \\ \\
+Additive\textbackslash Concat \textsuperscript{2} & $a(k_i, q) = v^\top act(W[q;k_i]+ b)$ & \citeauthor{bahdanau2016neural}, \citeauthor{DBLP:journals/corr/LuongPM15} \\ \\
+Deep & $a(k_i, q) = v^\top E^{(L-1)} + b^L$ & \citeauthor{Pavlopoulos} \\
     & $E(l) = act(W_l E^{(l-1)} + b^l)$ &  \\
     & $E(1) = act(W_0k_i + W_1q + b^l)$ &  \\ \\
-Location-based & $a(k_i, q) = act(W q)$ & \citeauthor*{DBLP:journals/corr/LuongPM15} \\ \\
-Feature-based & $a(k_i, q) = v^\top act(W_0 \phi(K) + W_1 \phi(K) + b)$ & \citeauthor*{DBLP:journals/corr/abs-1810-10126} \\
+Location-based & $a(k_i, q) = act(W q)$ & \citeauthor{DBLP:journals/corr/LuongPM15} \\ \\
+Feature-based & $a(k_i, q) = v^\top act(W_0 \phi(K) + W_1 \phi(K) + b)$ & \citeauthor{DBLP:journals/corr/abs-1810-10126} \\
 \bottomrule
 \end{tabular}}
 \end{center}
 \caption{Distintos tipos de funciones de alineación. (Tabla basada en \cite{DBLP:journals/corr/abs-1904-02874} y \cite{weng2018attention}). \\
 $a(k_i, q)$ representa la función de alineación entre $k_i$ y $q$ y $act$ es una función de activación. \\
-$sim$ es una función de similaridad, \citeauthor*{DBLP:journals/corr/GravesWD14} propone la función coseno.\\
+$sim$ es una función de similaridad, \citeauthor{DBLP:journals/corr/GravesWD14} propone la función coseno.\\
 Los parámetros $v, W, W_1, W_2$ son parámetros aprendidos por la red neuronal.\\
 \textsuperscript{1} El factor de escala $\frac{1}{\sqrt{d_k}}$ ayuda a estabilizar cuando el
 gradiente es muy pequeño. $d_k$ es el tamaño de la cabeza de atención.\\
-\textsuperscript{2} La función de activación propuesta por \citeauthor*{bahdanau2016neural} es la función $tanh$ como se ve en \ref{eq:concat} \\
+\textsuperscript{2} La función de activación propuesta por \citeauthor{bahdanau2016neural} es la función $tanh$ como se ve en \ref{eq:concat} \\
 \label{Tab:att}}
 \end{table}
 
-De acuerdo a como es aplicado los distintos tipos de atención \citeauthor*{DBLP:journals/corr/abs-1904-02874}
+De acuerdo a como es aplicado los distintos tipos de atención \citeauthor{DBLP:journals/corr/abs-1904-02874}
 los dividen en 4 grandes grupos; por número de secuencias, por nivel de abstracción, por número de
 posiciones y por número de representaciones. Estos grupos no son mutualmente excluyentes por tanto
 una aplicación de atención puede pertenecer a más de una.
@@ -196,13 +196,13 @@ una aplicación de atención puede pertenecer a más de una.
 En la categoría \textit{por número de secuencias} se identifican 3 tipos, el primero de ellos,
 \textbf{Distintivos} (\textit{Distinctive}) es cuando la clave (key) y valor (value) pertenecen a
 distintas secuencias de entrada y salida respectivamente, como es el caso del modelo propuesto por
-\citeauthor*{bahdanau2016neural}. El segundo tipo, \textbf{Co-Atención} (\textit{co-attention}) utiliza
+\citeauthor{bahdanau2016neural}. El segundo tipo, \textbf{Co-Atención} (\textit{co-attention}) utiliza
 distintos secuencias al mismo tiempo para conocer los pesos de atención entre estas entradas. Por ejemplo,
 en tareas en donde se necesita trabajar con datos multi-modales como procesar imágenes y texto
 simultáneamente. En tareas como \textit{Visual Question Answering}
 se puede aplicar un mecanismo de atención conjunto tanto para las imágenes y el texto para identificar
 las regiones de la imagen y los palabras del texto que son más relevantes. El
-tercer tipo es \textbf{auto-atención} (\textit{Self Attention}), fue propuesto por \citeauthor*{yang2016hierarchical} y es uno
+tercer tipo es \textbf{auto-atención} (\textit{Self Attention}), fue propuesto por \citeauthor{yang2016hierarchical} y es uno
 de los puntos claves para los modelos \textit{Transformers} \cite{DBLP:journals/corr/VaswaniSPUJGKP17}.
 Es comúnmente usada en tareas que solo requieren una salida resumen y no una secuencia como \textit{
 Clasificación de texto}. La clave (key) y valor (value) pasan a ser las mismas y la atención es
@@ -214,11 +214,11 @@ La segunda Categoría agrupa la atención por el nivel de abstracción en la que
 representada en distintos niveles de abstracción, es decir, en texto, podemos separar los datos a
 nivel de letras, n-gramas, palabras, oraciones, párrafos, etc., por tanto, es posible atender
 de manera jerárquica a las palabras que forman una oración para posteriormente prestar atención a
-las oraciones que conformar un texto más largo. \citeauthor*{yang2016hierarchical} utiliza este procedimiento
+las oraciones que conformar un texto más largo. \citeauthor{yang2016hierarchical} utiliza este procedimiento
 para generar un vector de características usado posteriormente en un etapa de clasificación.
 
 En la tercer categoría la atención es realizada en diversas partes de la secuencia; la suma pesada sobre
-todos los puntajes de las entradas usada por \citeauthor*{bahdanau2016neural} se le denomina \textbf{
+todos los puntajes de las entradas usada por \citeauthor{bahdanau2016neural} se le denomina \textbf{
 Atención suave} (\textit{Soft-Attention}). Una alternativa es la \textbf{Atención dura}
 (\textit{Hard-Attention}) \cite{DBLP:journals/corr/XuBKCCSZB15} que calcula la atención no sobre todas
 los puntajes de alineamiento sino en una parte de estos, para ello se usa una distribución multinoulli
@@ -227,7 +227,7 @@ parametrizada por los pesos de la atención. A pesar de que es más eficiente qu
 a la \textit{atención dura} es la \textbf{Atención Local} (\textit{Local Attention}) cuya idea es aplicar
 atención sobre una ventana elegida ya sea centrada con respecto a la tiempo actual (alineamiento monotónico)
 o predicha por una función (alineamiento predictivo). La \textit{atención local} fue propuesta por
-\citeauthor*{DBLP:journals/corr/LuongPM15} así como la \textit{Atención Global} la cual es similar a la
+\citeauthor{DBLP:journals/corr/LuongPM15} así como la \textit{Atención Global} la cual es similar a la
 \textit{atención suave}.
 
 La última categoría divide los modelos de atención por las formas de representación de las entradas
@@ -235,7 +235,7 @@ sobre las que la atención es aplicada. Distintos modelos pueden beneficiarse de
 creando vectores de características distintos, cada uno de ellos deriva de algún tipo de representación
 de la entrada. por tanto, es posible atendera a diferentes representaciones y formar un vector
 final usando una combinación pesada de estos a través de dichos pesos de atención.
-\citeauthor*{DBLP:journals/corr/abs-1904-02874} llama a este tipo de modelos de atención como
+\citeauthor{DBLP:journals/corr/abs-1904-02874} llama a este tipo de modelos de atención como
 \textbf{multi-representational AM}. En la segunda categoría,
 \textbf{milti-dimensional attention}, la atención no es aplicada sobre los diversas vectores de
 características sino a un nivel más interno,

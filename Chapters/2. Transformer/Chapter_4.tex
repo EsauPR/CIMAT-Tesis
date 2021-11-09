@@ -226,7 +226,7 @@ gran cantidad de datos, tamaños de lotes de procesamiento grandes y una gran ca
 de procesamiento en gpu \cite{DBLP:journals/corr/abs-1804-00247}.
 
 \textit{Learning Rate WarmUp} es una de las primeras técnicas usadas y descritas en el proceso de
-entrenamiento por \citeauthor*{Vaswani}. Usando el algoritmo Adam como optimizador se varía el factor
+entrenamiento por \citeauthor{Vaswani}. Usando el algoritmo Adam como optimizador se varía el factor
 de aprendizaje de acuerdo a la fórmula:
 
 \begin{equation}
@@ -247,12 +247,12 @@ actual, véase la figura \ref{fig:noam}.
 
 Si bien, la razón por la que funciona este tipo de técnica no está del todo claro, se presume que usar
 \textit{Learning Rate WarmUp} ayuda a reducir la varianza del factor de aprendizaje adaptativo durante
-las primeras etapas del entrenamiento del modelo. \citeauthor*{DBLP:journals/corr/abs-1908-03265}
+las primeras etapas del entrenamiento del modelo. \citeauthor{DBLP:journals/corr/abs-1908-03265}
 demostraron que el segundo momento del algoritmo
 de Adam durante etapas tempranas de optimización es proporcional a una integral divergente, lo que
 provoca las actualizaciones inestables, llevando al
 modelo fuera de las regiones donde un mejor mínimo existe. Con esto en mente
-\citeauthor*{DBLP:journals/corr/abs-1908-03265} proponen el algoritmo de optimización
+\citeauthor{DBLP:journals/corr/abs-1908-03265} proponen el algoritmo de optimización
 \textit{RAdam} (Rectified Adam) como una alternativa a usar \textit{Learning Rate WarmUp} y mitigar
 este efecto durante la fase inicial del entrenamiento de los modelos.
 
@@ -276,7 +276,7 @@ La forma mas sencilla es usar un factor \textbf{linear warmup} parametrizado por
     \label{eq:warn_linear}
 \end{equation}
 
-\citeauthor*{DBLP:journals/corr/abs-1910-04209} proponen 3 formas de aplicar la técnica de \textit{warmup}:
+\citeauthor{DBLP:journals/corr/abs-1910-04209} proponen 3 formas de aplicar la técnica de \textit{warmup}:
 
 \textbf{Exponential warmup} aplica un decaimiento exponencial
 
@@ -310,17 +310,17 @@ con el paso del tiempo.
 \end{figure}
 
 
-Por otro lado, \citeauthor*{pmlr-v119-huang20f} mencionan que usar la técnica de \textit{Learning Rate WarmUp}
+Por otro lado, \citeauthor{pmlr-v119-huang20f} mencionan que usar la técnica de \textit{Learning Rate WarmUp}
 para mitigar la varianza del optimizador Adam no es del todo la solución y que el problema radica
 precisamente en la arquitectura del modelo Transformer, principalmente en las capas de normalización
 \cite{DBLP:journals/corr/abs-1804-09849} \cite{DBLP:journals/corr/abs-2002-04745}. En particular
-\citeauthor*{DBLP:journals/corr/abs-2002-04745} encuentran que para un modelo Transformer de cualquier
+\citeauthor{DBLP:journals/corr/abs-2002-04745} encuentran que para un modelo Transformer de cualquier
 tamaño con capas de normalización entre bloques residuales (\textit{Post-LN Transformer}), la escala
 de la norma del gradiente que incide en la última capa de normalización permanecen igual al no depender
 de la cantidad de bloques del transformer. Por el contrario, si la capa de normalización es colocada
 justo antes de la conexión residual (\textit{Pre-LN Transformer}) la magnitud de la norma del
 gradiente decrece conforme el tamaño del modelo incrementa, guiando así, al problema de desvanecimiento de
-gradiente. \citeauthor*{pmlr-v119-huang20f} proponen eliminar las capas de normalización del modelo
+gradiente. \citeauthor{pmlr-v119-huang20f} proponen eliminar las capas de normalización del modelo
 Transformer que en conjunto con la inestabilidad del algoritmo de optimización de Adam provocan la
 dificultad de entrenamiento durante desde las primeras etapas. Para ello, estandarizan la siguiente
 inicialización (\textit{T-Fixup}) de pesos del modelo, permitiendo evitar la etapa de \textit{WarmUp}
@@ -345,7 +345,7 @@ etapa de \textit{Warmup}:
     \centering
     \includegraphics[width=0.5 \textwidth]{Chapters/2. Transformer/Figures/transformer/tfixup.png}
     \caption{Histograma de gradientes del Algoritmo Adam con y sin etapa de \textit{WarmUp} y
-    usando inicialización \textit{T-Fixup}. Imagen original de \citeauthor*{pmlr-v119-huang20f}}
+    usando inicialización \textit{T-Fixup}. Imagen original de \citeauthor{pmlr-v119-huang20f}}
     \label{fig:t-fixup}
 \end{figure}
 
@@ -364,13 +364,13 @@ por otra función.
 
 \textbf{Atención de vecindades}:
 
-\citeauthor*{DBLP:journals/corr/abs-1802-05751} particionan la información de las representaciones de
+\citeauthor{DBLP:journals/corr/abs-1802-05751} particionan la información de las representaciones de
 las consultas asignándolos a diferentes bloques de memoria, restringiéndose a vecindarios locales
 alrededor de cada consulta. Principalmente basados en cómo las redes convolucionales trabajar. Sin
 embargo esta solucion es parcial y solo aplicable a secuencias de datos con relaciones cortas, cómo
 imágenes.
 
-\citeauthor*{DBLP:journals/corr/abs-1904-10509} factorizan la matriz de atención para reducir su complejidad
+\citeauthor{DBLP:journals/corr/abs-1904-10509} factorizan la matriz de atención para reducir su complejidad
 de $O(n^2)$ a $O(n\sqrt(n))$ por medio de matrices ralas, separando la atención a través de diferentes
 pasos al parametrizar la atención por una conectividad de distintos patrones elegidos previamente bajo el supuesto
 de que las matrices de atención son ralas, puesto que no contienen dependencias de relevancia
@@ -385,18 +385,18 @@ sobre representaciones distantes como se observa en la imagen \ref{fig:att-spar}
     \label{fig:att-spar}
 \end{figure}
 
-\citeauthor*{DBLP:journals/corr/abs-1905-07799} proponen reducir el ancho de la atención basándose en
+\citeauthor{DBLP:journals/corr/abs-1905-07799} proponen reducir el ancho de la atención basándose en
 que cada representación no necesita prestar atención sobre todas las demás sino que debería ser
 adaptativo. Así, para cada cabeza de atención se agrega una función de enmascaramiento que controla
 la flexibilidad del ancho una ventana. La ventana formada cambia dinámicamente de tamaño
 dependiendo de la representación en cuestión.
-\citeauthor*{DBLP:journals/corr/abs-2004-05150} siguen un estrategia similar, implementado
+\citeauthor{DBLP:journals/corr/abs-2004-05150} siguen un estrategia similar, implementado
 atención local con ventanas dilatadas distintas para cada cabeza, permitiendo atender contextos menos
 locales en cada ocasión y atención global sobre preseleccionados localizaciones. Dada la dificultad de
 su implementación sin usar ciclos para iterar sobre los elementos seleccionados a atender, implementan
 su propio kernel en \textit{CUDA} con las operaciones optimizadas para realizar esta tarea.
 
-\citeauthor*{DBLP:journals/corr/abs-1901-02860} mencionan que si el problema es el procesamiento de
+\citeauthor{DBLP:journals/corr/abs-1901-02860} mencionan que si el problema es el procesamiento de
 grandes secuencias por qué no dividirlas en secuencias más pequeñas y procesarlas individualmente
 y así evitar usar grandes cantidades de memoria en su procesamiento. El principal problema de este
 enfoque es que cada secuencia es procesada individualmente y la información de previas secuencias es
@@ -416,7 +416,7 @@ calculado nuevamente desde cero, permitiendo reducir considerablemente el tiempo
     \label{fig:trans-xl}
 \end{figure}
 
-\citeauthor*{DBLP:journals/corr/abs-2001-04451} reducen el problema de realizar la operación de softmax
+\citeauthor{DBLP:journals/corr/abs-2001-04451} reducen el problema de realizar la operación de softmax
 sobre toda la matriz $Q_i K_i^\top$ a calcularlo individualmente por cada consulta $q_j$, guardando
 solo una vez en memoria este valor en cada iteración y recalculándolo cuando se necesite de nuevo
 al utilizar \textit{Back-Propagation} usando de capas reversibles. Si bien, computacionalmente es
@@ -431,7 +431,7 @@ $W_i^Q$ y $W_i^K$ fuesen muy distintas.
 
 \textbf{Aproximaciones a la Atención original}:
 
-También \citeauthor*{DBLP:journals/corr/abs-1906-11024} proponen un modelo para compartir pesos de capas
+También \citeauthor{DBLP:journals/corr/abs-1906-11024} proponen un modelo para compartir pesos de capas
 adyacentes (Shared Attention Network - SAN).
 Cada $\pi$ capas continuas en el codificador comparten la misma matriz de atención y en el
 decodificador se comparte la proyección de los pesos de atención sobre la representación de los
@@ -445,7 +445,7 @@ proceso de entrenamiento y ajuste de pesos es muy costoso, un nuevo entrenamient
 cada ajuste de compartición de pesos, pero el modelo resultante
 es menos complejo y el tiempo en modo de evaluación o inferencia se ve reducido considerablemente.
 
-\citeauthor*{DBLP:journals/corr/abs-2006-04768} bajo la hipótesis de que la matriz de atención tienen
+\citeauthor{DBLP:journals/corr/abs-2006-04768} bajo la hipótesis de que la matriz de atención tienen
 rango mucho menor que $n$ proponen obtener los valores de cada cabeza haciendo una aproximación a ella.
 Para ello, se hace uso de dos matrices entrenables conjuntamente con el modelo, $E$ y $F$
 $\in \mathbb{R}^{n \times k}$ con $k<<n$/, tal que,
@@ -453,7 +453,7 @@ $head_i = softmax(\frac{Q_i (E_i K_i)}{\sqrt{d_m}}) F_iV_i$. Con ello la dimensi
 tamaño de las secuencias se ve reducido bajo el supuesto que podemos representar la información
 secuencial en un espacio más pequeño sin gran pérdida de información.
 
-\citeauthor*{DBLP:journals/corr/abs-2009-14794} por el contrario descomponen la operación de atención
+\citeauthor{DBLP:journals/corr/abs-2009-14794} por el contrario descomponen la operación de atención
 sobre los valores $head = softmax(\frac{QK^\top}{\sqrt{d_k} V})$ en una multiplicación matricial más simple
 $head = Q'k'^\top V$ con $Q'$ y $k'^\top \in \mathbb{R}^{n \times r}$ y $r<=n$.
 Para ello construyen $Q'$ y $k'$ como dos matrices usando kernels tal que su producto forma una
@@ -461,11 +461,11 @@ aproximación a la función softmax aplicada al producto de $Q$ y $K$. Notemos q
 reducir el costo computacional y en
 memoria simplemente reduciendo el producto $Q'(k'^\top V)$ de derecha a izquierda.
 
-Finalmente autores como \citeauthor*{DBLP:journals/corr/abs-2105-03824} remplazan completamente
+Finalmente autores como \citeauthor{DBLP:journals/corr/abs-2105-03824} remplazan completamente
 el bloque de \textit{Multihead Attention} con bloques que aplican operaciones de Transformada de
 Fourier o lo largo de la dimensión de los  embeddings y de las secuencias. Probando que el usar
 \textit{FFT} (Fast Fourier Transform) es suficiente para abstraer y modelar las relaciones. Y como
-\citeauthor*{DBLP:journals/corr/abs-2108-09084} que cambian la atención entre todas las consultas
+\citeauthor{DBLP:journals/corr/abs-2108-09084} que cambian la atención entre todas las consultas
 y llaves por una sola con todas las llaves. Para esto, a través de atención sumarizan todos las
 consultas en una consulta global. Este proceso es repetido con las llaves y valores como se observa
 en la figura \ref{fig:fast-former}
