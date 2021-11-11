@@ -353,7 +353,7 @@ Confusión} con el conteo de cada tipo de predicción en el conjunto de prueba.
     \cline{3-4}
     \\
     & & $\downarrow$ & $\downarrow$ & \\
-    \multicolumn{1}{c}{} &       & $P = \frac{TP}{FP+FP}$  & $NPV = \frac{TN}{FN+TN}$ &
+    \multicolumn{1}{c}{} &       & $P = \frac{TP}{TP+FP}$  & $NPV = \frac{TN}{FN+TN}$ &
     \end{tabular}
     \caption{
     Interpretation of the test results (prediction) according to the ground truth (GT). Metrics are calculated as the ratio between the diagonal element and the sum per row or column, as the case may be.  R, recall or sensitivity; S, specificity; P, precision; NPV, negative prediction value}
@@ -373,27 +373,59 @@ definir varias métricas de rendimiento.
         A = \frac{TP+TN}{TP+TN+FP+FN}.
     \end{equation}
 
-    \item Recall o Sensibility ($R$). Es la fracción de pacientes con enfermedades conrrectamente
+    \item Recall o Sensibility ($R$). Es la fracción de pacientes con enfermedades correctamente
           detectados. Esta metrica también es conocida como Tasa de Verdaderos Positivos (True
           Positive Rate, TPR), la tasa de detecciones correctas.
+    \begin{equation}
+        \label{eq:TPR}
+        R = \frac{TP}{TP + FN}
+    \end{equation}
 
-    \item Specificity ($S$). It is the fraction of patients without the disease that are correctly detected.
+    \item Specificity ($S$). Es la fracción de pacientes sin enfermedades que son detectados
+          correctamente.
+    \begin{equation}
+        \label{eq:Specificity}
+        S = \frac{TN}{TN + FP}
+    \end{equation}
 
-    \item False Positive Rate ($FPR$). The rate of false detections of the disease can be calculated with
+    \item False Positive Rate ($FPR$). La tasa de detecciones falsas de enfermedades, es calculada
+          como:
     \begin{equation}
         \label{eq:FPR}
-        FPR = 1- S,
+        FPR = 1 - S,
     \end{equation}
-    where $S$ is the Specificity.
+    donde $S$ es la Specificity.
 
-    \item Precision ($P$). This is the fraction of the predicted as positives that really have the disease, also known as the True Positive Rate ($TPR$).
+    \item Precision ($P$). Es la fracción de predicciones positivas que realmente tiene una una
+          enfermedad.
+    \begin{equation}
+        \label{eq:P}
+        P = \frac{TP}{TP + FP}
+    \end{equation}
 
-    \item $F_1$--score ($F_1$). The Recall metric can be bypassed if all the data tested are predicted positive regardless of the evidence. In such a case, $ FN = 0 $  and it result in $ R = 1 $; see the formula for Precision in Table \ref{table_cm}. Similarly, the Precision metric is mocked if all the tested data are predicted as negative. In this other case we will have $FPs = 0$, which implies $P = 1$. Since it is unfeasible to simultaneously cheat both metrics, then an imbalance between them indicates a bias in any of the ways described above. Therefore, it is more informative as a performance measure to use the geometric mean of both metrics.
+    \item $F_1$ Score ($F_1$).  Durante la creación de modelos buscamos un balance entre Precision y
+          Recall. El incremento
+          de alguna de estas dos métricas es en compensación de la otra. Un modelo que predice la
+          mayoría de los datos como positivos tendrá un Recall más cercano a 1 pues el conteo de
+          Falsos Negativos será mucho menor pero los Falsos positivos incrementarán reduciendo la
+          Precision del modelo. En caso contrario si el modelo predice la mayoría de lo datos como
+          negativos el conteo de Falsos Positivos será menor incrementado la métrica de Precision
+          pero los Falsos Negativos incrementan provocando que el Recall decremente. F1-Score
+          busca un balance entre las dos métricas (Precision-Recall Trade-Off). Un imbalance
+          entre ellas indica una sesgo en cualquiera de las dos maneras descritas anteriormente.
+          Por ello, es más informativo como medida de rendimiento usar una media geométrica entre
+          las dos métricas.
     \begin{equation}
         \label{eq:f1}
         F_1 = \frac{2\; P \, R}{P + R}.
     \end{equation}
 
-    \item Area Under Curve of Receiver Operator Characteristic (AUC-ROC). The receiver operator characteristic curve is a graph showing the diagnostic capabilities of binary classifiers. We have said that a particular pathology is positively detected if its predicted score is more significant than a given threshold. Then, adjusting such a threshold down allows, in general, to increase the TPR, although the FPR may also be increased. The ROC results of plotting values of TPR vs. FPR  by varying the threshold in the interval $[0,1]$. The AUC corresponds to the area under this ROC curve.
+    \item  Area Under Curve of Receiver Operator Characteristic, (AUC-ROC). La Curva Característica
+    Operativa del Receptor es un gráfico que muestra las capacidades de diagnóstico de clasificadores
+    binarios. Como se mencionó anteriormente, una patología es detectada como positiva si su puntaje
+    predicho is más significativo que un umbral dado. Así, ajustando dicho umbral en valores más
+    bajos, permite en general incrementar el TPR, aunque el FPR también puede ser incrementado.
+    La Curva ROC resulta de graficas los valores de TPR contra FPR variando el umbral en el intervalo
+    $[0,1]$. El AUC corresponde al área bajo la Curva de ROC.
 
 \end{enumerate}
