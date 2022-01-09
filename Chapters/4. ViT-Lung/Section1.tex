@@ -429,3 +429,47 @@ definir varias métricas de rendimiento.
     $[0,1]$. El AUC corresponde al área bajo la Curva de ROC.
 
 \end{enumerate}
+
+
+\subsection{Resultados}
+
+La Tabla~\ref{table_results} muestra un resumen del rendimiento del modelo propuesto. Las imágenes
+que conforman los conjuntos de entrenamiento, validación y prueba corresponden a los definidos
+originalmente en dataset. En ChestX-ray14, se redefinen las etiquetas de entrenamiento de acuerdo a
+CheXNet \cite{rajpurkar2018deep}. Los datos correspondientes a el conjunto de prueba permanecen sin
+cambio; las imágenes radiográficas y las etiquetas correspondientes.
+
+
+\begin{table*}[tb]
+    \centering
+    \begin{tabular}{|l||c|c|c|c|}
+        \hline
+    {\bf Phatology} 	    	&	\multicolumn{4}{c|}{\bf Proposal}  \\
+    \cline{2-5}
+                        &	AUC-PR	&	AUC-ROC 	& F1-Score  & Acc.  \\
+        \hline \hline
+        Cardiomegaly	&	0.290	&	0.875	&	0.324	&	0.911	\\
+        Emphysema	    &	0.413	&	0.938	&	0.350	&	0.886	\\
+        Effusion	    &	0.494	&	0.850	&	0.527	&	0.807	\\
+        Hernia	        &	0.050	&	0.855	&	0.051	&	0.957	\\
+        Infiltration	&	0.382	&	0.740	&	0.458	&	0.711	\\
+        Mass	        &	0.290	&	0.831	&	0.340	&	0.877	\\
+        Nodule	        &	0.249	&	0.806	&	0.299	&	0.876	\\
+        Atelectasis	    &	0.336	&	0.794	&	0.387	&	0.815	\\
+        Pneumothorax	&	0.447	&	0.906	&	0.496	&	0.852	\\
+        Pleural-Thick	&	0.157	&	0.820	&	0.217	&	0.852	\\
+        Pneumonia	    &	0.425	&	0.863	&	0.274	&	0.856	\\
+        Fibrosis	    &	0.106	&	0.852	&	0.154	&	0.910	\\
+        Edema	        &	0.187	&	0.879	&	0.193	&	0.788	\\
+        Consolidation	&	0.150	&	0.776	&	0.234	&	0.754	\\
+        \hline
+        COVID-19	        &	0.844	&	0.991	&	0.799	&	0.969	\\
+        Healthy	        &	0.691	&	0.736	&	0.496	&	0.712	\\
+        \hline\hline
+        Global-14	    &	0.284	&	0.842	&	0.307	&	0.846	\\
+        Global-15	    &	0.344	&	0.852	&	0.350	&	0.846	\\
+    \hline
+    \end{tabular}
+    \caption{Summary of the proposed method's performance. The train, validation and test datasets correspond to the originally defined in ChestX-ray14. However, the training labels correspond to the defined by the relabelling computed by CheXNet  \cite{rajpurkar2018deep}; see text.  The threshold was set equal to 0.5, no extra optimization was performed.}
+    \label{table_results}
+\end{table*}
