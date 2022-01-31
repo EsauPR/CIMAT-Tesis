@@ -433,12 +433,26 @@ definir varias métricas de rendimiento.
 
 \subsection{Resultados}
 
-La Tabla~\ref{table_results} muestra un resumen del rendimiento del modelo propuesto. Las imágenes
+La Tabla~\ref{table:res-model-covid} muestra un resumen del rendimiento del modelo propuesto. Las imágenes
 que conforman los conjuntos de entrenamiento, validación y prueba corresponden a los definidos
 originalmente en dataset. En ChestX-ray14, se redefinen las etiquetas de entrenamiento de acuerdo a
-CheXNet \cite{rajpurkar2018deep}. Los datos correspondientes a el conjunto de prueba permanecen sin
-cambio; las imágenes radiográficas y las etiquetas correspondientes.
+CheXNet \cite{rajpurkar2018deep}; excepto para las impagenes de \textit{COVID-19} y sin patologías
+identificadas. Es válido usar cualquier modificación de etiquetas en la etapa de entrenamiento
+siempre y cuando se mantenga el conjunto de datos de prueba sin cambios (imágenes de radiografia y
+sus etiquetas).
 
+Los resultados presentes se ajustan a el procedimiento de entrenamiento y prueba antes descrito. Las
+métricas que se incluyen son: \textit{Area Under the the Precision Receovery Curve} (AUC-PR),
+\textit{Area Under the Receiver Operating Characteristic Curve} (AUC-ROC), \textit{F1-Score} y
+\textit{Accuracy} (Acc.). \textit{Global-14} muestra el rendimiento en las patologias de
+\textit{ChestX-ray-14} (clasificaciones correctas vs clasificaciones incorrectas), \textit{Global-15}
+muestra el rendimiento incluyendo \textit{COVID-19}. Nótese que el modelo propuesto tiene su mejor
+rendimiento en la detección de \textit{COVID-19}, la enfermedad anexada. Tambien se han incluido
+datos de clases sin patologias detectadas (healthy) debido a la importancia de tener un buen desempeño
+en la detección de sujetos saludables. El rendimiento global sobre loas datos de \textit{ChestX-ray14}
+y \textit{COVID-19} se mestran en el último rengló de la tabla \ref{table:res-model-covid}. Adicionalmente,
+solo como referencia se incluye en el Apéndice la tabla con los resultados del rendimiento del modelo
+propuesto con el conjunto de prueba re-etiquetado.
 
 \begin{table*}[tb]
     \centering
@@ -470,6 +484,158 @@ cambio; las imágenes radiográficas y las etiquetas correspondientes.
         Global-15	    &	0.344	&	0.852	&	0.350	&	0.846	\\
     \hline
     \end{tabular}
-    \caption{Summary of the proposed method's performance. The train, validation and test datasets correspond to the originally defined in ChestX-ray14. However, the training labels correspond to the defined by the relabelling computed by CheXNet  \cite{rajpurkar2018deep}; see text.  The threshold was set equal to 0.5, no extra optimization was performed.}
-    \label{table_results}
+    \caption{Summary of the proposed method's performance. The train, validation and test datasets
+             correspond to the originally defined in ChestX-ray14. However, the training labels
+             correspond to the defined by the relabelling computed by CheXNet
+             \cite{rajpurkar2018deep}; see text. The threshold was set equal to 0.5, no extra
+             optimization was performed.}
+    \label{table:res-model-covid}
 \end{table*}
+
+Es importante recalcar que no es apropiado usar \textit{Accuracy} como único criterio de rendimiento
+bajo este contexto. El \textit{Accuracy} de cada clase es calculado como el número de clasificaciones
+correctas (TP y TN) entre la suma total de radiografías analizadas. Con clases desbalanceadas,
+tales como las que analizamos ahora (patología vs no patología), un modelo podría ser engañoso en cuanto
+a su eficiencia segando su clasificación sobre la o las clases más representativas. Si el desbalance
+grande, el modelo puede asignar todos los datos como la clase que representa mayor peso y por tanto
+tener un buen rendimiento en la métrica de \textit{Accuracy}. A pesar de ello, los datos presentados
+son resultados que sirven como referencia para el lector. Una manera más apropiada de medir el desempeño
+del modelo es calcular la gráfica de TPR vs FPR para obtener el área bajo la curva, en otras palabras,
+calcular AUC-ROC como la métrica de rendimiento \cite{Hanley1983-tu}. Apesar de que la curva de ROC
+es preferida sobre la de PR a causa de su convexidad, existe un mapeo uno a uno entre ellas
+\cite{10.1145/1143844.1143874}, al final, ambas curvas son calculadas usando la misma matirz de confusión. Por tanto, también se
+incluye la métrica AUC-PR para mejores comparaciones mayormente informativas que solo usar la
+curva de ROC \cite{Saito2015-db}.
+
+La tabla \ref{table_roc_auc} muestra una comparación de la métrica AUC-ROC para los modelos DR-CNN
+\cite{DBLP:journals/corr/abs-1808-05744}, CRAL \cite{GUAN2020259}, TSNC \cite{CHEN2020221}, CheXNet
+\cite{rajpurkar2018deep} y la propuesta descrita aquí. También se realiza la comparativa del modelo
+ResNet-38-large-meta (LargeMeta). Este modelo uisa ResNet-38 como backbone, un tamaño de imagen de
+$480 x 480$ pixeles y, a diferencia de los modelos comparados restantes utiliza datos adjuntos a la
+imagen (metadata). Las dos últimas columnas presentan la AUC-ROC para el modelo propuesto y la
+detección lograda un grupo de radiologos \cite{rajpurkar2018deep}. Se indica en negritas el modelo con el mejor
+rendimiento por patología. En general la métrica AUC-TOC en el dataset original ChestX-ray14 muestra
+una ligera ventaja para el modelo propuesto sobre el modelo CheXNet. La inclusión de COVID-19
+mejora dicha métrica de rendimiento en favor del modelo propuesto. Además, es visible que
+los resultamos obtenidos también superan a aquellos reportados por otros métodos investigados en
+\ref{baltruschat2019comparison}. Es importante notar que la métrica AUC-ROC para CheXNet corresponde
+a la meadia de 1000 salidas de usando boostraping para un Intervalo de Confianza de $95\%$
+\cite{rajpurkar2018deep}. Una actualización reciente de la implementación de CheXNet en el repositorio
+\cite{} reporta un AUC-ROC para Global-14 igual a 0.847. La última columna en la tabla 7 presenta
+el rendimiento promedio para los radiólogis que evaluan la radiografía para ChestX-ray14. Para
+mayor detalle del cómputo de la evaluación de los radiologos véase \cite{rajpurkar2018deep}. Las }
+marcas con asterisco $(*)$ indican donde los radiólogos tiene mejor rendimiento que cualquier de los
+modelos evaluados. La tabla \ref{table_dl_human} resume el rendimiento de la métrica AUC-ROC de los mejores métodos
+basados en DL (incluyendo el propio analizado) contra rendimiento de los radiólogos. Podemos notar
+una ventaja si unimos los métodos basados en DL, los cuales superar a los radiólogos en detectar
+seis patologías (sin tomar en cuenta COVID-19).
+
+\begin{table*}[tb]
+    \centering
+    %\resizebox{\textwidth}{!}{
+    \begin{tabular}{|l||c|c|c|c|c|c|l|}
+        \hline
+        \multicolumn{1}{|c||}{}	&	\multicolumn{5}{c|}{\bf Compared Models}    &\multicolumn{2}{c|}{} 	\\
+        \cline{2-8}
+                        &	CRAL	&	DR-CNN	&	TSNC	& LargeMeta & CheXNet	& Proposal	& 	Radiol.	\\
+        \hline\hline
+        Cardiomegaly	&	0.880	&	0.801	&	0.887	&	0.875	&\bf{0.923}	&	0.875	&	0.888	\\
+        Emphysema	    &	0.908	&	0.773	&	0.930	&	0.895	&	0.937	&\bf{0.938}	&   0.911	\\
+        Effusion	    &	0.829	&	0.797	&	0.831	&	0.822	&\bf{0.864}	&	0.850	&   0.900*	\\
+        Hernia	        &	0.917	&	0.748	&	0.921	&\bf{0.937}	&	0.916	&	0.855	&   0.985*	\\
+        Infiltration	&	0.702	&\bf{0.751}	&	0.703	&	0.694	&	0.734	&	0.740	&	0.734	\\
+        Mass	        &	0.834	&	0.760	&	0.833	&	0.820	&\bf{0.868}	&	0.831	&	0.886*	\\
+        Nodule	        &	0.773	&	0.741	&	0.798	&	0.747	&	0.780	&\bf{0.806}	&	0.899*	\\
+        Atelectasis	    &	0.781	&	0.766	&	0.785	&	0.763	&\bf{0.809}	&	0.794	&	0.808	\\
+        Pneumothorax	&	0.729	&	0.778	&	0.731	&	0.840	&	0.889	&\bf{0.906}	&	0.940*	\\
+        Pleural-Thick.	&	0.778	&	0.759	&	0.782	&	0.763	&	0.806	&\bf{0.820}	&	0.779	\\
+        Pneumonia	    &	0.857	&	0.800	&\bf{0.881}	&	0.731	&	0.768	&	0.863	&	0.823	\\
+        Fibrosis	    &	0.830	&	0.765	&	0.833	&	0.816	&	0.805	&\bf{0.852}	&	0.897*	\\
+        Edema	        &	0.850	&	0.820	&	0.849	&	0.846	&\bf{0.888}	&	0.879	&	0.910*	\\
+        Consolidation	&	0.754	&	0.787	&	0.754	&	0.749	&\bf{0.790}	&	0.776	&	0.841*	\\
+        \hline
+        COVID-19	    &	---	    &	---	    &	---	    &	---	    &	---	    &\bf{0.991}	&	---	    \\
+        Healthy	        &	---	    &	---	    &	---	    &	0.727	&	---	    &	0.736	&	---	    \\
+        \hline\hline
+        Global-14	    &	0.816	&	0.775	&	0.823	&	0.807	&	0.841	&\bf{0.842}	&	0.872*	\\
+        Global-15	    &	---	    &	---	    &	---	    &	---	    &	---	    &\bf{0.852}	&	---	    \\
+        \hline
+    \end{tabular}
+    %}
+    \caption{AUC-ROC values for the pathologies and healthy classes. The compared methods correspond
+             to deep neural networks models trained for the 14 pathologies in ChestX-ray14.}
+    \label{table_roc_auc}
+\end{table*}
+
+
+\begin{table}[tb]
+    \centering
+    %\resizebox{\textwidth}{!}{
+    \begin{tabular}{|l||l|c|l|}
+        \hline
+                        &	Method	&	AUC-ROC	& Radiol.	\\
+        \hline\hline
+        Cardiomegaly	&	CheXNet	    & 0.923 &   0.888	\\
+        Emphysema	    &	Proposal    & 0.938	&   0.911	\\
+        Effusion	    &	CheXNet	    & 0.864 &   0.900*	\\
+        Hernia	        &	LargeMeta   & 0.937	&   0.985*	\\
+        Infiltration	&	DR-CNN	    & 0.751 &	0.734	\\
+        Mass	        &	CheXNet	    & 0.868	&	0.886*	\\
+        Nodule	        &	Proposal    & 0.806	&	0.899*	\\
+        Atelectasis	    &	CheXNet	    & 0.809 &	0.808	\\
+        Pneumothorax	&	Proposal    & 0.906 &	0.940*	\\
+        Pleural-Thick.	&	Proposal    & 0.820	&	0.779	\\
+        Pneumonia	    &	TSNC	    & 0.881 &	0.823	\\
+        Fibrosis	    &	Proposal    & 0.852 &	0.897*	\\
+        Edema	        &	CheXNet	    & 0.888 &	0.910*	\\
+        Consolidation	&	CheXNet	    & 0.790 &	0.841*	\\
+        COVID-19	    &	Proposal    & 0.991 &	------	\\
+        \hline
+    \end{tabular}
+    %}
+    \caption{Comparison, per pathology, of the deep learning based method with best performance
+             versus human radiologists. Human radiologists lead in eight (indicated with $^\ast$) of
+            the fifteen pathologies.}
+    \label{table_dl_human}
+\end{table}
+
+
+La figura \ref{roc-curves} representa las curvas de ROC correspondientes a nuestra propuesta para
+todas las patologías incluyendo las clases COVID-19 y Healthy. como pueden verse en cada uno de los
+gráficos, las curvas se encuentran sobre la diagonal, en particular para COVID-19. La figura
+\href{img-results} ilustra la detección obtenida mediante el método propuesto: una diagnóstico previo
+y la región de interés detectado usando GradCAM; una técnica de visualización de redes neuronales
+profundas propuesta en \cite{selvaraju2017grad}. La primer fila muestra cuatro radiografias de
+pacientes con diferentes patologias, la segunda fila se encuentra su correspondiente GradCAM
+indicando la región que contribuye a la detección. Las imágenes radiográficas de la figura están
+correctamente clasificadas de acuerdo con las etiquetas originales. Las regiones rojkas son aquellas
+con mayor contribución a la detección de la enfermedad. La radiografía de la primer columna claramente
+muestra un corazon de tamaño mayor de lo normal. La segunda columna corresponde a neumonia, la
+tercer columna muestra una formación inusual en el púlmon (mass), la última columna indica el caso
+de COVID-19.
+
+% \begin{figure}
+%     \begin{center}
+%         \scalebox{0.6}{\input{Chapters/4. ViT-Lung/images/ROC_AUC.pdf}}
+%     \end{center}
+% \label{roc-curves}
+% \end{figure}
+
+
+\begin{figure}
+    \begin{center}
+        \scalebox{0.6}{\input{Chapters/4. ViT-Lung/images/ROC_AUC.pgf}}
+    \end{center}
+    \caption{ROC Curves (plots of FPR versus TPR) for the pathology and healthy classes.}
+    \label{roc-curves}
+\end{figure}
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8 \textwidth]{Chapters/4. ViT-Lung/images/vlgrid.png}
+    \caption{Some X-ray images (top row) with different pathologies and their associated GradCam images
+         (bottom row). The first column shows a grown heart, the second column corresponds to
+         Pneumonia, the third column shows an unusual tissue in the lung, and the last column a case
+         of COVID-19.}
+    \label{img-results}
+\end{figure}
