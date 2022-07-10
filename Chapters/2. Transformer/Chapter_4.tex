@@ -448,7 +448,7 @@ es menos complejo y el tiempo en modo de evaluación o inferencia se ve reducido
 \citeauthor{DBLP:journals/corr/abs-2006-04768} bajo la hipótesis de que la matriz de atención tienen
 rango mucho menor que $n$ proponen obtener los valores de cada cabeza haciendo una aproximación a ella.
 Para ello, se hace uso de dos matrices entrenables conjuntamente con el modelo, $E$ y $F$
-$\in \mathbb{R}^{n \times k}$ con $k<<n$/, tal que,
+$\in \mathbb{R}^{n \times k}$ con $k \ll n$, tal que,
 $head_i = softmax(\frac{Q_i (E_i K_i)}{\sqrt{d_m}}) F_iV_i$. Con ello la dimensión correspondiente al
 tamaño de las secuencias se ve reducido bajo el supuesto que podemos representar la información
 secuencial en un espacio más pequeño sin gran pérdida de información.
