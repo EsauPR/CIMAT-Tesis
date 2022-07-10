@@ -78,30 +78,25 @@ acuerdo a \cite{rajpurkar2018deep}, los datos re-etiquetados permiten mejorar el
 significativamente. Cada re-etiquetado es realizado a través del entrenamiento de múltiples modelos
 de redes neuronales con los datos originales como entrada, los modelos con mejor accuracy en la
 evaluación del dataset original son conservados. Después, las predicciones individuales de cada
-modelo son promediadas.
-
-In order to train our model, we use the relabelled version of the ChestX-ray14 database proposed by
-the authors of CheXNet \cite{rajpurkar2018deep}.  According to \cite{rajpurkar2018deep}, the
-relabelled data allows to improve the training process significantly. Such relabelling consists of
-training multiple times a  neural network with the original training data set and keeping those
-models with the best accuracy on the original validation set. Then, the predictions of the individual
-models are averaged, and a binary detector of each pathology is computed by using a threshold that
-maximizes the F1-score in all the pathologies (see Section~\ref{sec_metrics} for the F1-score
-definition). Finally, each training and test datum is relabeled as positive for pathology, if it was
-initially labeled as positive or the ensemble prediction is positive. However,  we define the train,
-validation, and test data sets according to the original problem; \emph{i.e.}, for the original list and
-only use the new labels in the training stage. Thus, we report two results: the first one on the
-original test dataset and, just for reference,  with the updated labels in the Appendix.
+modelo son promediadas y un detector binario para cada patología es construido usando un umbral que
+que permita maximizar la métrica F1-score en todas las patologías, (véase la sección \ref{sec_metrics}
+para la definición de F1-score). Finalmente, cada dato es re-etiquetado, como positivo si este fue
+originalmente etiquetado como positivo o el clasificador construido en el paso previo resulta positiva.
+A pesar de este re-etiquetado, en estos experimentos los datos preservan su estructura de acuerdo a
+los datos de entrenamiento y validación proporcionados originalmente; para para el conjunto de datos
+orinales, solo los datos de entrenamiento re-etiquetados son usados, es decir, solo se usan los datos
+con etiquetas modificadas en la etapa de entrenamiento, preservando la evaluación intacta al proceso
+usado por otro los otros métodos. Aún así, se muestra el reporte correspondiente a el conjunto de
+validación re-etiquetado solo como referencia adjunto en el Apéndice.
 
 \subsubsection{Data Preprocessing}
 
-We keep as simple as possible the preprocessing of the radiography, we only perform a histogram
-equalization and resize the data to $1024 \times 1024$ pixels.
-
-La datos de entrada son imágenes de 1024
-columnas y 1024 filas con 3 canales idénticos. Siguiente la propuesta de \textit{CheXNet}, se hace uso
-de multiples funciones de perdida tipo \textit{Binary Cross-Entropy} con distintos pesos
-para solventar el desbalanceamiento de clases.
+El procesamiento las imágenes radiográficas sigue un camino simple, se implementa un proceso de
+equalización por histograma, seguido de un redimensionamiento a $1024 \times 1024$ pixeles. Siendo
+los datos de entrada a el modelo neuronal generado imágenes de 1024  columnas y 1024 filas con 3
+canales idénticos. Siguiendo la propuesta de \textit{CheXNet}, se hace uso de multiples funciones de
+perdida tipo \textit{Binary Cross-Entropy} con distintos pesos para solventar el desbalanceamiento
+de clases.
 
 \begin{equation} \label{eq:loss}
     L(\hat y, y) = \sum_{c=0}^{15} \left[ w_c^{(p)} y_c \log \hat y_c  + w_c^{(n)}  (1-y_c) \log  (1- \hat y_c)  \right],
