@@ -89,7 +89,7 @@ con etiquetas modificadas en la etapa de entrenamiento, preservando la evaluaci�
 usado por otro los otros métodos. Aún así, se muestra el reporte correspondiente a el conjunto de
 validación re-etiquetado solo como referencia adjunto en el Apéndice.
 
-\subsubsection{Data Preprocessing}
+\subsubsection{Procesamiento de los datos}
 
 El procesamiento las imágenes radiográficas sigue un camino simple, se implementa un proceso de
 equalización por histograma, seguido de un redimensionamiento a $1024 \times 1024$ pixeles. Siendo
@@ -99,7 +99,7 @@ perdida tipo \textit{Binary Cross-Entropy} con distintos pesos para solventar el
 de clases.
 
 \begin{equation} \label{eq:loss}
-    L(\hat y, y) = \sum_{c=0}^{15} \left[ w_c^{(p)} y_c \log \hat y_c  + w_c^{(n)}  (1-y_c) \log  (1- \hat y_c)  \right],
+    L(\hat y, y) = \sum_{c=0}^{15} \left[ w_c^{(p)} y_c \log \hat y_c + w_c^{(n)} (1-y_c) \log (1- \hat y_c) \right],
 \end{equation}
 
 donde $y$ es el vector de etiquetas reales, $\hat y$ es el vector de etiquetas predichas,
@@ -107,7 +107,7 @@ $w_c^{(p)}$ y $w_c^{(n)}$ son los pesos para los casos positivos y negativos de 
 respectivamente. Dichos pesos son calculados como sigue:
 
 \begin{equation}\label{eq:weights}
-    w_c^{(n)} = \frac{n_c}{N} \;\;\;\;\text{and}\;\;\;\;   w_c^{(p)} = 1-  w_c^{(n)};
+    w_c^{(n)} = \frac{n_c}{N} \;\;\;\; \text{and} \;\;\;\; w_c^{(p)} = 1-  w_c^{(n)};
 \end{equation}
 
 donde $N$ es el tamaño del conjunto de datos, y $n_c$ el número de imágenes radiográficas con
@@ -119,7 +119,7 @@ pesos son inversamente proporcional al número de casos en la clase.
 \subsection{Vision Transformers}
 \subsection{ViT con cabezas de atención Flexibles}
 
-\section{Alternativa: CNN y Transfer Learning}
+\subsection{CNN y Transfer Learning}
 
 El modelo desarrollado es construido tomando \textit{CheXNet} como referencia
 \cite{rajpurkar2018deep}, el cual clasifica entre 14 enfermedades
@@ -329,7 +329,7 @@ Tuberculosis. La arquitectura extendida incluyendo la nueva rama está descrita 
 \end{figure}
 
 
-\subsubsection{Métricas de Evaluación}
+\subsection{Métricas de Evaluación}
 
 Considerando un problema de clasificación binario donde cada radiografia tiene una etiqueta
 $y = \{1, 0\}$ con $1$ indicando la presencia del padecimiento en el paciente y $0$ significando
