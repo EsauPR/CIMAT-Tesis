@@ -1,6 +1,6 @@
 \section{Estimación de Pose 3D}
 
-En la sección \ref{sec:taxonomy}, mencionamos previamente que la estimación de pose puede hacerse
+En la sección \ref{sec:taxonomy}, previamente mencionamos que la estimación de pose puede hacerse
 en dos etapas. La primer etapa encargada de predecir las poses en 2 dimensiones y la segunda en
 realizar la predicción a 3 dimensiones a partir de los resultados de la etapa anterior. Este esquema
 de predicción y entrenamiento fue uno de los primeros propuestos por J. Martinez
@@ -22,8 +22,8 @@ de las imágenes, en la primer etapa.
 
 En la figura \ref{fig:model_martinez} se muestra el modelo usado por J. Martinez. Los datos de entrada
 son las posiciones de las articulaciones del cuerpo humano, estos son incrementados de dimensión a
-1024 usando la primer capa lineal para posteriormente pasar a un proceso de normalización por lotes
-y ser activados con una función \textit{RELU} con dropout de 50 por ciento. La salida de este modelo
+1024 usando la primer capa lineal, posteriormente pasa a un proceso de normalización por lotes
+y son activados con una función \textit{RELU} con dropout de 50 por ciento. La salida de este modelo
 es proyectada para tener una dimensión de $3n$ con $n$ como el número de articulaciones, representando
 puntos en un espacio de 3 dimensiones.
 
@@ -41,17 +41,7 @@ Proyecto enfocado solo en Estimación de pose 2D HPE y 3D HPE considerando un so
 
 Para el primer caso solo martinez solo se enfoca en el segundo stage de la estimación de pose
 no se usa un modelo end-to-end sino que aprovecha los modelos ya creados para estimación de pose
-en 2d y luego crea un modelo de red neuronal para la estimación en 3d. Por tanto el input para este
-modelo son las coordenadas en 2d que son salida de otro modelo previo
-
-El segundo caso es un modelo end-to-end el input de los datos ya son las imágenes y la salida
-son los puntos en 3d representando las poses
-
-
-\section{Datos y Procesamiento}
-
-- Procesamiento de datos de martinez
-- Que no se olvide explicar lo de los
+en 2d y
 
 \section{Arquitecturas de Estimación 2D y 3D}
 
