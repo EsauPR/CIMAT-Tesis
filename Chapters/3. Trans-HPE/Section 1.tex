@@ -27,13 +27,34 @@ y son activados con una función \textit{RELU} con dropout de 50 por ciento. La 
 es proyectada para tener una dimensión de $3n$ con $n$ como el número de articulaciones, representando
 puntos en un espacio de 3 dimensiones.
 
-Por otra parte,
-Leer y explicar lo que hace martinez
-y lo que hace el otro tipejo
+Siguiendo la misma estrategia \citeauthor{DBLP:journals/corr/abs-2009-00348}
+\cite{DBLP:journals/corr/abs-2009-00348} utiliza una arquitectura
+basada en el Transformer presentado por \citeauthor{Vaswani} \cite{Vaswani}. Un Transformer con capas
+ocultas de dimensión 512, 8 cabeza de multi-atención y bloques codificadores como se observa en la
+figura \ref{fig:Liftformerfig}.
 
-- Dos proyectos
-- el de gonzales
-- el otro que jaló mejor
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=.4\textwidth]{Chapters/3. Trans-HPE/img/poseTrans.png}
+    \caption[Liftformer]{Liftformer
+    \cite{DBLP:journals/corr/abs-2009-00348}, modelo basado en la parte codificadora del un Transformer.
+    Predice los puntos de articulación 3D a partir de una secuencia de puntos 2D.}
+\label{fig:Liftformerfig}
+\end{figure}
+
+Liftformer solo implementa la parte codificadora del modelo de
+Transformer sin ningún otro cambio a este. Durante el entrenamiento utiliza como entrada una secuencia
+de coordenadas representando las puntos de articulaciones en dos dimenciones. La primer mitad corresponde
+a información del pasado y la segunda mitad a información del futuro generando una predicción de pose
+3D correspondiente al centro de la secuencia de entrada.
+
+Al inicio del modelo la información es reproyectada de un espacio de $[N, 34]$ a $[N, 512]$ a través
+de una capa Convolucional de una dimención. En este misma etapa es inyectada la información temporal
+a usando \textit{temporal embeddings}. De manera similar y dado que no es usado un decodificador
+el modelo elige el token correspondiente a la mitad de los datos de entrada repoyectándolo a dimenciones
+$[1, 51]$. Las 17 articulaciones y en coordenadas x, y, z estarán representadas por este vector de 51
+elementos.
+
 
 - Proyecto del tipo que usa transformers
 
@@ -42,8 +63,6 @@ Proyecto enfocado solo en Estimación de pose 2D HPE y 3D HPE considerando un so
 Para el primer caso solo martinez solo se enfoca en el segundo stage de la estimación de pose
 no se usa un modelo end-to-end sino que aprovecha los modelos ya creados para estimación de pose
 en 2d y
-
-\section{Arquitecturas de Estimación 2D y 3D}
 
 Explicar las arquitecturas usadadas
 - la de martinez
