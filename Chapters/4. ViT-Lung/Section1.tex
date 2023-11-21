@@ -116,8 +116,6 @@ pesos son inversamente proporcional al número de casos en la clase.
 
 
 \section{Arquitecturas usadas}
-\subsection{Vision Transformers}
-\subsection{ViT con cabezas de atención Flexibles}
 
 \subsection{CNN y Transfer Learning}
 
@@ -182,6 +180,88 @@ densas y una operación de \textit{Dropout} intermedia con probabilidad de $25\%
     \caption{Deep neural network architecture used in the proposed model. The Dense layers include the bias term. Drop-0.25 means a Dropout layer with a probability of 0.25.}
     \label{table_resnet50}
 \end{table}
+
+\subsection{Vision Transformers}
+
+Los modelos \textit{Vision Transformers} (\textit{ViT}) \cite{DBLP:journals/corr/abs-2010-11929} propuestos en el
+año 2020 son una variante de los modelos Transformer diseñados para resolver tareas de visión por
+computadora. En lugar de utilizar convoluciones como tradicionalmente se haría con otros modelos
+para extraer las distintias carácterísitcas de la imagen, los modelos Vision Transformers descomponen
+la imagen de entrada en una serie de parches, que posteriormente se tokenizan y se aplican la
+arquitectura de Transformer estandar presentada anteriormente, véase la figura \ref{fig_ViT}.
+
+\begin{figure}[htp]
+    \centering
+    {\includegraphics[width=1.0\textwidth]{Chapters/4. ViT-Lung/images/ViT.png}}
+\caption{Modelo ViT \cite{DBLP:journals/corr/abs-2010-11929}. Representación original del ViT. Las
+imágenes a procesarse son descompuestas en una serie de parches (3x3 parches en este ejemplo). Los
+parches generados son proyectados a una dimension linear agregandose información posicional.}
+\label{fig_ViT}
+\end{figure}
+
+El mecanismo de atención en el modelo ViT transforma continuamente los vectores de representación de
+los parches de la imagen, incorporando relaciones semánticas entre los parches de la imágen.
+Análogamente a como se usaría en el área de Procesamiento de Lenguaje Natural, mientras los vectores
+avanzan en profundida en el modelo Transformer, las relaciones semánticas formadas entre los parches
+son cada vez más complejos. Esto rempĺaza así, las características extraidas a través de operaciones
+convolucionales. Para relizar dichas tareas el modelo ViT solo utiliza la parte codificadora de la
+arquitectura general del Transformer, codificando y extrayendo la información relevante de las imágenes
+en las etapas de multiatención.
+
+A pesar de que los enfoques dirigidos con modelos ViT y CNN son diferentes, algunas investigaciones
+indican que la representación de la información en capas inferiores es bastante similar, esto es
+convoluciones más internas que guardan características locales y cabezas de atención más profundas
+\cite{DBLP:journals/corr/abs-2108-08810}. Aún así, los modelos ViT incorporan más información global
+que los modelos CNNs en capas inferiores y los \textit{skip connections} incorporados a los modelos
+influyen más en los modelos ViTs
+que en los modelos basados en CNNs. Además, como describen en su artículo \citeauthor{DBLP:journals/corr/abs-2010-11929}
+los modelos ViT se benefician de entrenamientos conjuntos de datos mucho más grandes a comparación
+de los datos necesarios para obtener resultados favorables en CNNs.
+
+Basados en las propuestas de \citeauthor{DBLP:journals/corr/abs-2010-11929}, la red clasificadora
+implementada deriva de estos modelos obtenidos.
+
+Basados en las propuestas de Jorge Santos, la red clasificadora implementada deriva de los modelos
+obtenidos entrenados en este articulos. El modelo es entrenado usadno el dataset ILSVRC-2012 ImageNet
+dataset con 1k clases y 1.3M de imágenes, el dataset ImageNet-21k con 21k clases y 14M de imágenes y
+JFT con 18k clases y 303M de imagnes de alta resolución.
+
+Basados en las propuestas de \citeauthor{DBLP:journals/corr/abs-2010-11929}, la red clasificadora
+implementada se deriva de los modelos entrenados que describen. Los modelos se entrenan utilizando
+varios conjuntos de datos; el conjunto de datos ILSVRC-2012 de ImageNet, que consta de 1k clases y
+1.3 millones de imágenes, el conjunto de datos ImageNet-21k, que contiene 21k clases y 14 millones
+de imágenes y el conjunto de datos JFT, que incluye 18k clases y 303 millones de imágenes de alta
+resolución. Estos conjuntos de datos proporcionan una amplia variedad de ejemplos que permiten al
+modelo aprender y generalizar eficazmente.
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{| l | c |}
+     \hline
+    \textbf{Input size}  & 384 $\times$ 384 \\
+    \textbf{Patch size}  & 32 $\times$ 32 \\
+    \textbf{Layers}      & 12  \\
+    \textbf{Hidden size} & 768 \\
+    \textbf{MLP Size}    & 3072 \\
+    \textbf{Heads}       & 12 \\
+    \textbf{Params}      & 86M \\
+     \hline
+    \end{tabular}
+    \caption{Deep neural network architecture used in the extended model with the Tuberculosis branch. Dense layers include the bias term and $^\ast$ indicates trainable layers.}
+\label{table_ViTBase}
+\end{table}
+
+La arquitectura del modelo ViT está basado en las usadas
+por los transformers implementados en \textit{BERT} \cite{DBLP:journals/corr/abs-1810-04805} y
+usando la nomenclatura \textit{ViT-Base-patch32-384}. \quotes{Base} hace referencia al modelo base de
+\textit{BERT}, \quotes{patch32} a la variante que trabaja con parches de tamaño $32 \times 32$ y
+\quotes{384} a la dimensiones de las imágenes de entrada al modelo. En la tabla \ref{table_ViTBase}
+se ejemplifica la arquitectura mencionada. 12 capas codificadoras del Transformer conforman el modelo
+ViT con 12 cabezas de atención con un tamaña de 768 y finalmente las segmentos MLP de tamaño 3072.
+
+
+\subsection{ViT con cabezas de atención Flexibles}
+
 
 \subsubsection{Proceso de Entrenamiento}
 \label{ss:archiecture}
