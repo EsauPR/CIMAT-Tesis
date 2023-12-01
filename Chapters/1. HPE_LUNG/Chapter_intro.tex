@@ -1,2 +1,117 @@
+\chapter{Introduction}
+La pandemia de \textit{COVID-19} ha tenido un impacto sin precedentes en la salud y el bienestar de las
+personas, así como en el funcionamiento de los sistemas de salud a nivel mundial. La alta demanda
+de atención médica por parte de los pacientes infectados ha provocado la saturación de los hospitales,
+lo que afecta la calidad y la seguridad de los servicios de salud para otras enfermedades.
+Además, la pandemia ha evidenciado la desprotección y la vulnerabilidad de los trabajadores de la
+salud, que se enfrentan a condiciones de trabajo precarias, falta de equipo de protección personal
+y riesgo de contagio \cite{demanda-hospital-mexico}.
+
+
+La historia del COVID-19 inicia en el 2019 en Wuhan, China, reportada como un nuevo tipo de neumonía
+viral \cite{huang2020clinical} y pocos meses después, en marzo del 2020 el \textit{COVID-19} fue
+declarado como pandemia a nivel mundial por la Organización Mundial de la Salud (\textit{WHO})
+\cite{world2020director}. Este escenario, fue suficiente para mostrar cuan vulnerables somos ante
+eventos de esta magnitud y que hay mucho trabajo por delante. La ciencia y tecnología son nuestras
+más grandes herramientas para construir  métodos que puedan apoyar y agilizar el diagnóstico y
+tratamiento de las enfermedades pulmonares, incluyendo el COVID-19.
+
+El análisis de imágenes de rayos X y \textit{Tomografías Computarizadas} (TC) es una técnica valiosa
+para el diagnóstico de enfermedades pulmonares, incluyendo el COVID-19, que ha causado una grave
+crisis sanitaria a nivel mundial. Mediante el análisis de imágenes de rayos X usando modelos de
+Inteligencia Artificial se puede ayudar a los médicos a identificar las patologías presentes en las
+imágenes, así como a visualizar las regiones de interés que indican la severidad de la enfermedad.
+De esta manera, se mejorar la precisión y la rapidez del diagnóstico, lo que puede traducirse en una
+mejor atención al paciente y una optimización de los recursos hospitalarios.
+
+Sin embargo, a pesar de los diversos esfuerzos para desarrollar
+métodos basados en aprendizaje máquina para la detección automática de COVID-19 y otras patologías
+en estas imágenes, aún no están listos para su uso clínico \cite{roberts2021common}. Algunas de las
+limitaciones que enfrentan estos métodos son:
+
+\begin{itemize}
+    \item Sesgos debido a bases de datos pequeñas o recopilaciones de diversas fuentes sin un
+          tratamiento o normalización entre estos, lo que afecta la calidad y la representatividad
+          de los datos.
+    \item Enfoques de detección en enfermedades específicas dejando de lado la posible contribución
+          a los modelos de la inclusión de otras enfermedades, lo que reduce la capacidad de
+          diagnóstico múltiple y holístico.
+    \item Falta de regulación, validación y explicabilidad de los modelos, lo que dificulta su
+          interpretación y su confianza por parte de los médicos y los pacientes.
+    \item Escasez de recursos computacionales y humanos para el pre-procesamiento, análisis y
+          etiquetado de las imágenes, lo que limita la rapidez y la precisión de los resultados.
+\end{itemize}
+
+Estos desafíos requieren de soluciones innovadoras que puedan aprovechar el potencial del aprendizaje
+máquina para el diagnóstico de enfermedades pulmonares mediante imágenes de Rayos X y TC, y que al
+mismo tiempo puedan superar las barreras técnicas, éticas y sociales que impiden su aplicación clínica.
+
+Hay un trabajo continuo en la comunidad cientifica para poder aumentar y diversificar las bases de
+datos de imágenes de rayos X y TC, asegurar su calidad, su anonimato y su accesibilidad para los
+investigadores y los médicos. Así en este trabajo se presenta un modelo basado en aprendizaje profundo
+que puede detectar 15 patologías
+pulmonares, incluyendo COVID-19, usando imágenes de rayos X de diferentes fuentes y regiones.
+El modelo se basa en los transformers, una arquitectura reciente que usa mecanismos de atención para
+procesar secuencias de datos, y que ha mostrado resultados sobresalientes en tareas de procesamiento
+de lenguaje natural y visión artificial. El modelo se compara con otros modelos basados en redes
+convolucionales y transfer learning, y se evalúa usando métricas de clasificación y visualización
+de las regiones de interés en las imágenes.
+
+
+\chapter{Marco Teórico}
+
 \section{Planteamiento del Problema}
-Aquí Especificar brevemente los problemas y cómo se piensan resolver
+
+La detección de \textit{COVID-19} y otras patologías pulmonares mediante imágenes de rayos X es un
+problema relevante y desafiante, que requiere de métodos de inteligencia artificial eficaces y confiables.
+El diagnóstico temprano y preciso de estas enfermedades puede mejorar el pronóstico y el tratamiento
+de los pacientes, así como reducir el riesgo de contagio y la carga sobre el sistema de salud.
+
+Sin embargo, los métodos existentes basados en redes neuronales profundas tienen limitaciones como
+el sesgo de los datos, el enfoque en enfermedades específicas, y la falta de generalización y
+explicabilidad.
+
+En este trabajo se propone desarrollar algunos modelos basado en \textit{Aprendizaje Profundo} que
+puedan detectar distintas patologías pulmonares, incluyendo COVID-19. En su totalidad se cuenta con
+datos de 15 patologías con información obtenida a través de imágenes de rayos X provenientes de
+diferentes fuentes y regiones.
+
+Uno de los modelos se basa en los \textit{Transformers}, una arquitectura reciente que usa
+\textit{Mecanismos de Atención} para procesar secuencias de datos, y que ha mostrado resultados
+sobresalientes en tareas de procesamiento de lenguaje natural y visión artificial.
+El modelo se compara con otros modelos basados en \textit{Redes Convolucionales} aplicando
+técnicas de \textit{Transfer Learning} en ambos. Se evalúan usando métricas de clasificación y
+visualización de las regiones de interés en las imágenes.
+
+El modelo propuesto tiene varias ventajas sobre los métodos existentes. Primero, es capaz de
+detectar múltiples patologías pulmonares simultáneamente, lo que permite un diagnóstico más
+completo y holístico. Segundo, es robusto a la variabilidad de los datos, ya que puede adaptarse a
+imágenes de rayos X de diferentes calidades, resoluciones, ángulos y contrastes.
+Tercero, es interpretable, ya que puede generar mapas de calor que indican las zonas más relevantes
+para la clasificación, lo que facilita la comprensión y la validación de las predicciones.
+
+Es importante mencionar que los modelos propuestos no pretende reemplazar un análisis profesional
+realizado por un médico, sino que busca ser una herramienta de apoyo para el análisis exploratorio
+de las radiografías.
+
+Durante la pandemia, era crítico detectar oportunamente el padecimiento y estos modelos ayudan a
+acelerar la decisión del médico radiólogo. Además, el modelo puede ser útil para la detección de
+otras enfermedades pulmonares que pueden afectar la salud y la calidad de vida de las personas. A
+pesar de los esfuerzos en desarrollar diversos métodos de aprendizaje máquina para la detección de
+\textit{COVID-19} basados en Rayos X y Tomografías Computarizadas, los resultados obtenidos y
+reportados hasta el momento aún no están listos para uso clínico \cite{roberts2021common}.
+\citeauthor{shuja2021covid} presenta una relación de los conjuntos de datos abiertos de
+\textit{COVID-19} categorizándolos por tipo (imágenes biomédicas,
+datos textuales y de audio), aplicaciones y métodos aplicados de \textit{IA}, \textit{Big Data} y
+estadísticos. Sin embargo, las imagenes en los datasets mencionados son reducidos y limitados a
+regiones específicas alrededor del mundo. Por otro lado, \citeauthor{greenspan2020position} mencionan
+que la mayoria de los modelos reportados fueron probados en bajo en esquema de diagnóstico bastante
+estrecho, puesto que los modelos deberían ser capaces de detectar \textit{COVID-19} en conjunto
+con una amplia variedad de patologías. De acuerdo a \citeauthor{roberts2021common} los fallos comunes
+son, entre otros, el sesgo en datasets pequeños o datasets no normalizados recolectados de una larga
+variedad de fuentes. \citeauthor{roberts2021common} también argumenta la importancia de desarrollar
+modelos no solo para la clasificación binaria de \textit{COVID-19}, sino además poder distinguirlo
+de otros tipos de neumonías virales y bacteriales. El trabajo descrito a continuación se centra en
+atacar el problema en los términos anteriores, no solamente haciendo la distinción entre
+\textit{COVID-19} y otros tipos de neumonías sino a través de diversas enfermedades en afán de ayudar
+a clínicos en el diagnóstico de otras patologías mas allá de neumonía.

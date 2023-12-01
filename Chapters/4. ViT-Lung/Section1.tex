@@ -193,8 +193,8 @@ arquitectura de Transformer estandar presentada anteriormente, véase la figura 
 \begin{figure}[htp]
     \centering
     {\includegraphics[width=1.0\textwidth]{Chapters/4. ViT-Lung/images/ViT.png}}
-\caption{Modelo ViT \cite{DBLP:journals/corr/abs-2010-11929}. Representación original del ViT. Las
-imágenes a procesarse son descompuestas en una serie de parches (3x3 parches en este ejemplo). Los
+\caption{Representación original del modelo ViT mostrado en \cite{DBLP:journals/corr/abs-2010-11929}.
+Las imágenes a procesarse son descompuestas en una serie de parches (3x3 parches en este ejemplo). Los
 parches generados son proyectados a una dimension linear agregandose información posicional.}
 \label{fig_ViT}
 \end{figure}
@@ -217,14 +217,6 @@ influyen más en los modelos ViTs
 que en los modelos basados en CNNs. Además, como describen en su artículo \citeauthor{DBLP:journals/corr/abs-2010-11929}
 los modelos ViT se benefician de entrenamientos conjuntos de datos mucho más grandes a comparación
 de los datos necesarios para obtener resultados favorables en CNNs.
-
-Basados en las propuestas de \citeauthor{DBLP:journals/corr/abs-2010-11929}, la red clasificadora
-implementada deriva de estos modelos obtenidos.
-
-Basados en las propuestas de Jorge Santos, la red clasificadora implementada deriva de los modelos
-obtenidos entrenados en este articulos. El modelo es entrenado usadno el dataset ILSVRC-2012 ImageNet
-dataset con 1k clases y 1.3M de imágenes, el dataset ImageNet-21k con 21k clases y 14M de imágenes y
-JFT con 18k clases y 303M de imagnes de alta resolución.
 
 Basados en las propuestas de \citeauthor{DBLP:journals/corr/abs-2010-11929}, la red clasificadora
 implementada se deriva de los modelos entrenados que describen. Los modelos se entrenan utilizando
@@ -251,19 +243,69 @@ modelo aprender y generalizar eficazmente.
 \label{table_ViTBase}
 \end{table}
 
-La arquitectura del modelo ViT está basado en las usadas
-por los transformers implementados en \textit{BERT} \cite{DBLP:journals/corr/abs-1810-04805} y
-usando la nomenclatura \textit{ViT-Base-patch32-384}. \quotes{Base} hace referencia al modelo base de
+La arquitectura del modelo ViT está basado en las implemetaciones de los Transformers
+mostrados en \textit{BERT} \cite{DBLP:journals/corr/abs-1810-04805}. Presentan distintas nomenclaturas
+para definir el tamaño del modelo generado. En particular se ha usado en este trabajo la arquitectura
+\textit{ViT-Base-patch32-384}. \quotes{Base} hace referencia al modelo base de
 \textit{BERT}, \quotes{patch32} a la variante que trabaja con parches de tamaño $32 \times 32$ y
 \quotes{384} a la dimensiones de las imágenes de entrada al modelo. En la tabla \ref{table_ViTBase}
-se ejemplifica la arquitectura mencionada. 12 capas codificadoras del Transformer conforman el modelo
-ViT con 12 cabezas de atención con un tamaña de 768 y finalmente las segmentos MLP de tamaño 3072.
+se ejemplifica la arquitectura mencionada; 12 capas codificadoras del Transformer conforman el modelo
+ViT, con 12 cabezas de atención con un tamaño de 768 y finalmente las componentes MLP de tamaño 3072.
 
+En la red detectora basa en ViT, la etapa clasificadora del modelo \textit{ResNet50} también es
+remplazada con dos capas densas y una operación de \textit{Dropout} intermedia con probabilidad
+de $25\%$, similar al modelo de CNN propuesto anteriormente.
 
-\subsection{ViT con cabezas de atención Flexibles}
+\begin{figure}[htp]
+    \centering
+    {\includegraphics[width=0.7\textwidth]{Chapters/4. ViT-Lung/images/cabezas_vit.jpg}}
+\caption{Representación gráfica del módulo de MultiHead Self-Attention en el modelo ViT. Se observa
+         que el tamaño de la matriz de atención $Q_i K_i^T$ es dependiente del número de parches
+         generados en la imagen al igual que el tamaño de cada cabeza de atención $H_i$ depende de
+         la dimensión de estos.}
+\label{vit-head-dim}
+\end{figure}
 
+% \subsection{ViT con cabezas de atención Flexibles}
 
-\subsubsection{Proceso de Entrenamiento}
+% Como se observó en la sección \ref*{section-mha} el Transformer está basado en la idea de
+% Multihead-Self-Attention, permitiendo al modelo conjuntamente atender a información en diferentes
+% posiciones desde distintos subespacios de representación
+
+% \begin{equation}
+%     mha(Q, K, V) = Concat(head_1,head_2,head_3,..., head_h)W^O
+% \end{equation}
+
+% con $E_Q, E_K, E_V \in \mathbb{R}^{n \times d_{m}}$ como embeddings de entrada, $n$ es el tamaño de la
+% secuencia, $d_m$ es el tamaño del embedding y $h$ el número de cabezas de atención. Cada cabeza de
+% atención está indicada como:
+
+% \begin{equation}
+%     head_i = Attention(E_Q W_i^Q, E_K W_i^K, E_V W_i^V) =
+%     Sofmax\Big(\frac{E_Q W_i^Q (E_K W_i^K)^T}{\sqrt{d_k}}\Big) E_V W_i^V
+%     \label{eq:head-mha}
+% \end{equation}
+
+% donde $W_i^Q$, $W_i^K$ $\in \mathbb{R}^{d_m \times d_k}$, $W_i^V$ $\in \mathbb{R}^{d_m \times d_v}$,
+% $W^O$ $\in \mathbb{R}^{hd_v \times d_m}$ y $d_k=d_v=d_m/h$.
+
+% Observando la ecuación \label{eq:mha} podemos identificar algunas propiedades que se complen en el
+% modelo de Transformes
+
+% \begin{itemize}
+%     \item El tamaño de la cabeza es dependiente de la dimensión del embedding y el número de cabezas
+%           de atención.
+%     \item Mientras más cabezas de atención los embeddings son proyectados a dimensiones de subespacios
+%           de representación cada vez menores, indicando una mayor compresión de la información en estos.
+%     \item La necesidad de escalar el modelo implica escalar conjuntamente todas las dimensiones.
+% \end{itemize}
+
+% Con ello en mente la hipótesis es que la redefinición de $W_i^Q$, $W_i^K$, $W_i^V$ $\in \mathbb{R}^{d_m \times d_h}$,
+% $W^O$ $\in \mathbb{R}^{hd_h \times d_m}$ con $d_h$ como un hiperparámetro y $d_h > d_k$
+% podemos tener mayor control de las cabezas de atención y sobre la representación
+% del aprendizaje de cada una de ellas.
+
+\subsection{Proceso de Entrenamiento}
 \label{ss:archiecture}
 
 % we present the procedure to train our models to detect the 15 pathology's (including COVID-19) from a network pre-trained with ImageNet.
