@@ -1,4 +1,4 @@
-\subsection{Mecanismos de Atención} \label{section:att}
+\subsection{Mecanismos de atención} \label{section:att}
 
 Una de las arquitecturas comunes vistas previamente es la mostrada en la figura \ref{fig:rnn_cfgc} cuya información
 procesada es resumida en una sola salida. Este tipo de red es usada como parte de las soluciones en
@@ -50,7 +50,7 @@ previas predichas. En otras palabras, el decodificador define la probabilidad co
     p(y^{(t)} | \{y^{(1)}, \dots , y^{(t-1)}\}, C) = g(y^{(t-1)}, s^{(t)}, C; \theta_g)
 \end{equation}
 
-donde $g$ es una función no lineal que emite la probabilidad de $y^{(t)}$ y $s^{(t)}$ es el estado oculto
+\noindent donde $g$ es una función no lineal que emite la probabilidad de $y^{(t)}$ y $s^{(t)}$ es el estado oculto
 del \textit{decodificador} \ref{eq:sqs_s}.
 
 \begin{equation}
@@ -71,7 +71,7 @@ contar con un mecanismo
 para selectivamente centrarse en las distintas partes de la secuencia que tienen mayor influencia sobre
 una la salida esperada a cierto tiempo.
 
-Por tanto, las palabras predichas no son calculadas por un único \textit{vector de contexto} generado por
+Es asi que las palabras predichas no son calculadas por un único \textit{vector de contexto} generado por
 el \textit{codificador}, sino que para cada objetivo $y^{(t)}$ se calcula un nuevo \textit{vector de contexto} $c^{(t)}$:
 
 \begin{equation}
@@ -92,7 +92,7 @@ información codificada por cada estado oculto y al momento de obtener la salida
     c^{(t)} = \sum_{i=1}^{T_x} \alpha_{t,i} h^{(i)}
 \end{equation}
 
-aquí cada peso $\alpha_{t,i}$ indica que tan bien se \quotes{alinean} los términos $y^{(t)}$ y $x^{(i)}$,
+\noindent aquí cada peso $\alpha_{t,i}$ indica que tan bien se \quotes{alinean} los términos $y^{(t)}$ y $x^{(i)}$,
 y son calculados por una \textit{función de alineamiento} que denota que tan importante es el estado
 oculto del \textit{codificador} $h^{(t)}$ para el estado oculto del decodificador $s^{(i)}$.
 
@@ -109,7 +109,7 @@ capa oculta y la función $\tanh$ como activación:
     \label{eq:concat}
 \end{equation}
 
-con $v_a$ y $W_a$ como matrices de pesos a aprender durante el entrenamiento, $[s^{(t)};h^{(i)}]$
+\noindent con $v_a$ y $W_a$ como matrices de pesos a aprender durante el entrenamiento, $[s^{(t)};h^{(i)}]$
 representa una concatenación de los estados ocultos del \textit{codificador} y decodificador. En la figura
 \ref{fig:att} podemos ver gráficamente el modelo usado por \textit{Bahdanau}.
 

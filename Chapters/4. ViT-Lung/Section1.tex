@@ -31,7 +31,7 @@ En la ejecución de este trabajo se usa de la base de datos \textit{ChestX}
 \cite{wang2017chestx} y se incluye imágenes de Rayos-X para \text{COVID-19} y \textit{saludables}
 (imágenes de personas sin alguna enfermedad de pulmón identificada). El dataset \textit{ChestX-ray14}
 contiene 112,120 radiografías de tórax de vista frontal (frontal-view) \textit{AP} y \textit{PA}
-(anterior-posterior y posterior-anterior) de 30,805 pacientes únicos. Cada imágen esta anotada con
+(anterior-posterior y posterior-anterior) de 30,805 pacientes únicos. Cada imagen esta anotada con
 algunas de las etiquetas correspondientes a las 14 patologías descritas previamente. Este dataset es
 enriquecido durante el previamente al proceso de entrenamiento descrito aquí con radiografías de
 personas con neumonía y \textit{saludables}. La tabla \ref{table_dataset} resume la composición del
@@ -126,7 +126,7 @@ construido desde cero y extiende la propuesta de \textit{CheXNet} para incluir l
 imágenes con \textit{COVID-19}.
 
 \textit{CheXNet} es un modelo basado en redes neuronales para detectar la presencia de 14 diferentes
-enfermedades de pulmón. \textit{CheXNet} Usas imagenes de Rayos X de vista frontal como entrada y
+enfermedades de pulmón. \textit{CheXNet} Usa imágenes de Rayos X de vista frontal como entrada y
 un modelo convolucional pre-entrenado como backbone \cite{rajpurkar2018deep}. El modelo backbone usado
 por \textit{CheXNet} es la red \textit{DenseNet121} \cite{huang2017densely} que contiene 121 capas
 convolucionales entrenadas con la base de datos de \textit{ImageNet} \cite{ILSVRC15}. Las imágenes
@@ -149,13 +149,13 @@ la elección del modelo \textit{ResNet50} como backbone en la implementación de
 \textit{ResNet50} fue propuesta por \citeauthor{he2016deep} y es una opción popular en la
 implementación de sistemas de reconocimiento generales dado su eficiencia computacional y relativamente
 sencillez de entrenamiento (por su grafo de gradientes con poco caminos) en comparación del candidato
-natural \textit{DenseNet121} usando en \textit{CheXNet}, aque versiones alternativas de
-\textit{CheXNet} estan disponibles \cite{chexnet_code}. A pesar de lo anterior, no se descarta el uso
+natural \textit{DenseNet121} usando en \textit{CheXNet}, cuyas versiones alternativas del modelo
+\textit{CheXNet} están disponibles en \cite{chexnet_code}. A pesar de lo anterior, no se descarta el uso
 e investigación en un futuro de otros modelos como backbone ya sea inclusive \textit{DenseNet} o
 \textit{efficientNet} \cite{tan2019efficientnet}. Sabiendo que este mismo procedimiento puede
-guiarnos a incluir nuevas patologias tales como Tuberculosis Pulmonar \cite{stirenko2018chest}; un
-tipo de neumonia bacterial mayormente común en países en vías de desarrollo y también frecuentemente
-reportado en pacientes con sindrome de inmunodeficiencia adquirida (AIDS) \cite{matsuura2018tuberculous}.
+guiarnos a incluir nuevas patologías tales como Tuberculosis Pulmonar \cite{stirenko2018chest}; un
+tipo de neumonía bacterial mayormente común en países en vías de desarrollo y también frecuentemente
+reportado en pacientes con síndrome de inmunodeficiencia adquirida (AIDS) \cite{matsuura2018tuberculous}.
 
 En la red detectora, la etapa clasificadora del modelo \textit{ResNet50} es remplazada con dos capas
 densas y una operación de \textit{Dropout} intermedia con probabilidad de $25\%$. La tabla
@@ -186,27 +186,27 @@ densas y una operación de \textit{Dropout} intermedia con probabilidad de $25\%
 Los modelos \textit{Vision Transformers} (\textit{ViT}) \cite{DBLP:journals/corr/abs-2010-11929} propuestos en el
 año 2020 son una variante de los modelos Transformer diseñados para resolver tareas de visión por
 computadora. En lugar de utilizar convoluciones como tradicionalmente se haría con otros modelos
-para extraer las distintias carácterísitcas de la imagen, los modelos Vision Transformers descomponen
-la imagen de entrada en una serie de parches, que posteriormente se tokenizan y se aplican la
-arquitectura de Transformer estandar presentada anteriormente, véase la figura \ref{fig_ViT}.
+para extraer las distintas características de la imagen, los modelos Vision Transformers descomponen
+la imagen de entrada en una serie de parches, que posteriormente les son asignados un token y se
+aplica la arquitectura de Transformer estándar presentada anteriormente, véase la figura \ref{fig_ViT}.
 
 \begin{figure}[htp]
     \centering
     {\includegraphics[width=1.0\textwidth]{Chapters/4. ViT-Lung/images/ViT.png}}
 \caption{Representación original del modelo ViT mostrado en \cite{DBLP:journals/corr/abs-2010-11929}.
 Las imágenes a procesarse son descompuestas en una serie de parches (3x3 parches en este ejemplo). Los
-parches generados son proyectados a una dimension linear agregandose información posicional.}
+parches generados son proyectados a una dimension linear agregándose información posicional.}
 \label{fig_ViT}
 \end{figure}
 
 El mecanismo de atención en el modelo ViT transforma continuamente los vectores de representación de
-los parches de la imagen, incorporando relaciones semánticas entre los parches de la imágen.
+los parches de la imagen, incorporando relaciones semánticas entre los parches de la imagen.
 Análogamente a como se usaría en el área de Procesamiento de Lenguaje Natural, mientras los vectores
-avanzan en profundida en el modelo Transformer, las relaciones semánticas formadas entre los parches
-son cada vez más complejos. Esto rempĺaza así, las características extraidas a través de operaciones
-convolucionales. Para relizar dichas tareas el modelo ViT solo utiliza la parte codificadora de la
+avanzan en profundidad en el modelo Transformer, las relaciones semánticas formadas entre los parches
+son cada vez más complejos. Esto remplaza así, las características extraídas a través de operaciones
+convolucionales. Para realizar dichas tareas el modelo ViT solo utiliza la parte codificadora de la
 arquitectura general del Transformer, codificando y extrayendo la información relevante de las imágenes
-en las etapas de multiatención.
+en las etapas de multi-atención.
 
 A pesar de que los enfoques dirigidos con modelos ViT y CNN son diferentes, algunas investigaciones
 indican que la representación de la información en capas inferiores es bastante similar, esto es
@@ -243,7 +243,7 @@ modelo aprender y generalizar eficazmente.
 \label{table_ViTBase}
 \end{table}
 
-La arquitectura del modelo ViT está basado en las implemetaciones de los Transformers
+La arquitectura del modelo ViT está basado en las implementaciones de los Transformers
 mostrados en \textit{BERT} \cite{DBLP:journals/corr/abs-1810-04805}. Presentan distintas nomenclaturas
 para definir el tamaño del modelo generado. En particular se ha usado en este trabajo la arquitectura
 \textit{ViT-Base-patch32-384}. \quotes{Base} hace referencia al modelo base de
@@ -289,7 +289,7 @@ de $25\%$, similar al modelo de CNN propuesto anteriormente.
 % donde $W_i^Q$, $W_i^K$ $\in \mathbb{R}^{d_m \times d_k}$, $W_i^V$ $\in \mathbb{R}^{d_m \times d_v}$,
 % $W^O$ $\in \mathbb{R}^{hd_v \times d_m}$ y $d_k=d_v=d_m/h$.
 
-% Observando la ecuación \label{eq:mha} podemos identificar algunas propiedades que se complen en el
+% Observando la ecuación \label{eq:mha} podemos identificar algunas propiedades que se cumplen en el
 % modelo de Transformes
 
 % \begin{itemize}
@@ -311,7 +311,7 @@ de $25\%$, similar al modelo de CNN propuesto anteriormente.
 % we present the procedure to train our models to detect the 15 pathology's (including COVID-19) from a network pre-trained with ImageNet.
 \begin{enumerate}
     \item \textbf{Entrenamiento inicial}. Una vez seleccionada la red convolucional pre-entrenada
-          con la base de datos de ImageNet, se reemplaza la etapa de clasificacion con por una nueva
+          con la base de datos de ImageNet, se reemplaza la etapa de clasificación con por una nueva
           compuesta por dos capas densas. En la tabla \ref{table_resnet50} se presentan los detalles
           de la red \textit{ResNet50} usada en este modelo. De esta forma, la red convolucional
           \textit{ResNet50} funciona como un extractor de características; se transforma los datos
@@ -359,15 +359,15 @@ Similar a \citeauthor{rajpurkar2018deep}, usamos, al inicio de cada etapa de ent
 imágenes de entrenamiento son volteadas horizontalmente con 0.5 de probabilidad como técnica de
 augmentation de datos.
 
-La salida de la red es un vector de tamaño igual a el número de patologias detectadas, 15. Cada
+La salida de la red es un vector de tamaño igual a el número de patologías detectadas, 15. Cada
 elemento del vector $\tilde y_i \in [0,1]$ puede ser interpretado como la probabilidad que la
 i-ésima patología esta presente en la imagen analizada. El vector $\tilde y$ no necesariamente tiene
-que sumar 1, puesto que varias patologias pueden estar presentes en la radiografía. Una patologias
+que sumar 1, puesto que varias patologías pueden estar presentes en la radiografía. Una patologías
 detectada como positiva ocurre si  $\tilde y > \theta$, donde $\theta$ es el umbral. El valor típico
 para este umbral es de $0.5$ y puede ser modificado dependiendo del análisis de la curva del \textit{Receiver
 Operator Characteristic}, o \textit{Curva ROC}. Como algoritmo de entrenamiento se usa \emph{Adam}
-\cite{kingma15adam} con un factor de aprendizaje (LR) de $1\times 10^{-4}$, parámetros de inercia
-$\beta_1=0.9$ y $\beta_2=0.999$ con un descaimiento (LR-decay) de $0.1$ si después de 10 iteraciones
+\cite{kingma2017adam} con un factor de aprendizaje (LR) de $1\times 10^{-4}$, parámetros de inercia
+$\beta_1=0.9$ y $\beta_2=0.999$ con un decaimiento (LR-decay) de $0.1$ si después de 10 iteraciones
 no se detecta una reducción en el valor de la función de pérdida mayor a $1\times 10^{-4}$ (plateau
 escape).
 
@@ -378,8 +378,8 @@ y entrenado con las 15 patologías mencionadas anteriormente, puede ser la base 
 detectores para otras enfermedades de pulmón. La idea en esta etapa es no repetir el proceso
 completo de entrenamiento sino usar en vez una simple estrategia de Transfer Learning. Así, se
 procede a extender el modelo para detectar (junto con las otras enfermedades) neumonía causada por
-Tuberculosis \cite{stirenko2018chest}, un tipo de neumonía bacterial común en paises en estado vias
-de desarrollo y también frecuentemente reportado en pacientes con sindrome de inmunodeficiencia
+Tuberculosis \cite{stirenko2018chest}, un tipo de neumonía bacterial común en países en estado vias
+de desarrollo y también frecuentemente reportado en pacientes con síndrome de inmunodeficiencia
 adquirida (AIDS) \cite{matsuura2018tuberculous}. El dataset considerado incluye casos de
 \textit{Tuberculosis} y \textit{no Tuberculosis} pero es
 importante aclarar que la condición en particular de los casos de \textit{no Tuberculosis} no es
@@ -451,16 +451,16 @@ Tuberculosis. La arquitectura extendida incluyendo la nueva rama está descrita 
 \end{figure}
 
 
-\subsection{Métricas de Evaluación}
+\subsection{Métricas de Evaluación} \label{sec_metrics}
 
-Considerando un problema de clasificación binario donde cada radiografia tiene una etiqueta
+Considerando un problema de clasificación binario donde cada radiografía tiene una etiqueta
 $y = \{1, 0\}$ con $1$ indicando la presencia del padecimiento en el paciente y $0$ significando
 que se encuentra sano, el detector puede tener dos posibles resultados: una detección positiva (P)
 para la enfermedad o una detección negativa (N). La tabla \ref{table_cm} muestra la caracterización
 de la etiqueta predicha de acuerdo a los valores reales (Ground Truth, GT). Si un paciente enfermo
 es correctamente detectado, tenemos un \textit{Verdadero Positivo} (True Positive, TP) y si la
 predicción falla, es una \textit{Falso Positivo} (False Negativo, FN). Por otro lado, si una etiqueta
-positiva es erroneamente predicha en un paciente saludable entonces tenemos un \textit{Falso Positivo}
+positiva es erróneamente predicha en un paciente saludable entonces tenemos un \textit{Falso Positivo}
 (False Positive, FP), y si el paciente saludable es correctamente predicho es un
 \textit{Verdadero Negativo} (True Negative, TN). La tabla \ref{table_cm} muestra la \textit{Matiz de
 Confusión} con el conteo de cada tipo de predicción en el conjunto de prueba.
@@ -493,7 +493,7 @@ Confusión} con el conteo de cada tipo de predicción en el conjunto de prueba.
 \end{table*}
 
 Para este trabajo asumimos que una patología en particular es correctamente detectada si su
-correspondiente puntaje en el vector de predicho es más significante que cierto umbral. En particular,
+correspondiente puntuación en el vector de predicho es más significante que cierto umbral. En particular,
 asumimos un umbral igual para todas las patologías de $0.5$. Usando la Matriz de Confusión podemos
 definir varias métricas de rendimiento.
 
@@ -506,7 +506,7 @@ definir varias métricas de rendimiento.
     \end{equation}
 
     \item Recall o Sensibility ($R$). Es la fracción de pacientes con enfermedades correctamente
-          detectados. Esta metrica también es conocida como Tasa de Verdaderos Positivos (True
+          detectados. Esta métrica también es conocida como Tasa de Verdaderos Positivos (True
           Positive Rate, TPR), la tasa de detecciones correctas.
     \begin{equation}
         \label{eq:TPR}
@@ -557,7 +557,7 @@ definir varias métricas de rendimiento.
     binarios. Como se mencionó anteriormente, una patología es detectada como positiva si su puntaje
     predicho is más significativo que un umbral dado. Así, ajustando dicho umbral en valores más
     bajos, permite en general incrementar el TPR, aunque el FPR también puede ser incrementado.
-    La Curva ROC resulta de graficas los valores de TPR contra FPR variando el umbral en el intervalo
+    La Curva ROC resulta de gráficas los valores de TPR contra FPR variando el umbral en el intervalo
     $[0,1]$. El AUC corresponde al área bajo la Curva de ROC.
 
 \end{enumerate}
@@ -568,21 +568,21 @@ definir varias métricas de rendimiento.
 La Tabla~\ref{table:res-model-covid} muestra un resumen del rendimiento del modelo propuesto. Las imágenes
 que conforman los conjuntos de entrenamiento, validación y prueba corresponden a los definidos
 originalmente en dataset. En ChestX-ray14, se redefinen las etiquetas de entrenamiento de acuerdo a
-CheXNet \cite{rajpurkar2018deep}; excepto para las impagenes de \textit{COVID-19} y sin patologías
+CheXNet \cite{rajpurkar2018deep}; excepto para las imágenes de \textit{COVID-19} y sin patologías
 identificadas. Es válido usar cualquier modificación de etiquetas en la etapa de entrenamiento
-siempre y cuando se mantenga el conjunto de datos de prueba sin cambios (imágenes de radiografia y
+siempre y cuando se mantenga el conjunto de datos de prueba sin cambios (imágenes de radiografía y
 sus etiquetas).
 
 Los resultados presentes se ajustan a el procedimiento de entrenamiento y prueba antes descrito. Las
 métricas que se incluyen son: \textit{Area Under the the Precision Receovery Curve} (AUC-PR),
 \textit{Area Under the Receiver Operating Characteristic Curve} (AUC-ROC), \textit{F1-Score} y
-\textit{Accuracy} (Acc.). \textit{Global-14} muestra el rendimiento en las patologias de
+\textit{Accuracy} (Acc.). \textit{Global-14} muestra el rendimiento en las patologías de
 \textit{ChestX-ray-14} (clasificaciones correctas vs clasificaciones incorrectas), \textit{Global-15}
 muestra el rendimiento incluyendo \textit{COVID-19}. Nótese que el modelo propuesto tiene su mejor
-rendimiento en la detección de \textit{COVID-19}, la enfermedad anexada. Tambien se han incluido
-datos de clases sin patologias detectadas (healthy) debido a la importancia de tener un buen desempeño
+rendimiento en la detección de \textit{COVID-19}, la enfermedad anexada. También se han incluido
+datos de clases sin patologías detectadas (healthy) debido a la importancia de tener un buen desempeño
 en la detección de sujetos saludables. El rendimiento global sobre loas datos de \textit{ChestX-ray14}
-y \textit{COVID-19} se mestran en el último rengló de la tabla \ref{table:res-model-covid}. Adicionalmente,
+y \textit{COVID-19} se muestran en el último renglón de la tabla \ref{table:res-model-covid}. Adicionalmente,
 solo como referencia se incluye en el Apéndice la tabla con los resultados del rendimiento del modelo
 propuesto con el conjunto de prueba re-etiquetado.
 
@@ -633,29 +633,29 @@ grande, el modelo puede asignar todos los datos como la clase que representa may
 tener un buen rendimiento en la métrica de \textit{Accuracy}. A pesar de ello, los datos presentados
 son resultados que sirven como referencia para el lector. Una manera más apropiada de medir el desempeño
 del modelo es calcular la gráfica de TPR vs FPR para obtener el área bajo la curva, en otras palabras,
-calcular AUC-ROC como la métrica de rendimiento \cite{Hanley1983-tu}. Apesar de que la curva de ROC
+calcular AUC-ROC como la métrica de rendimiento \cite{Hanley1983-tu}. A pesar de que la curva de ROC
 es preferida sobre la de PR a causa de su convexidad, existe un mapeo uno a uno entre ellas
-\cite{10.1145/1143844.1143874}, al final, ambas curvas son calculadas usando la misma matirz de confusión. Por tanto, también se
+\cite{10.1145/1143844.1143874}, al final, ambas curvas son calculadas usando la misma matriz de confusión. Por tanto, también se
 incluye la métrica AUC-PR para mejores comparaciones mayormente informativas que solo usar la
 curva de ROC \cite{Saito2015-db}.
 
 La tabla \ref{table_roc_auc} muestra una comparación de la métrica AUC-ROC para los modelos DR-CNN
 \cite{DBLP:journals/corr/abs-1808-05744}, CRAL \cite{GUAN2020259}, TSNC \cite{CHEN2020221}, CheXNet
 \cite{rajpurkar2018deep} y la propuesta descrita aquí. También se realiza la comparativa del modelo
-ResNet-38-large-meta (LargeMeta). Este modelo uisa ResNet-38 como backbone, un tamaño de imagen de
+ResNet-38-large-meta (LargeMeta). Este modelo emplea ResNet-38 como backbone, un tamaño de imagen de
 $480 x 480$ pixeles y, a diferencia de los modelos comparados restantes utiliza datos adjuntos a la
 imagen (metadata). Las dos últimas columnas presentan la AUC-ROC para el modelo propuesto y la
-detección lograda un grupo de radiologos \cite{rajpurkar2018deep}. Se indica en negritas el modelo con el mejor
+detección lograda un grupo de radiólogos \cite{rajpurkar2018deep}. Se indica en negritas el modelo con el mejor
 rendimiento por patología. En general la métrica AUC-TOC en el dataset original ChestX-ray14 muestra
 una ligera ventaja para el modelo propuesto sobre el modelo CheXNet. La inclusión de COVID-19
 mejora dicha métrica de rendimiento en favor del modelo propuesto. Además, es visible que
 los resultamos obtenidos también superan a aquellos reportados por otros métodos investigados en
-\ref{baltruschat2019comparison}. Es importante notar que la métrica AUC-ROC para CheXNet corresponde
-a la meadia de 1000 salidas de usando boostraping para un Intervalo de Confianza de $95\%$
+\cite{baltruschat2019comparison}. Es importante notar que la métrica AUC-ROC para CheXNet corresponde
+a la media de 1000 salidas de usando boostraping para un Intervalo de Confianza de $95\%$
 \cite{rajpurkar2018deep}. Una actualización reciente de la implementación de CheXNet en el repositorio
-\cite{} reporta un AUC-ROC para Global-14 igual a 0.847. La última columna en la tabla 7 presenta
-el rendimiento promedio para los radiólogis que evaluan la radiografía para ChestX-ray14. Para
-mayor detalle del cómputo de la evaluación de los radiologos véase \cite{rajpurkar2018deep}. Las }
+\cite{chexnet_code} reporta un AUC-ROC para Global-14 igual a 0.847. La última columna en la tabla 7 presenta
+el rendimiento promedio para los radiólogos que evalúan la radiografía para ChestX-ray14. Para
+mayor detalle del cómputo de la evaluación de los radiólogos véase \cite{rajpurkar2018deep}. Las }
 marcas con asterisco $(*)$ indican donde los radiólogos tiene mejor rendimiento que cualquier de los
 modelos evaluados. La tabla \ref{table_dl_human} resume el rendimiento de la métrica AUC-ROC de los mejores métodos
 basados en DL (incluyendo el propio analizado) contra rendimiento de los radiólogos. Podemos notar
@@ -735,24 +735,16 @@ seis patologías (sin tomar en cuenta COVID-19).
 La figura \ref{roc-curves} representa las curvas de ROC correspondientes a nuestra propuesta para
 todas las patologías incluyendo las clases COVID-19 y Healthy. como pueden verse en cada uno de los
 gráficos, las curvas se encuentran sobre la diagonal, en particular para COVID-19. La figura
-\href{img-results} ilustra la detección obtenida mediante el método propuesto: una diagnóstico previo
+\ref{img-results} ilustra la detección obtenida mediante el método propuesto: una diagnóstico previo
 y la región de interés detectado usando GradCAM; una técnica de visualización de redes neuronales
-profundas propuesta en \cite{selvaraju2017grad}. La primer fila muestra cuatro radiografias de
-pacientes con diferentes patologias, la segunda fila se encuentra su correspondiente GradCAM
+profundas propuesta en \cite{selvaraju2017grad}. La primer fila muestra cuatro radiografías de
+pacientes con diferentes patologías, la segunda fila se encuentra su correspondiente GradCAM
 indicando la región que contribuye a la detección. Las imágenes radiográficas de la figura están
-correctamente clasificadas de acuerdo con las etiquetas originales. Las regiones rojkas son aquellas
+correctamente clasificadas de acuerdo con las etiquetas originales. Las regiones rojas son aquellas
 con mayor contribución a la detección de la enfermedad. La radiografía de la primer columna claramente
-muestra un corazon de tamaño mayor de lo normal. La segunda columna corresponde a neumonia, la
-tercer columna muestra una formación inusual en el púlmon (mass), la última columna indica el caso
+muestra un corazón de tamaño mayor de lo normal. La segunda columna corresponde a neumonía, la
+tercer columna muestra una formación inusual en el pulmón (mass), la última columna indica el caso
 de COVID-19.
-
-% \begin{figure}
-%     \begin{center}
-%         \scalebox{0.6}{\input{Chapters/4. ViT-Lung/images/ROC_AUC.pdf}}
-%     \end{center}
-% \label{roc-curves}
-% \end{figure}
-
 
 \begin{figure}
     \begin{center}

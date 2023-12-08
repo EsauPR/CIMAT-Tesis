@@ -1,7 +1,7 @@
 \section{El modelo Transformer}
 
 A finales del año 2017 se presentó un nuevo modelo que vino a revolucionar el área de Procesamiento
-de Lenguaje Natural, El Transformer \cite{Vaswani}. Una de sus principales características es la
+de Lenguaje Natural, \textit{El Transformer} \cite{Vaswani}. Una de sus principales características es la
 capacidad de procesar la información de alguna secuencia de forma paralela, caso contrario a las
 Redes Neuronales Recurrentes, donde la información se procesa recurrentemente. Gracias a ello,
 la capacidad de \textit{recuerdo} no se ve afectado por el problema de \textit{El desvanecimiento
@@ -55,7 +55,7 @@ Véase la figura \ref{fig:trans_encoder}.
             \label{eq:trans_enc}
         \end{equation*}
     \end{minipage}
-    \caption{Etapa Codificadora del Modelo Transformer. Pseudocódigo}
+    \caption{Pseudocódigo - Etapa Codificadora del Modelo Transformer}
     \label{fig:trans_encoder}
 \end{figure}
 
@@ -131,7 +131,7 @@ a lo largo de la literatura. El modelo original que introdujo a los Transformers
 \end{equation}
 
 El Transformer está basado en la idea de de aplicar atención multiples veces, al usar varias cabezas
-de atención, Multihead-Self-Attention (MHA), permite  al modelo conjuntamente atender a información
+de atención, \textit{Multihead-Self-Attention} (MHA), permite  al modelo conjuntamente atender a información
 en distintas posiciones desde $h$ diferentes subespacios de representación. \ref{eq:mha}
 
 \begin{equation}
@@ -174,7 +174,7 @@ como:
 \end{split}
 \end{equation}
 
-donde $W_i^Q$, $W_i^K$ $\in \mathbb{R}^{d_m \times d_k}$, $W_i^V$ $\in \mathbb{R}^{d_m \times d_v}$
+\noindent donde $W_i^Q$, $W_i^K$ $\in \mathbb{R}^{d_m \times d_k}$, $W_i^V$ $\in \mathbb{R}^{d_m \times d_v}$
 y $d_k=d_v=d_m/h$.
 
 el término de escalamiento $\sqrt{d_k}$ ayuda a evitar que la magnitud de los productos puntos calculados
@@ -212,7 +212,7 @@ geométrica desde $2\pi$ hasta $10000 \cdot 2\pi$ \ref{eq:trans_pos_enc}:
     \label{fig:trans_pos_enc}
 \end{figure}
 
-Poner una figura completa de todo el esquema del Transformer
+\textbf{Poner una figura completa de todo el esquema del Transformer}
 
 \subsection{Problemas típicos en el entrenamiento de Transformers}
 
@@ -262,7 +262,7 @@ comúnmente es usado en conjunto con algoritmos de optimización estocásticos c
 constante, la estrategia de \textit{Learning Rate WarmUp} configura este factor con valores muy
 pequeños en los primeros pasos de entrenamiento. Durante las primeras etapas del entrenamiento
 el factor de aprendizaje es incrementado hasta un límite que es ligeramente superior o inferior al valor
-inicial de $\alpha$ del optimizador usado y posteriormente es  decrementado
+inicial de $\alpha$ del optimizador usado y posteriormente es decrementado
 progresivamente hasta la convergencia del modelo.
 
 Así, en cada paso del algoritmo de optimización el cuál está parametrizado por el factor de aprendizaje
@@ -285,7 +285,7 @@ La forma mas sencilla es usar un factor \textbf{linear warmup} parametrizado por
     \label{eq:warn_expo}
 \end{equation}
 
-recomienda elegir $\tau = (1 - \beta_2)^{-1}$ tal que no se tan diferente del segundo momento de
+\noindent recomienda elegir $\tau = (1 - \beta_2)^{-1}$ tal que no se tan diferente del segundo momento de
 corrección de bias del algoritmo de \textit{Adam} $\beta_2$.
 
 \begin{equation}
@@ -366,8 +366,8 @@ por otra función.
 
 \citeauthor{DBLP:journals/corr/abs-1802-05751} particionan la información de las representaciones de
 las consultas asignándolos a diferentes bloques de memoria, restringiéndose a vecindarios locales
-alrededor de cada consulta. Principalmente basados en cómo las redes convolucionales trabajar. Sin
-embargo esta solucion es parcial y solo aplicable a secuencias de datos con relaciones cortas, cómo
+alrededor de cada consulta. Principalmente basados en cómo las redes convolucionales trabajan. Sin
+embargo esta solución es parcial y solo aplicable a secuencias de datos con relaciones cortas, cómo
 imágenes.
 
 \citeauthor{DBLP:journals/corr/abs-1904-10509} factorizan la matriz de atención para reducir su complejidad
@@ -411,14 +411,14 @@ calculado nuevamente desde cero, permitiendo reducir considerablemente el tiempo
     \centering
     \includegraphics[width=0.8 \textwidth]{Chapters/2. Transformer/Figures/transformer/trans-XL.png}
     \caption{Transformer-XL. Para tratar con secuencias largas divide el proceso en secuencias más
-             cortas creando estados ocultos intermedios y usandolos en el cálculo de las próximas
+             cortas creando estados ocultos intermedios y usándolos en el cálculo de las próximas
              secuencias. Figura obtenida de \cite{DBLP:journals/corr/abs-1901-02860}.}
     \label{fig:trans-xl}
 \end{figure}
 
 \citeauthor{DBLP:journals/corr/abs-2001-04451} reducen el problema de realizar la operación de softmax
 sobre toda la matriz $Q_i K_i^\top$ a calcularlo individualmente por cada consulta $q_j$, guardando
-solo una vez en memoria este valor en cada iteración y recalculándolo cuando se necesite de nuevo
+solo una vez en memoria este valor en cada iteración y recalculando este cuando se necesite de nuevo
 al utilizar \textit{Back-Propagation} usando de capas reversibles. Si bien, computacionalmente es
 más costoso permite usar mucho
 menos memoria que la solución original. Por otro lado, dado que el resultado de la función softmax
@@ -426,7 +426,7 @@ depende en mucho mayor medida en los elementos dominantes de la matriz, solo es 
 las llaves más cercanas a la consulta en cuestión. \textit{LSH} (\textit{Local Sensitive Hashing})
 resuelve este problema permitiendo encontrar rápidamente los vecinos más cercanos en espacios de altas
 dimensiones, con la  restricción de que $W_i^Q = W_i^K$ dado que se necesita conservar la
-similaridad entre consultas y llaves, algo que sería más dificil si sus matrices de proyección
+similaridad entre consultas y llaves, algo que sería más difícil si sus matrices de proyección
 $W_i^Q$ y $W_i^K$ fuesen muy distintas.
 
 \textbf{Aproximaciones a la Atención original}:
@@ -463,12 +463,12 @@ memoria simplemente reduciendo el producto $Q'(k'^\top V)$ de derecha a izquierd
 
 Finalmente autores como \citeauthor{DBLP:journals/corr/abs-2105-03824} remplazan completamente
 el bloque de \textit{Multihead Attention} con bloques que aplican operaciones de Transformada de
-Fourier o lo largo de la dimensión de los  embeddings y de las secuencias. Probando que el usar
-\textit{FFT} (Fast Fourier Transform) es suficiente para abstraer y modelar las relaciones. Y como
-\citeauthor{DBLP:journals/corr/abs-2108-09084} que cambian la atención entre todas las consultas
-y llaves por una sola con todas las llaves. Para esto, a través de atención sumarizan todos las
+Fourier o lo largo de la dimensión de los  embeddings y de las secuencias, probando que el usar
+\textit{FFT} (Fast Fourier Transform) es suficiente para abstraer y modelar las relaciones.
+\citeauthor{DBLP:journals/corr/abs-2108-09084} cambian la atención entre todas las consultas
+y llaves por una sola con todas las llaves. Para ello, a través de la atención resumen todos las
 consultas en una consulta global. Este proceso es repetido con las llaves y valores como se observa
-en la figura \ref{fig:fast-former}
+en la figura \ref{fig:fast-former}.
 
 \begin{figure}[ht!]
     \centering

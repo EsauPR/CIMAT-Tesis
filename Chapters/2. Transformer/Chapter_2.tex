@@ -15,7 +15,7 @@ alternativas de construir una \textit{RNN}, una de las maneras más comunes es u
     \label{eq:rnn_Ot}
 \end{equation}
 
-Donde los parámetros compartidos de la red ahora son descritos por las matrices
+Los parámetros compartidos de la red ahora son descritos por las matrices
 $W_x \in \mathbb{R}^{d \times k}$, $W_h \in \mathbb{R}^{k \times k}$ y $
 W_{out} \in \mathbb{R}^{k \times q}$ con $k$ como la dimensión del estado oculto, $q$ la dimensión
 de las salidas $o^{(t)}$, $b \in \mathbb{R} ^ {1 \times q}$ el parámetro de sesgo y $\phi$ es la
@@ -26,29 +26,29 @@ es incluida a la codificación de la información del tiempo actual $t$ calculad
 salidas de la red.
 
 
-\begin{figure}
+\begin{figure}[ht!]
 \centering
 \includegraphics[width=0.4 \textwidth]{Chapters/2. Transformer/Figures/rnn/rnn_cell.jpg}
-\caption{Computo del estado oculto y salida de una Red Neuronal Recurrente.}
+\caption{Cómputo del estado oculto y salida de una Red Neuronal Recurrente.}
 \label{fig:rnn_cell}
 \end{figure}
 
 Sin embargo el cálculo de los estados ocultos mediante \ref{eq:rnn_Ht} presenta algunos problemas.
-La interacción entre la información del pasado y la actual siempre es "plana", es decir, la información
+La interacción entre la información del pasado y la actual siempre es \quotes{plana}, es decir, la información
 fluye a través del tiempo de la misma manera sin forma de dar prioridad o ignorar parte de
 esta. Por lo que resulta una tarea un poco más complicada preservar información relevante a en cada paso
 o desechar información que ya no es util para la red. También, causado por este mismo flujo de los
 datos, la información del pasado poco a poco es opacada por nueva información, impidiendo que se
 puedan encontrar dependencias de información en secuencias largas en tiempos distantes;
 comúnmente se hace referencia a este problema como \textit{The Short-term Memory Problem} en inglés
-\cite{VanishinGradient2}.
-Aunado a problemas como el
+\cite{VanishinGradient2}, aunado a problemas como el
 \textit{Desvanecimiento o Explosión del Gradiente} \cite{VanishinGradient} \cite{pmlr-v28-pascanu13},
 y acentuándose aun más
 debido a las matrices de pesos compartidos en la recurrencia. Dichas
-multiplicaciones en la recurrencia tienen similitud al método de potencia, en donde cualquier
+multiplicaciones de las matrices en la recurrencia tienen similitud a las realizadas en el
+\textit{método de potencia}, en donde cualquier
 componente en la matriz inicial que no esté alineada con el vector propio asociado al mayor valor
-propio son eventualmente descartados \cite[pp.~390-392]{GoodBengCour16}), por ende, los resultados
+propio son eventualmente descartados \cite[pp.~390-392]{GoodBengCour16}). Por ende, los resultados
 de este producto tendrán a ser cercanos a cero (desvanecerse) o explotar dependiendo de la magnitud
 de la matriz de pesos.
 
@@ -79,7 +79,7 @@ estado $h^{(t)}$ via la \textit{Celda de Memoria} actual $C^{(t)}$.
 \label{fig:rnn_lstm}
 \end{figure}
 
-Las ecuaciones \ref{eq:comp} rigen el comportamiento de Compuertas de Entrada, Salida y Olvido.
+Las ecuaciones \ref{eq:comp} rigen el comportamiento de Compuertas de Entrada, Salida y Olvido,
 
 \begin{equation}
     \begin{split}
@@ -90,7 +90,7 @@ Las ecuaciones \ref{eq:comp} rigen el comportamiento de Compuertas de Entrada, S
     \label{eq:comp}
 \end{equation}
 
-Donde $W_{xi}, W_{xf}, W_{xo} \in \mathbb{R}^{d \times k}$,
+\noindent donde $W_{xi}, W_{xf}, W_{xo} \in \mathbb{R}^{d \times k}$,
 $W_{hi}, W_{hf}, W_{ho} \in \mathbb{R}^{k \times k}$ y $b_i, b_f, b_o \in \mathbb{R}^{1xk}$
 
 La Memoria Candidata y la Celda de memoria son actualizadas mediante:
@@ -102,10 +102,10 @@ La Memoria Candidata y la Celda de memoria son actualizadas mediante:
     \end{split}
 \end{equation}
 
-Donde $W_{xi} \in \mathbb{R}^{d \times k}$,
+\noindent donde $W_{xi} \in \mathbb{R}^{d \times k}$,
 $W_{hc} \in \mathbb{R}^{k \times k}$ y $b_c \in \mathbb{R}^{1xk}$
 
-Y finalmente el estado oculto $h^{(t)}$ esta dado por:
+\noindent y finalmente el estado oculto $h^{(t)}$ esta dado por:
 
 \begin{equation}
     \begin{split}
@@ -113,7 +113,7 @@ Y finalmente el estado oculto $h^{(t)}$ esta dado por:
     \end{split}
 \end{equation}
 
-$\sigma$ y $\odot$ denotan la función de activación sigmoide y la multiplicación uno a uno
+\noindent $\sigma$ y $\odot$ denotan la función de activación sigmoide y la multiplicación uno a uno
 respectivamente.
 
 
