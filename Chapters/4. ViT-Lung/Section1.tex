@@ -1,4 +1,4 @@
-\section{Detección de Patologías en Pulmones con Rayos X}
+\section{Detección de patologías en pulmones con Rayos X}
 
 Diferentes trabajos se han limitado a clasificar \textit{COVID-2019} y \textit{no COVID-2019} (o
 neumonía), es por ello que durante este trabajo desarrollamos un sistemas más completo para {
@@ -69,7 +69,7 @@ dataset completo usado en este trabajo.
     \label{table_dataset}
 \end{table}
 
-\subsubsection{Data Relabelling}
+\subsubsection{Re-etiquetamiento de datos}
 \label{ssec_relabelling}
 
 Para lograr un entrenamiento del modelo exitosamente, se usa la versión re-etiquetada de la base de
@@ -168,7 +168,7 @@ densas y una operación de \textit{Dropout} intermedia con probabilidad de $25\%
                  &     Input   &  Output    &  \\
     Layer        &   dimension & dimension  & Parameters \\
     \hline\hline
-    ResNet50     &     3,1000,1000 &     2048,1,1 & 24,036,431 \\
+    ResNet50     &     3,1024,1024 &     2048,1,1 & 24,036,431 \\
     Flatten      &     2048        &     2048     &  --        \\
     Dense        &     2048        &     256      & 524,544    \\
     ReLU         &     256         &     256      & --         \\
@@ -236,10 +236,12 @@ modelo aprender y generalizar eficazmente.
     \textbf{Hidden size} & 768 \\
     \textbf{MLP Size}    & 3072 \\
     \textbf{Heads}       & 12 \\
-    \textbf{Params}      & 86M \\
+    \textbf{Params}      & 87M \\
      \hline
     \end{tabular}
-    \caption{Deep neural network architecture used in the extended model with the Tuberculosis branch. Dense layers include the bias term and $^\ast$ indicates trainable layers.}
+    \caption{Configuración de la arquitectura del modelo ViT usado. Usa imágenes de tamaño
+             $384 \times 384$ con 3 canales correspondientes al modo RGB. En total cuenta con 12
+             cabezas de atención y 12 codificadores internos.}
 \label{table_ViTBase}
 \end{table}
 
@@ -249,6 +251,7 @@ para definir el tamaño del modelo generado. En particular se ha usado en este t
 \textit{ViT-Base-patch32-384}. \quotes{Base} hace referencia al modelo base de
 \textit{BERT}, \quotes{patch32} a la variante que trabaja con parches de tamaño $32 \times 32$ y
 \quotes{384} a la dimensiones de las imágenes de entrada al modelo. En la tabla \ref{table_ViTBase}
+y \ref{table_ViT}
 se ejemplifica la arquitectura mencionada; 12 capas codificadoras del Transformer conforman el modelo
 ViT, con 12 cabezas de atención con un tamaño de 768 y finalmente las componentes MLP de tamaño 3072.
 
@@ -256,13 +259,35 @@ En la red detectora basa en ViT, la etapa clasificadora del modelo \textit{ResNe
 remplazada con dos capas densas y una operación de \textit{Dropout} intermedia con probabilidad
 de $25\%$, similar al modelo de CNN propuesto anteriormente.
 
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{| l|c | c | r |}
+    \hline
+                 &     Input   &  Output    &  \\
+    Layer        &   dimension & dimension  & Parameters \\
+    \hline\hline
+    ViT     &     3,384,384 &     768 & 87,416,064 \\
+    Dense        &     768        &     256      & 196,864    \\
+    ReLU         &     256         &     256      & --         \\
+    Drop-0.25  &     256         &     256      & --         \\
+    Dense        &     256         &     15       &  3,855     \\
+    Sigmoid      &     15          &     15       & --         \\
+    \hline
+    \end{tabular}
+    \caption{ViT architecture usada en el modelo propuesto. Las capas densas incluyen el término de bias.
+    Drop-0.25 significa una capa de Dropout con una probabilidad de 0.25.}
+    \label{table_ViT}
+\end{table}
+
 \begin{figure}[htp]
     \centering
     {\includegraphics[width=0.7\textwidth]{Chapters/4. ViT-Lung/images/cabezas_vit.jpg}}
-\caption{Representación gráfica del módulo de MultiHead Self-Attention en el modelo ViT. Se observa
+\caption{Representación gráfica del módulo de MultiHead Self-Attention en el modelo ViT usando 3 cabezas
+         de atención. Se observa
          que el tamaño de la matriz de atención $Q_i K_i^T$ es dependiente del número de parches
          generados en la imagen al igual que el tamaño de cada cabeza de atención $H_i$ depende de
-         la dimensión de estos.}
+         la dimensión de estos. Las cabezas de atención resultantes finalmente son re-proyectadas
+         a dimensiones $n \times d_m$ para las etapas posteriores. }
 \label{vit-head-dim}
 \end{figure}
 
@@ -308,9 +333,12 @@ de $25\%$, similar al modelo de CNN propuesto anteriormente.
 \subsection{Proceso de Entrenamiento}
 \label{ss:archiecture}
 
+% \subsubsection{Proceso de entranamiento para el modelo CNN}
+
 % we present the procedure to train our models to detect the 15 pathology's (including COVID-19) from a network pre-trained with ImageNet.
 \begin{enumerate}
-    \item \textbf{Entrenamiento inicial}. Una vez seleccionada la red convolucional pre-entrenada
+    \item \textbf{Entrenamiento inicial}.\\
+          \textbf{Modelo CNN}: Una vez seleccionada la red convolucional pre-entrenada
           con la base de datos de ImageNet, se reemplaza la etapa de clasificación con por una nueva
           compuesta por dos capas densas. En la tabla \ref{table_resnet50} se presentan los detalles
           de la red \textit{ResNet50} usada en este modelo. De esta forma, la red convolucional
@@ -324,9 +352,23 @@ de $25\%$, similar al modelo de CNN propuesto anteriormente.
           congelados y solamente son actualizados los pesos que pertenecen a la etapa de
           clasificación (las capas densas descritas en la tabla \ref{table_resnet50}). El
           entrenamiento se realiza durante 35 épocas conservando el mejor modelo de acuerdo al
-          accuracy obtenido usando el conjunto de validación.
+          \textit{accuracy} obtenido usando el conjunto de validación.
+          \textbf{Modelo ViT}: al igual que el modelo CNN, con la red basada en Transformers y pre-entrenada con la base de datos
+          ILSVRC-2012 de ImageNet, se remplaza la etapa de clasificación
+          por la misma red compuesta por dos capas densas. En la tabla \ref{table_ViTBase}
+          y \ref{table_ViT} se presentan los detalles de la arquitectura de la red \textit{ViT}.
+          Similar al modelo convolucional el modelo \textit{ViT} trabaja extrayendo carácterísticas y
+          y encontrando relaciones a través de la atención. Esto le permite determinar características
+          esenciales para poder identificar las distintas patologías trabajadas. El clasificador
+          añadido a la red contiene dos capas densas que procesa la información del modelo ViT y
+          determina finalmente la clasificación correspondiente para cada dato. Durante la primer
+          etapa de entrenamiento los pesos entrenables asociados al modelo \textit{ViT} que conforma
+          la red son congelados permitiendo solo el entrenamiento del modelo clasificador. El entrenamiento
+          se realiza durante 25 épocas conservando el mejor modelo de acuerdo al valor de \textit{accuracy}
+          obtenido usando el conjunto de validación.
 
-    \item \textbf{Fine-tuning}. Hasta este punto, el enfoque usado es un \textit{aprendizaje superficial}
+    \item \textbf{Fine-tuning}\\
+          \textbf{Modelo CNN}: Hasta este punto, el enfoque usado es un \textit{aprendizaje superficial}
           y la etapa de extracción de características está completamente desasociado de la etapa de
           clasificación. La ventaja de implementar el sistema a través de dos redes neuronales (la
           red backbone y la red MLP) es que podemos mejorar la extracción de características en
@@ -336,9 +378,16 @@ de $25\%$, similar al modelo de CNN propuesto anteriormente.
           construido de de la 5° etapa convolucional (\textit{layer conv5\_3}) \cite{he2016deep}.
           Así, permitimos que el tensor obtenido a la salida de la red backbone sea particularizado
           a la tarea de clasificación actual. El procedimiento de \textit{Fine-tuning} es realizado
-          por 25 épocas más.
+          por 20 épocas más.\\
+          \textbf{Modelo ViT}: Siguiendo un procedimiento similar al modelo propuesto basado en
+          \textit{ResNet50} se procede a descongelar lo dos últimos bloques del modelo ViT, esto es
+          los correspondientes a los bloques 11 y 12 de acuerdo a la arquitectura vista en la tabla
+          \ref{table_ViT}. Permitiendo similarmente que los salidas del modelo ViT sean más particulares
+          a la tarea de clasificación en cuestión. 12 épocas más de entrenamiento le siguen a este
+          modelo.
 
-    \item \textbf{Full-tuning}. Las razones por las cuales solamente son reentrenadas las últimas
+    \item \textbf{Full-tuning}\\
+          \textbf{Modelo CNN}: Las razones por las cuales solamente son reentrenadas las últimas
           capas convolucionales son que tenemos que lidiar con el problema del desvanecimiento del
           gradiente y el sistema completo puede terminar sobre ajustando sus parámetros a la base de
           datos de entrenamiento. El primer problema no es tan relevante en este punto, el
@@ -352,22 +401,31 @@ de $25\%$, similar al modelo de CNN propuesto anteriormente.
           la etapa de extracción de características (backbone) y la etapa de clasificación (MLP).
           Para evitar el over-fitting, el entrenamiento es continuado solamente por 10 épocas
           conservando el mejor modelo de acuerdo al accuracy obtenido en el conjunto de validación.
+          \textbf{Modelo ViT}: Con la misma premisa anterior el modelo \textit{ViT} es descongelado completamente
+          permitiendo el entrenamiento de todos los bloques de la red. Esto permite al modelo especializarse
+          en la tarea de detección de patologías pulmonares al ajustar sus pesos por algunas más épocas.
+          De la misma manera, el modelo \textit{ViT} es entrenado por 8 épocas más. A diferencia del
+          modelo basado en \textit{ResNet50} el número de épocas es menor en cada etapa para el modelo
+          \textit{ViT} puesto que se observó una convergencia más rápida.
 
 \end{enumerate}
 
-Similar a \citeauthor{rajpurkar2018deep}, usamos, al inicio de cada etapa de entrenamiento, las
-imágenes de entrenamiento son volteadas horizontalmente con 0.5 de probabilidad como técnica de
+Similar a \citeauthor{rajpurkar2018deep}, usamos, al inicio de cada etapa de entrenamiento en ambas
+redes, las imágenes de entrenamiento son volteadas horizontalmente con 0.5 de probabilidad como técnica de
 augmentation de datos.
 
-La salida de la red es un vector de tamaño igual a el número de patologías detectadas, 15. Cada
+La salida de la red basada en \textit{ResNet50} y \textit{ViT} es un vector de tamaño igual a el
+número de patologías detectadas, 15. Cada
 elemento del vector $\tilde y_i \in [0,1]$ puede ser interpretado como la probabilidad que la
 i-ésima patología esta presente en la imagen analizada. El vector $\tilde y$ no necesariamente tiene
 que sumar 1, puesto que varias patologías pueden estar presentes en la radiografía. Una patologías
 detectada como positiva ocurre si  $\tilde y > \theta$, donde $\theta$ es el umbral. El valor típico
-para este umbral es de $0.5$ y puede ser modificado dependiendo del análisis de la curva del \textit{Receiver
-Operator Characteristic}, o \textit{Curva ROC}. Como algoritmo de entrenamiento se usa \emph{Adam}
-\cite{kingma2017adam} con un factor de aprendizaje (LR) de $1\times 10^{-4}$, parámetros de inercia
-$\beta_1=0.9$ y $\beta_2=0.999$ con un decaimiento (LR-decay) de $0.1$ si después de 10 iteraciones
+para este umbral es de $0.5$ y puede ser modificado dependiendo del análisis de la curva del
+\textit{Receiver Operator Characteristic}, o \textit{Curva ROC}. Como algoritmo de entrenamiento se
+usa \emph{Adam}
+\cite{kingma2017adam} con un factor de aprendizaje (LR) de $1\times 10^{-4}$ para el modelo basado
+en \textit{ResNet50} y $1\times 10^{-5}$ para el modelo basado en \textit{ViT}, con parámetros de inercia
+$\beta_1=0.9$ y $\beta_2=0.999$ en ambos modelos y con un decaimiento (LR-decay) de $0.1$ si después de 10 iteraciones
 no se detecta una reducción en el valor de la función de pérdida mayor a $1\times 10^{-4}$ (plateau
 escape).
 
@@ -565,7 +623,8 @@ definir varias métricas de rendimiento.
 
 \subsection{Resultados}
 
-La Tabla~\ref{table:res-model-covid} muestra un resumen del rendimiento del modelo propuesto. Las imágenes
+La Tabla~\ref{table:res-model-covid} muestra un resumen del rendimiento de los modelos propuestos.
+Las imágenes
 que conforman los conjuntos de entrenamiento, validación y prueba corresponden a los definidos
 originalmente en dataset. En ChestX-ray14, se redefinen las etiquetas de entrenamiento de acuerdo a
 CheXNet \cite{rajpurkar2018deep}; excepto para las imágenes de \textit{COVID-19} y sin patologías
@@ -578,19 +637,17 @@ métricas que se incluyen son: \textit{Area Under the the Precision Receovery Cu
 \textit{Area Under the Receiver Operating Characteristic Curve} (AUC-ROC), \textit{F1-Score} y
 \textit{Accuracy} (Acc.). \textit{Global-14} muestra el rendimiento en las patologías de
 \textit{ChestX-ray-14} (clasificaciones correctas vs clasificaciones incorrectas), \textit{Global-15}
-muestra el rendimiento incluyendo \textit{COVID-19}. Nótese que el modelo propuesto tiene su mejor
+muestra incluyendo \textit{COVID-19}. Nótese que el modelo propuesto tiene su mejor
 rendimiento en la detección de \textit{COVID-19}, la enfermedad anexada. También se han incluido
 datos de clases sin patologías detectadas (healthy) debido a la importancia de tener un buen desempeño
-en la detección de sujetos saludables. El rendimiento global sobre loas datos de \textit{ChestX-ray14}
-y \textit{COVID-19} se muestran en el último renglón de la tabla \ref{table:res-model-covid}. Adicionalmente,
-solo como referencia se incluye en el Apéndice la tabla con los resultados del rendimiento del modelo
-propuesto con el conjunto de prueba re-etiquetado.
+en la detección de sujetos saludables. El rendimiento global sobre los datos de \textit{ChestX-ray14}
+y \textit{COVID-19} se muestran en el último renglón de la tabla \ref{table:res-model-covid}.
 
 \begin{table*}[tb]
     \centering
     \begin{tabular}{|l||c|c|c|c|}
         \hline
-    {\bf Phatology} 	    	&	\multicolumn{4}{c|}{\bf Proposal}  \\
+    {\bf Phatology} 	    	&	\multicolumn{4}{c|}{\bf Modelo propuesto ResNet50}  \\
     \cline{2-5}
                         &	AUC-PR	&	AUC-ROC 	& F1-Score  & Acc.  \\
         \hline \hline
@@ -609,19 +666,57 @@ propuesto con el conjunto de prueba re-etiquetado.
         Edema	        &	0.187	&	0.879	&	0.193	&	0.788	\\
         Consolidation	&	0.150	&	0.776	&	0.234	&	0.754	\\
         \hline
-        COVID-19	        &	0.844	&	0.991	&	0.799	&	0.969	\\
+        COVID-19	    &	0.844	&	0.991	&	0.799	&	0.969	\\
         Healthy	        &	0.691	&	0.736	&	0.496	&	0.712	\\
         \hline\hline
-        Global-14	    &	0.284	&	0.842	&	0.307	&	0.846	\\
-        Global-15	    &	0.344	&	0.852	&	0.350	&	0.846	\\
+        Global-14	    &	0.284	&	0.842	&	0.307	&	0.847	\\
+        Global-15	    &	0.321	&	0.852	&	0.340	&	0.855	\\
     \hline
     \end{tabular}
-    \caption{Summary of the proposed method's performance. The train, validation and test datasets
-             correspond to the originally defined in ChestX-ray14. However, the training labels
-             correspond to the defined by the relabelling computed by CheXNet
-             \cite{rajpurkar2018deep}; see text. The threshold was set equal to 0.5, no extra
-             optimization was performed.}
+    \caption{Resumen del rendimiento del modelo propuesto basado en \textit{ResNet50}.
+            Los conjuntos de datos de validación corresponden a como originalmente
+            están definidos en ChestX-ray14. Los etiquetas de entrenamiento corresponden a las
+            definidas de acuerdo al re-etiquetado realizado por CheXNet; véase \cite{rajpurkar2018deep}
+            El valor de umbral está definido igual a 0.5. Ninguna otra optimización fue realizada.}
     \label{table:res-model-covid}
+\end{table*}
+
+\begin{table*}[tb]
+    \centering
+    \begin{tabular}{|l||c|c|c|c|}
+        \hline
+    {\bf Phatology} 	    	&	\multicolumn{4}{c|}{\bf Modelo propuesto ViT}  \\
+    \cline{2-5}
+                        &	AUC-PR	&	AUC-ROC 	& F1-Score  & Acc.  \\
+        \hline \hline
+        Cardiomegaly	&	0.253	&	0.866	&	0.324	&	0.928	\\
+        Emphysema	    &	0.246	&	0.866	&	0.319	&	0.924	\\
+        Effusion	    &	0.401	&	0.791	&	0.434	&	0.807	\\
+        Hernia	        &	0.036	&	0.843	&	0.064	&	0.971	\\
+        Infiltration	&	0.256	&	0.621	&	0.235	&	0.724	\\
+        Mass	        &	0.227	&	0.768	&	0.296	&	0.900	\\
+        Nodule	        &	0.157	&	0.704	&	0.209	&	0.908	\\
+        Atelectasis	    &	0.271	&	0.734	&	0.325	&	0.840	\\
+        Pneumothorax	&	0.359	&	0.842	&	0.430	&	0.880	\\
+        Pleural-Thick	&	0.125	&	0.765	&	0.197	&	0.881	\\
+        Pneumonia	    &	0.104	&	0.738	&	0.144	&	0.732	\\
+        Fibrosis	    &	0.070	&	0.810	&	0.134	&	0.932	\\
+        Edema	        &	0.120	&	0.828	&	0.180	&	0.877	\\
+        Consolidation	&	0.118	&	0.715	&	0.171	&	0.836	\\
+        \hline
+        COVID-19	    &	0.859	&	0.982	&	0.801	&	0.973	\\
+        Healthy	        &	0.634	&	0.705	&	0.537	&	0.703	\\
+        \hline\hline
+        Global-14	    &	0.196	&	0.778	&	0.247	&	0.867	\\
+        Global-15	    &	0.240	&	0.791	&	0.284	&	0.874	\\
+    \hline
+    \end{tabular}
+    \caption{Resumen del rendimiento del modelo propuesto basado en \textit{ViT}.
+            Los conjuntos de datos de validación corresponden a como originalmente
+            están definidos en ChestX-ray14. Los etiquetas de entrenamiento corresponden a las
+            definidas de acuerdo al re-etiquetado realizado por CheXNet; véase \cite{rajpurkar2018deep}
+            El valor de umbral está definido igual a 0.5. Ninguna otra optimización fue realizada.}
+    \label{table:vit-model-covid}
 \end{table*}
 
 Es importante recalcar que no es apropiado usar \textit{Accuracy} como único criterio de rendimiento
@@ -635,7 +730,8 @@ son resultados que sirven como referencia para el lector. Una manera más apropi
 del modelo es calcular la gráfica de TPR vs FPR para obtener el área bajo la curva, en otras palabras,
 calcular AUC-ROC como la métrica de rendimiento \cite{Hanley1983-tu}. A pesar de que la curva de ROC
 es preferida sobre la de PR a causa de su convexidad, existe un mapeo uno a uno entre ellas
-\cite{10.1145/1143844.1143874}, al final, ambas curvas son calculadas usando la misma matriz de confusión. Por tanto, también se
+\cite{10.1145/1143844.1143874}, al final, ambas curvas son calculadas usando la misma matriz de
+confusión. Por tanto, también se
 incluye la métrica AUC-PR para mejores comparaciones mayormente informativas que solo usar la
 curva de ROC \cite{Saito2015-db}.
 
@@ -665,37 +761,38 @@ seis patologías (sin tomar en cuenta COVID-19).
 \begin{table*}[tb]
     \centering
     %\resizebox{\textwidth}{!}{
-    \begin{tabular}{|l||c|c|c|c|c|c|l|}
+    \begin{tabular}{|l||c|c|c|c|c|c|c|l|}
         \hline
-        \multicolumn{1}{|c||}{}	&	\multicolumn{5}{c|}{\bf Compared Models}    &\multicolumn{2}{c|}{} 	\\
-        \cline{2-8}
-                        &	CRAL	&	DR-CNN	&	TSNC	& LargeMeta & CheXNet	& Proposal	& 	Radiol.	\\
+        \multicolumn{1}{|c||}{}	&	\multicolumn{5}{c|}{\bf Modelos comparativos}    &\multicolumn{2}{c|}{\bf Propuestas} & 	\\
+        \cline{2-9}
+                        &	CRAL	&	DR-CNN	&	TSNC	& LgMeta & CheXNet	& CNN	    & ViT & 	Radiol.	\\
         \hline\hline
-        Cardiomegaly	&	0.880	&	0.801	&	0.887	&	0.875	&\bf{0.923}	&	0.875	&	0.888	\\
-        Emphysema	    &	0.908	&	0.773	&	0.930	&	0.895	&	0.937	&\bf{0.938}	&   0.911	\\
-        Effusion	    &	0.829	&	0.797	&	0.831	&	0.822	&\bf{0.864}	&	0.850	&   0.900*	\\
-        Hernia	        &	0.917	&	0.748	&	0.921	&\bf{0.937}	&	0.916	&	0.855	&   0.985*	\\
-        Infiltration	&	0.702	&\bf{0.751}	&	0.703	&	0.694	&	0.734	&	0.740	&	0.734	\\
-        Mass	        &	0.834	&	0.760	&	0.833	&	0.820	&\bf{0.868}	&	0.831	&	0.886*	\\
-        Nodule	        &	0.773	&	0.741	&	0.798	&	0.747	&	0.780	&\bf{0.806}	&	0.899*	\\
-        Atelectasis	    &	0.781	&	0.766	&	0.785	&	0.763	&\bf{0.809}	&	0.794	&	0.808	\\
-        Pneumothorax	&	0.729	&	0.778	&	0.731	&	0.840	&	0.889	&\bf{0.906}	&	0.940*	\\
-        Pleural-Thick.	&	0.778	&	0.759	&	0.782	&	0.763	&	0.806	&\bf{0.820}	&	0.779	\\
-        Pneumonia	    &	0.857	&	0.800	&\bf{0.881}	&	0.731	&	0.768	&	0.863	&	0.823	\\
-        Fibrosis	    &	0.830	&	0.765	&	0.833	&	0.816	&	0.805	&\bf{0.852}	&	0.897*	\\
-        Edema	        &	0.850	&	0.820	&	0.849	&	0.846	&\bf{0.888}	&	0.879	&	0.910*	\\
-        Consolidation	&	0.754	&	0.787	&	0.754	&	0.749	&\bf{0.790}	&	0.776	&	0.841*	\\
+        Cardiomegaly	&	0.880	&	0.801	&	0.887	&	0.875	&\bf{0.923}	&	0.875	& 0.866 &	0.888	\\
+        Emphysema	    &	0.908	&	0.773	&	0.930	&	0.895	&	0.937	&\bf{0.938}	& 0.866 &   0.911	\\
+        Effusion	    &	0.829	&	0.797	&	0.831	&	0.822	&\bf{0.864}	&	0.850	& 0.791 &   0.900*	\\
+        Hernia	        &	0.917	&	0.748	&	0.921	&\bf{0.937}	&	0.916	&	0.855	& 0.843 &   0.985*	\\
+        Infiltration	&	0.702	&\bf{0.751}	&	0.703	&	0.694	&	0.734	&	0.740	& 0.621 &	0.734	\\
+        Mass	        &	0.834	&	0.760	&	0.833	&	0.820	&\bf{0.868}	&	0.831	& 0.768 &	0.886*	\\
+        Nodule	        &	0.773	&	0.741	&	0.798	&	0.747	&	0.780	&\bf{0.806}	& 0.704 &	0.899*	\\
+        Atelectasis	    &	0.781	&	0.766	&	0.785	&	0.763	&\bf{0.809}	&	0.794	& 0.734 &	0.808	\\
+        Pneumothorax	&	0.729	&	0.778	&	0.731	&	0.840	&	0.889	&\bf{0.906}	& 0.842 &	0.940*	\\
+        Pleural-Thick.	&	0.778	&	0.759	&	0.782	&	0.763	&	0.806	&\bf{0.820}	& 0.765 &	0.779	\\
+        Pneumonia	    &	0.857	&	0.800	&\bf{0.881}	&	0.731	&	0.768	&	0.863	& 0.738 &	0.823	\\
+        Fibrosis	    &	0.830	&	0.765	&	0.833	&	0.816	&	0.805	&\bf{0.852}	& 0.810 &	0.897*	\\
+        Edema	        &	0.850	&	0.820	&	0.849	&	0.846	&\bf{0.888}	&	0.879	& 0.828 &	0.910*	\\
+        Consolidation	&	0.754	&	0.787	&	0.754	&	0.749	&\bf{0.790}	&	0.776	& 0.715 &	0.841*	\\
         \hline
-        COVID-19	    &	---	    &	---	    &	---	    &	---	    &	---	    &\bf{0.991}	&	---	    \\
-        Healthy	        &	---	    &	---	    &	---	    &	0.727	&	---	    &	0.736	&	---	    \\
+        COVID-19	    &	---	    &	---	    &	---	    &	---	    &	---	    &\bf{0.991}	& \bf 0.982 &	---	    \\
+        Healthy	        &	---	    &	---	    &	---	    &	0.727	&	---	    &	0.736	& 0.705 &	---	    \\
         \hline\hline
-        Global-14	    &	0.816	&	0.775	&	0.823	&	0.807	&	0.841	&\bf{0.842}	&	0.872*	\\
-        Global-15	    &	---	    &	---	    &	---	    &	---	    &	---	    &\bf{0.852}	&	---	    \\
+        Global-14	    &	0.816	&	0.775	&	0.823	&	0.807	&	0.841	&\bf{0.842}	& 0.778 &	0.872*	\\
+        Global-15	    &	---	    &	---	    &	---	    &	---	    &	---	    &\bf{0.852}	& 0.791 &	---	    \\
         \hline
     \end{tabular}
     %}
-    \caption{AUC-ROC values for the pathologies and healthy classes. The compared methods correspond
-             to deep neural networks models trained for the 14 pathologies in ChestX-ray14.}
+    \caption{Valores correspondientes a la métrica AUC-ROC para las 15 patologías y muestras saludables.
+             Los modelos usados en la comparación fueron entrenados para detectar las 14 patologías
+             en ChestX-ray14.}
     \label{table_roc_auc}
 \end{table*}
 
@@ -725,9 +822,9 @@ seis patologías (sin tomar en cuenta COVID-19).
         \hline
     \end{tabular}
     %}
-    \caption{Comparison, per pathology, of the deep learning based method with best performance
-             versus human radiologists. Human radiologists lead in eight (indicated with $^\ast$) of
-            the fifteen pathologies.}
+    \caption{Comparativo por patología de los modelos de deep learning con mejor rendimiento contra
+             el rendimiento de los radiólogos humanos.Los radiólogos lideran en 8 de las 15
+             patologías.}
     \label{table_dl_human}
 \end{table}
 

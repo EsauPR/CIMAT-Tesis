@@ -65,27 +65,26 @@
 % \vspace* creates some vertical white space on the page to make the title page look more pleasing.  \vspace would do much the same thing, but would not insert the white space if we were at the top of a fresh page.  As this is the start of the document we're obviously at the beginning of a page, so the asterisk is necessary to ensure we still put in two cm of white space.
 \vspace*{2cm}
 
-{\huge Thesis Title} % \huge sets the font size.  Other options include things like \large, \Large, \small, \tiny, etc.
+{\huge Detección de patologías pulmonares a través de modelos de aprendizaje profundo} % \huge sets the font size.  Other options include things like \large, \Large, \small, \tiny, etc.
 
 \vspace{2cm}
 
-{\large by\\Student Name}
+{\large por\\Oscar Esau Peralta Rosales}
 
 \vspace{2cm}
-{Professor SuperProf, Advisor}
+{Mariano JJ Rivera Meraz, Director de Tesis}
 
 % \vfill creates an arbitrary amount of vertical white space as necessary to fill the page
 \vfill
 
-A thesis submitted in partial fulfillment\\
-of the requirements for the\\
-Degree of Bachelor of Arts with Honors\\
-in Physics
-
+Esta tesis es presentada en forma y cumplimiento\\
+de acuerdo a los requerimientos para obtener el grado\\
+de Maestro en Ciencias con Especialidad en Computación\\
+y Matemáticas Industriales\\
 \vspace*{3cm}
 
-WILLIAMS COLLEGE\\
-Williamstown, Massachusetts\\
+Centro de Investigación en Matemáticas A.C. \\
+Guanajuato, Gto., México\\
 \today % you might choose to set a permanent date, but \today will put in today's date
 \end{center}
 \end{titlepage}
@@ -97,12 +96,12 @@ Williamstown, Massachusetts\\
 % \chapter{} and/or \chapter*{} will create a chapter in your thesis.  Including the asterisk will cause the chapter to not appear in the table of contents.
 
 % \input will reference a particular .tex file.  Here we are grabbing a file entitled Abstract stored in the folder Chapters
-\chapter{Abstract}
+\chapter{Abstracto}
 \input{Chapters/Abstract}
-\chapter{Executive Summary}
+\chapter{Resumen ejecutivo}
 \input{Chapters/ExecutiveSummary}
 
-\chapter{Acknowledgments}
+\chapter{Agradecimientos}
 \input{Chapters/Acknowledgments}
 
 %\tableofcontents will create a table of contents.  By default it will include entries for any \chapter, \section, and \subsection command that appears in your thesis unless you have called the tag with an asterisk
@@ -116,7 +115,7 @@ Williamstown, Massachusetts\\
 % \chapter{Introduction}
 
 
-\chapter{Marco Teórico}
+% \chapter{Marco Teórico}
 \input{Chapters/1. HPE_LUNG/Chapter_intro.tex}
 % \input{Chapters/1. HPE_LUNG/Chapter_HPE.tex}
 \input{Chapters/1. HPE_LUNG/Chapter_LUNG.tex}
@@ -125,7 +124,7 @@ Williamstown, Massachusetts\\
 % \chapter{Transformers en Estimación de Pose en Humanos}
 % \input{Chapters/3. Trans-HPE/Section 1.tex}
 
-\chapter{Vision Transformers en Detección de Patologías en Pulmones con Rayos X}
+\chapter{Modelos de aprendizaje profundo para la detección de patologías en pulmones }
 \input{Chapters/4. ViT-Lung/Section1.tex}
 
 \chapter{Conclusiones y Trabajo Futuro}
