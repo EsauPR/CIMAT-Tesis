@@ -400,8 +400,8 @@ de $25\%$, similar al modelo de CNN propuesto anteriormente.
           se realiza una afinación completa del modelo. Esto es, entrenando completamente la red,
           la etapa de extracción de características (backbone) y la etapa de clasificación (MLP).
           Para evitar el over-fitting, el entrenamiento es continuado solamente por 10 épocas
-          conservando el mejor modelo de acuerdo al accuracy obtenido en el conjunto de validación.
-          \textbf{Modelo ViT}: Con la misma premisa anterior el modelo \textit{ViT} es descongelado completamente
+          conservando el mejor modelo de acuerdo al accuracy obtenido en el conjunto de validación.\\
+          \textbf{Modelo ViT}: De acuerdo a la premisa anterior, el modelo \textit{ViT} es descongelado completamente
           permitiendo el entrenamiento de todos los bloques de la red. Esto permite al modelo especializarse
           en la tarea de detección de patologías pulmonares al ajustar sus pesos por algunas más épocas.
           De la misma manera, el modelo \textit{ViT} es entrenado por 8 épocas más. A diferencia del
@@ -431,18 +431,14 @@ escape).
 
 \subsubsection{Transfer Learning para la detección de Neumonía por Tuberculosis}
 
-El propósito de esta sección es demostrar que el backbone (el modelo ResNet50) del modelo propuesto
+El propósito de esta sección es demostrar que el backbone del  modelo propuesto basado en ResNet50
 y entrenado con las 15 patologías mencionadas anteriormente, puede ser la base para desarrollar
 detectores para otras enfermedades de pulmón. La idea en esta etapa es no repetir el proceso
 completo de entrenamiento sino usar en vez una simple estrategia de Transfer Learning. Así, se
 procede a extender el modelo para detectar (junto con las otras enfermedades) neumonía causada por
 Tuberculosis \cite{stirenko2018chest}, un tipo de neumonía bacterial común en países en estado vias
 de desarrollo y también frecuentemente reportado en pacientes con síndrome de inmunodeficiencia
-adquirida (AIDS) \cite{matsuura2018tuberculous}. El dataset considerado incluye casos de
-\textit{Tuberculosis} y \textit{no Tuberculosis} pero es
-importante aclarar que la condición en particular de los casos de \textit{no Tuberculosis} no es
-especificada por completo, es decir, incluyen tanto pacientes saludables como pacientes con otras
-afecciones.
+adquirida (AIDS) \cite{matsuura2018tuberculous}.
 
 \begin{table}[!ht]
     \centering
@@ -454,26 +450,22 @@ afecciones.
      ---&  Non-Tuberculosis     & 3 & 6000  & 1600 \\
      \hline
     \end{tabular}
-    \caption{Number of chest radiography's from patients with and without Tuberculosis.}
+    \caption{ Número de radiografías de tórax de pacientes con y sin Tuberculosis.}
 \label{table_dataset_tb}
 \end{table}
+
+El dataset considerado incluye casos de
+\textit{Tuberculosis} y \textit{no Tuberculosis} pero es
+importante aclarar que la condición en particular de los casos de \textit{no Tuberculosis} no es
+especificada por completo, es decir, incluyen tanto pacientes saludables como pacientes con otras
+afecciones.
+
 
 La base de datos (indicada proveniente de la fuente 3 en la tabla \ref{table_dataset_tb}) está
 compuesta por radiografías provenientes de: TBX11K dataset \cite{liu2020rethinking},
 India (DA and DB) dataset \cite{chauhan2014role}, Montgomery County dataset \cite{jaeger2014two}, y
 Shenzhen Hospital dataset \cite{jaeger2014two}. En este trabajo se usa las listas originales para el
 entrenamiento y Evaluación definidos para este dataset.
-
-Para poder detectar Tuberculosis, se realiza la implementación de un clasificador binario usando como
-backbone la red ResNet50 entrenada previamente para la detección de las 15 patologías anteriores.
-La nueva rama de clasificación incluye dos nuevas capas densas (con sus respectivas funciones de
-activación). Conservamos los parámetros correspondientes al backbone no entrenables y solo se entrena
-las nuevas capas densas usando la estrategia mencionada en la subsección de {\bf Initial Training}
-\ref{ss:archiecture} con el optimizador, factor de aprendizaje y otros parámetros sin cambios y
-\textit{Weighted Binary Cross-Entropy} como función de pérdida similar a \eqref{eq:loss}. Este modelo
-extendido aún detecta las 15 enfermedades comentadas previamente con una salida binaria extra para
-Tuberculosis. La arquitectura extendida incluyendo la nueva rama está descrita en la tabla
-\ref{table_resnet50_tb}.
 
 \begin{table}[!ht]
     \centering
@@ -497,14 +489,28 @@ Tuberculosis. La arquitectura extendida incluyendo la nueva rama está descrita 
     Sigmoid      &      1       &      1           & --         \\
      \hline
     \end{tabular}
-    \caption{Deep neural network architecture used in the extended model with the Tuberculosis branch. Dense layers include the bias term and $^\ast$ indicates trainable layers.}
+    \caption{ Arquitectura del modelo de la red de aprendizaje profundo usada en el modelo extendido
+             con una rama para Tuberculosis. Las capas densas incluyen el término de bias y $^\ast$
+             indica las capas que son entrenables.}
 \label{table_resnet50_tb}
 \end{table}
+
+Para poder detectar Tuberculosis, se realiza la implementación de un clasificador binario usando como
+backbone la red ResNet50 entrenada previamente para la detección de las 15 patologías anteriores.
+La nueva rama de clasificación incluye dos nuevas capas densas (con sus respectivas funciones de
+activación). Conservamos los parámetros correspondientes al backbone no entrenables y solo se entrena
+las nuevas capas densas usando la estrategia mencionada en la subsección de {\bf Entrenamiento Inicial}
+\ref{ss:archiecture} con el optimizador, factor de aprendizaje y otros parámetros sin cambios y
+\textit{Weighted Binary Cross-Entropy} como función de pérdida similar a \eqref{eq:loss}. Este modelo
+extendido aún detecta las 15 enfermedades comentadas previamente con una salida binaria extra para
+Tuberculosis. La arquitectura extendida incluyendo la nueva rama está descrita en la tabla
+\ref{table_resnet50_tb}.
 
 \begin{figure}[htp]
     \centering
     {\includegraphics[width=0.5\textwidth]{Chapters/4. ViT-Lung/images/tb_net.pdf}}
-\caption{Scheme of the extension of the 15 pathology detector including a new branch for Tuberculosis detection.}
+\caption{ Esquema de la extensión del detector de las 15 patologías incluyendo una nueva rama para
+          la detección de Tuberculosis.}
 \label{net_tb}
 \end{figure}
 
@@ -513,7 +519,7 @@ Tuberculosis. La arquitectura extendida incluyendo la nueva rama está descrita 
 
 Considerando un problema de clasificación binario donde cada radiografía tiene una etiqueta
 $y = \{1, 0\}$ con $1$ indicando la presencia del padecimiento en el paciente y $0$ significando
-que se encuentra sano, el detector puede tener dos posibles resultados: una detección positiva (P)
+que se encuentra sano, los detectores pueden tener dos posibles resultados: una detección positiva (P)
 para la enfermedad o una detección negativa (N). La tabla \ref{table_cm} muestra la caracterización
 de la etiqueta predicha de acuerdo a los valores reales (Ground Truth, GT). Si un paciente enfermo
 es correctamente detectado, tenemos un \textit{Verdadero Positivo} (True Positive, TP) y si la
@@ -527,33 +533,36 @@ Confusión} con el conteo de cada tipo de predicción en el conjunto de prueba.
     \centering
     \begin{tabular}{ccccl}
     %\cline{3-4}
-    &  & \multicolumn{2}{ c }{Prediction} \\
+    &  & \multicolumn{2}{ c }{Predicción} \\
     %\cline{3-4}
-    \multicolumn{1}{c}{}& & Positive & Negative &    \\
+    \multicolumn{1}{c}{}& & Positivo & Negativo &    \\
     \cline{3-4}
     \multicolumn{1}{c}{\multirow{6}{*}{GT} } &
     \\
-    \multicolumn{1}{c}{} & Disease & TP & FN   &  $ \longrightarrow  R = \frac{TP}{TP+FN}$  \\
+    \multicolumn{1}{c}{} & Emfermo & TP & FN   &  $ \longrightarrow  R = \frac{TP}{TP+FN}$  \\
     \\
     \cline{3-4}
     \multicolumn{1}{ c }{}                    &
     \\
-    \multicolumn{1}{c}{} & No-Disease & FP & TN   &  $ \longrightarrow S = \frac{TN}{FP+TN}$   \\
+    \multicolumn{1}{c}{} & No-Enfermo & FP & TN   &  $ \longrightarrow S = \frac{TN}{FP+TN}$   \\
     \\
     \cline{3-4}
     \\
     & & $\downarrow$ & $\downarrow$ & \\
     \multicolumn{1}{c}{} &       & $P = \frac{TP}{TP+FP}$  & $NPV = \frac{TN}{FN+TN}$ &
     \end{tabular}
-    \caption{
-    Interpretation of the test results (prediction) according to the ground truth (GT). Metrics are calculated as the ratio between the diagonal element and the sum per row or column, as the case may be.  R, recall or sensitivity; S, specificity; P, precision; NPV, negative prediction value}
+    \caption{Interpretación de los resultados (predicción) de acuerdo al los valores reales (Ground
+             Truth, GT). Las métricas son calculadas como la relación entre el elemento de la diagonal
+             y la suma correspondiente por fila o por columna. Según sea el caso: R, \textit{recall}
+             o \textit{sensitivity}; S, \textit{specificity}; P, \textit{precision}; NPV,
+             \textit{negative prediction value}.}
     \label{table_cm}
 \end{table*}
 
 Para este trabajo asumimos que una patología en particular es correctamente detectada si su
 correspondiente puntuación en el vector de predicho es más significante que cierto umbral. En particular,
-asumimos un umbral igual para todas las patologías de $0.5$. Usando la Matriz de Confusión podemos
-definir varias métricas de rendimiento.
+asumimos un umbral igual para todas las patologías de $0.5$ en ambos modelos. Usando la Matriz de
+Confusión podemos definir varias métricas de rendimiento.
 
 \begin{enumerate}
     \item Accuracy ($A$). Esta métrica es quizás la más obvia. Corresponde al razón de los datos
@@ -584,7 +593,7 @@ definir varias métricas de rendimiento.
         \label{eq:FPR}
         FPR = 1 - S,
     \end{equation}
-    donde $S$ es la Specificity.
+    donde $S$ es el valor de Specificity.
 
     \item Precision ($P$). Es la fracción de predicciones positivas que realmente tiene una una
           enfermedad.
@@ -593,7 +602,7 @@ definir varias métricas de rendimiento.
         P = \frac{TP}{TP + FP}
     \end{equation}
 
-    \item $F_1$ Score ($F_1$).  Durante la creación de modelos buscamos un balance entre Precision y
+    \item $F_1$ Score ($F_1$).  Durante la creación de los modelos buscamos un balance entre Precision y
           Recall. El incremento
           de alguna de estas dos métricas es en compensación de la otra. Un modelo que predice la
           mayoría de los datos como positivos tendrá un Recall más cercano a 1 pues el conteo de
@@ -623,31 +632,33 @@ definir varias métricas de rendimiento.
 
 \subsection{Resultados}
 
-La Tabla~\ref{table:res-model-covid} muestra un resumen del rendimiento de los modelos propuestos.
-Las imágenes
-que conforman los conjuntos de entrenamiento, validación y prueba corresponden a los definidos
+La Tabla~\ref{table:res-model-covid} y \ref{table:vit-model-covid} muestra un resumen del rendimiento
+de los modelos propuestos.
+Las imágenes que conforman los conjuntos de entrenamiento, validación y prueba corresponden a los definidos
 originalmente en dataset. En ChestX-ray14, se redefinen las etiquetas de entrenamiento de acuerdo a
 CheXNet \cite{rajpurkar2018deep}; excepto para las imágenes de \textit{COVID-19} y sin patologías
 identificadas. Es válido usar cualquier modificación de etiquetas en la etapa de entrenamiento
 siempre y cuando se mantenga el conjunto de datos de prueba sin cambios (imágenes de radiografía y
 sus etiquetas).
 
-Los resultados presentes se ajustan a el procedimiento de entrenamiento y prueba antes descrito. Las
-métricas que se incluyen son: \textit{Area Under the the Precision Receovery Curve} (AUC-PR),
+Los resultados presentes se ajustan a el procedimiento de entrenamiento y prueba antes descrito para
+ambos modelos.
+Las métricas que se incluyen son: \textit{Area Under the the Precision Recovery Curve} (AUC-PR),
 \textit{Area Under the Receiver Operating Characteristic Curve} (AUC-ROC), \textit{F1-Score} y
 \textit{Accuracy} (Acc.). \textit{Global-14} muestra el rendimiento en las patologías de
 \textit{ChestX-ray-14} (clasificaciones correctas vs clasificaciones incorrectas), \textit{Global-15}
-muestra incluyendo \textit{COVID-19}. Nótese que el modelo propuesto tiene su mejor
+muestra incluyendo \textit{COVID-19}. Nótese que los modelos propuestos tienen su mejor
 rendimiento en la detección de \textit{COVID-19}, la enfermedad anexada. También se han incluido
 datos de clases sin patologías detectadas (healthy) debido a la importancia de tener un buen desempeño
 en la detección de sujetos saludables. El rendimiento global sobre los datos de \textit{ChestX-ray14}
-y \textit{COVID-19} se muestran en el último renglón de la tabla \ref{table:res-model-covid}.
+y \textit{COVID-19} se muestran en el último renglón de la tabla \ref{table:res-model-covid} y
+y \ref{table:vit-model-covid}.
 
 \begin{table*}[tb]
     \centering
     \begin{tabular}{|l||c|c|c|c|}
         \hline
-    {\bf Phatology} 	    	&	\multicolumn{4}{c|}{\bf Modelo propuesto ResNet50}  \\
+    {\bf Patología} 	    	&	\multicolumn{4}{c|}{\bf Modelo propuesto ResNet50}  \\
     \cline{2-5}
                         &	AUC-PR	&	AUC-ROC 	& F1-Score  & Acc.  \\
         \hline \hline
@@ -685,7 +696,7 @@ y \textit{COVID-19} se muestran en el último renglón de la tabla \ref{table:re
     \centering
     \begin{tabular}{|l||c|c|c|c|}
         \hline
-    {\bf Phatology} 	    	&	\multicolumn{4}{c|}{\bf Modelo propuesto ViT}  \\
+    {\bf Patología} 	    	&	\multicolumn{4}{c|}{\bf Modelo propuesto ViT}  \\
     \cline{2-5}
                         &	AUC-PR	&	AUC-ROC 	& F1-Score  & Acc.  \\
         \hline \hline
@@ -724,7 +735,7 @@ bajo este contexto. El \textit{Accuracy} de cada clase es calculado como el núm
 correctas (TP y TN) entre la suma total de radiografías analizadas. Con clases desbalanceadas,
 tales como las que analizamos ahora (patología vs no patología), un modelo podría ser engañoso en cuanto
 a su eficiencia segando su clasificación sobre la o las clases más representativas. Si el desbalance
-grande, el modelo puede asignar todos los datos como la clase que representa mayor peso y por tanto
+es grande, el modelo puede asignar todos los datos como la clase que representa mayor peso y por tanto
 tener un buen rendimiento en la métrica de \textit{Accuracy}. A pesar de ello, los datos presentados
 son resultados que sirven como referencia para el lector. Una manera más apropiada de medir el desempeño
 del modelo es calcular la gráfica de TPR vs FPR para obtener el área bajo la curva, en otras palabras,
@@ -737,14 +748,16 @@ curva de ROC \cite{Saito2015-db}.
 
 La tabla \ref{table_roc_auc} muestra una comparación de la métrica AUC-ROC para los modelos DR-CNN
 \cite{DBLP:journals/corr/abs-1808-05744}, CRAL \cite{GUAN2020259}, TSNC \cite{CHEN2020221}, CheXNet
-\cite{rajpurkar2018deep} y la propuesta descrita aquí. También se realiza la comparativa del modelo
+\cite{rajpurkar2018deep} y las dos propuesta descritas aquí, el modelo basado en ViT y el modelo basado
+en ResNet50. También se realiza la comparativa del modelo
 ResNet-38-large-meta (LargeMeta). Este modelo emplea ResNet-38 como backbone, un tamaño de imagen de
 $480 x 480$ pixeles y, a diferencia de los modelos comparados restantes utiliza datos adjuntos a la
-imagen (metadata). Las dos últimas columnas presentan la AUC-ROC para el modelo propuesto y la
-detección lograda un grupo de radiólogos \cite{rajpurkar2018deep}. Se indica en negritas el modelo con el mejor
-rendimiento por patología. En general la métrica AUC-TOC en el dataset original ChestX-ray14 muestra
-una ligera ventaja para el modelo propuesto sobre el modelo CheXNet. La inclusión de COVID-19
-mejora dicha métrica de rendimiento en favor del modelo propuesto. Además, es visible que
+imagen (metadata). Las tres últimas columnas presentan la AUC-ROC para los modelos propuestos y la
+detección lograda un grupo de radiólogos \cite{rajpurkar2018deep}. Se indica en negritas el modelo
+con el mejor rendimiento por patología.
+En general la métrica AUC-ROC en el dataset original ChestX-ray14 muestra
+una ligera ventaja para el modelo propuesto basado en ResNet50 sobre el modelo CheXNet. La inclusión
+de COVID-19 mejora dicha métrica de rendimiento en favor del modelo propuesto. Además, es visible que
 los resultamos obtenidos también superan a aquellos reportados por otros métodos investigados en
 \cite{baltruschat2019comparison}. Es importante notar que la métrica AUC-ROC para CheXNet corresponde
 a la media de 1000 salidas de usando boostraping para un Intervalo de Confianza de $95\%$
@@ -753,17 +766,17 @@ a la media de 1000 salidas de usando boostraping para un Intervalo de Confianza 
 el rendimiento promedio para los radiólogos que evalúan la radiografía para ChestX-ray14. Para
 mayor detalle del cómputo de la evaluación de los radiólogos véase \cite{rajpurkar2018deep}. Las }
 marcas con asterisco $(*)$ indican donde los radiólogos tiene mejor rendimiento que cualquier de los
-modelos evaluados. La tabla \ref{table_dl_human} resume el rendimiento de la métrica AUC-ROC de los mejores métodos
-basados en DL (incluyendo el propio analizado) contra rendimiento de los radiólogos. Podemos notar
-una ventaja si unimos los métodos basados en DL, los cuales superar a los radiólogos en detectar
-seis patologías (sin tomar en cuenta COVID-19).
+modelos evaluados. La tabla \ref{table_dl_human} resume el rendimiento de la métrica AUC-ROC de los
+mejores métodos basados en DL (incluyendo el propio analizado basado en ResNet50) contra rendimiento
+de los radiólogos. Podemos notar una ventaja si unimos los métodos basados en DL, los cuales superar
+a los radiólogos en detectar seis patologías (sin tomar en cuenta COVID-19).
 
 \begin{table*}[tb]
     \centering
     %\resizebox{\textwidth}{!}{
     \begin{tabular}{|l||c|c|c|c|c|c|c|l|}
         \hline
-        \multicolumn{1}{|c||}{}	&	\multicolumn{5}{c|}{\bf Modelos comparativos}    &\multicolumn{2}{c|}{\bf Propuestas} & 	\\
+        \multicolumn{1}{|c||}{Patología}	&	\multicolumn{5}{c|}{\bf Modelos comparativos}    &\multicolumn{2}{c|}{\bf Propuestas} & 	\\
         \cline{2-9}
                         &	CRAL	&	DR-CNN	&	TSNC	& LgMeta & CheXNet	& CNN	    & ViT & 	Radiol.	\\
         \hline\hline
@@ -829,8 +842,9 @@ seis patologías (sin tomar en cuenta COVID-19).
 \end{table}
 
 
-La figura \ref{roc-curves} representa las curvas de ROC correspondientes a nuestra propuesta para
-todas las patologías incluyendo las clases COVID-19 y Healthy. como pueden verse en cada uno de los
+La figura \ref{roc-curves-cnn} y \ref{roc-curves-vit} representan las curvas de ROC correspondientes
+a las propuestas para basadas en ResNet50 y ViT respectivamente de todas las patologías incluyendo las
+clases COVID-19 y Healthy. Como pueden verse en cada uno de los
 gráficos, las curvas se encuentran sobre la diagonal, en particular para COVID-19. La figura
 \ref{img-results} ilustra la detección obtenida mediante el método propuesto: una diagnóstico previo
 y la región de interés detectado usando GradCAM; una técnica de visualización de redes neuronales
@@ -841,22 +855,786 @@ correctamente clasificadas de acuerdo con las etiquetas originales. Las regiones
 con mayor contribución a la detección de la enfermedad. La radiografía de la primer columna claramente
 muestra un corazón de tamaño mayor de lo normal. La segunda columna corresponde a neumonía, la
 tercer columna muestra una formación inusual en el pulmón (mass), la última columna indica el caso
-de COVID-19.
+de COVID-19. A su vez se muestran imágenes de las radiografías correspondientes a cada una de las 15
+patologías en las figuras \ref{fig-atelectasis} a la figura \ref{fig-ntorx}. En estas se observa
+la imagen radiográfica original de los pulmones así como el GradCAM correspondiente de la detección
+del clasificador basado en ResNet50 y cuya predicción fue positiva a la enfermedad en cuestión.
 
 \begin{figure}
     \begin{center}
         \scalebox{0.6}{\input{Chapters/4. ViT-Lung/images/ROC_AUC.pgf}}
     \end{center}
-    \caption{ROC Curves (plots of FPR versus TPR) for the pathology and healthy classes.}
-    \label{roc-curves}
+    \caption{Curvas de ROC (gráficas de FPR contra TPR) para cada patología y muestras saludables
+    del modelo CNN.}
+    \label{roc-curves-cnn}
+\end{figure}
+
+\begin{figure}
+    \begin{center}
+        \scalebox{0.6}{\input{Chapters/4. ViT-Lung/images/ROC_AUC_ViT.pgf}}
+    \end{center}
+    \caption{Curvas de ROC (gráficas de FPR contra TPR) para cada patología y muestras saludables
+             del modelo ViT.}
+    \label{roc-curves-vit}
 \end{figure}
 
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=0.8 \textwidth]{Chapters/4. ViT-Lung/images/vlgrid.png}
-    \caption{Some X-ray images (top row) with different pathologies and their associated GradCam images
-         (bottom row). The first column shows a grown heart, the second column corresponds to
-         Pneumonia, the third column shows an unusual tissue in the lung, and the last column a case
-         of COVID-19.}
+    \caption{Algunas imágenes de rayos-X (primer fila) con diferentes patologías y sus imágenes GradCam
+             asociadas en la segunda fila. La primera columna muestra un corazón crecido, la segunda
+             columna corresponde a neumonía, la tercer columna muestra una especie de tejido inusual
+             en el pulmón y la última columna un caso de COVID-19.}
     \label{img-results}
 \end{figure}
+
+De manera general el rendimiento del modelo convolucional basado en ResNet50 es mayor al modelo de
+atención basado en ViT. Cabe resaltar que solo existe una diferencia en ambos modelos que podría mejorar
+los resultados en favor al modelo ViT, la resolución de las imágenes. El modelo ViT trabaja con imágenes
+más pequeñas que el modelo ResNet50, $384\times384$ y $1024\times1024$ respectivamente. Dicha limitante
+se debe a la capacidad computacional requerida y con la que se contó para el entrenamiento ya que el
+modelo basado en ViT requiere un consumo de memoria mucho mayor para su procesamiento.
+
+\begin{figure}[b]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Atelectasis/1_1_00000147_001.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Atelectasis/1_1_00000149_002.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Atelectasis/1_1_00000150_003.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Atelectasis/1_1_00000150_004.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Atelectasis/1_1_00000467_000.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Atelectasis/1_1_00000032_036.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Atelectasis/1_1_00029596_022.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Atelectasis/1_1_00030408_000.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Atelectasis/1_1_00030408_013.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Atelectasis/1_1_00028974_018.png}
+    \end{subfigure}
+
+    \caption[short]{Atelectasis. Radiografías detectadas con la patología de atelectasis por los
+                    radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
+                    de la patología como positivo por el modelo CNN.}
+    \label{fig-atelectasis}
+\end{figure}
+
+\begin{figure}[b]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Cardiomegaly/1_0_00000013_037.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Cardiomegaly/1_0_00000211_018.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Cardiomegaly/1_0_00000732_008.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Cardiomegaly/1_0_00001582_008.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Cardiomegaly/1_0_00002059_002.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Cardiomegaly/1_0_00004344_039.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Cardiomegaly/1_0_00004344_045.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Cardiomegaly/1_0_00004526_017.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Cardiomegaly/1_1_00014706_010.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Cardiomegaly/1_1_00016291_042.png}
+    \end{subfigure}
+
+    \caption[short]{Cardiomegalia. Radiografías detectadas con la patología de cardiomegalia por los
+                    radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
+                    de la patología como positivo por el modelo CNN.}
+
+    \label{fig-cardiomegalia}
+\end{figure}
+
+\begin{figure}[b]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Consolidation/1_1_00000246_014.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Consolidation/1_1_00000246_016.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Consolidation/1_1_00000344_000.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Consolidation/1_1_00000467_002.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Consolidation/1_1_00000467_003.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Consolidation/1_1_00000618_008.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Consolidation/1_1_00000618_011.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Consolidation/1_1_00000808_002.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Consolidation/1_1_00000882_003.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Consolidation/1_1_00018187_052.png}
+    \end{subfigure}
+
+    \caption[short]{Consolidación pulmunar. Radiografías detectadas con la patología de consolidación pulmunar por los
+                    radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
+                    de la patología como positivo por el modelo CNN.}
+\end{figure}
+
+\begin{figure}[b]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/COVID-19/1_1_0c9b15035c41_3ea703bd1e0b.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/COVID-19/1_1_0d5082a9a044_d417f8e64511.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/COVID-19/1_1_1b5ca94ac38b_68fcf433c6fe.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/COVID-19/1_1_1b5ca94ac38b_0919a3b8af01.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/COVID-19/1_1_1e3f6f8e494c_efe83e860c17.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/COVID-19/1_1_4bb14a344446_0d3910133fbe.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/COVID-19/1_1_4be426760e00_16d85c7f7837.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/COVID-19/1_1_7b6c49da06db_b6b631939d4f.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/COVID-19/1_1_cde0ab9526da_fa935d855d4e.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/COVID-19/1_1_covid-19-pneumonia-20-pa-on-admission.jpg}
+    \end{subfigure}
+
+    \caption[short]{Covid-19. Radiografías detectadas con la patología de Covid-19 por los
+                    radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
+                    de la patología como positivo por el modelo CNN.}
+\end{figure}
+
+\begin{figure}[b]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Edema/1_1_00001373_031.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Edema/1_1_00001373_032.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Edema/1_1_00001787_000.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Edema/1_1_00003528_021.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Edema/1_1_00003803_009.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Edema/1_1_00004533_020.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Edema/1_1_00006304_002.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Edema/1_1_00006304_006.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Edema/1_1_00010535_002.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Edema/1_1_00011583_006.png}
+    \end{subfigure}
+
+    \caption[short]{Edema. Radiografías detectadas con la patología de edema pulmonar por los
+                    radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
+                    de la patología como positivo por el modelo CNN.}
+\end{figure}
+
+\begin{figure}[b]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Effusion/1_1_00000092_001.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Effusion/1_1_00000147_002.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Effusion/1_1_00000181_005.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Effusion/1_1_00000181_054.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Effusion/1_1_00000181_055.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Effusion/1_1_00000211_004.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Effusion/1_1_00000211_008.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Effusion/1_1_00000211_011.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Effusion/1_1_00022883_011.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Effusion/1_1_00022899_009.png}
+    \end{subfigure}
+
+    \caption[short]{Derrame pleural. Radiografías detectadas con la patología de derrame pleural por los
+                    radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
+                    de la patología como positivo por el modelo CNN.}
+\end{figure}
+
+\begin{figure}[b]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Emphysema/1_1_00000312_001.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Emphysema/1_1_00000732_006.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Emphysema/1_1_00001093_000.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Emphysema/1_1_00001555_000.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Emphysema/1_1_00008841_062.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Emphysema/1_1_00011683_042.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Emphysema/1_1_00012298_007.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Emphysema/1_1_00015387_000.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Emphysema/1_1_00023075_007.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Emphysema/1_1_00023078_006.png}
+    \end{subfigure}
+
+    \caption[short]{Enfisema pulmonar. Radiografías detectadas con la patología de enfisema pulmonar por los
+                    radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
+                    de la patología como positivo por el modelo CNN.}
+\end{figure}
+
+\begin{figure}[b]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Fibrosis/1_1_00000092_003.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Fibrosis/1_1_00000181_052.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Fibrosis/1_1_00000733_003.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Fibrosis/1_1_00001170_049.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Fibrosis/1_1_00003089_002.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Fibrosis/1_1_00003996_011.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Fibrosis/1_1_00004533_001.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Fibrosis/1_1_00004822_017.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Fibrosis/1_1_00011460_074.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Fibrosis/1_1_00013993_125.png}
+    \end{subfigure}
+
+    \caption[short]{Fibrosis. Radiografías detectadas con la patología de fibrosis por los
+                    radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
+                    de la patología como positivo por el modelo CNN.}
+\end{figure}
+
+\begin{figure}[b]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Hernia/1_1_00000284_001.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Hernia/1_1_00000284_003.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Hernia/1_1_00000284_005.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Hernia/1_1_00006713_017.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Hernia/1_1_00007894_005.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Hernia/1_1_00008508_003.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Hernia/1_1_00008508_004.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Hernia/1_1_00009507_003.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Hernia/1_1_00020915_001.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Hernia/1_1_00029188_001.png}
+    \end{subfigure}
+
+    \caption[short]{Hernia. Radiografías detectadas con la patología de hernia por los
+                    radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
+                    de la patología como positivo por el modelo CNN.}
+\end{figure}
+
+\begin{figure}[b]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Infiltration/1_1_00000147_000.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Infiltration/1_1_00000181_010.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Infiltration/1_1_00000181_062.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Infiltration/1_1_00000211_040.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Infiltration/1_1_00001006_014.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Infiltration/1_1_00001006_015.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Infiltration/1_1_00001006_017.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Infiltration/1_1_00001006_027.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Infiltration/1_1_00001075_005.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Infiltration/1_1_00022215_012.png}
+    \end{subfigure}
+
+    \caption[short]{Infiltración pulmonar. Radiografías detectadas con la patología de infiltración pulmonar por los
+                    radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
+                    de la patología como positivo por el modelo CNN.}
+\end{figure}
+
+\begin{figure}[b]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Mass/1_1_00000618_001.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Mass/1_1_00000618_006.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Mass/1_1_00001248_018.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Mass/1_1_00001517_011.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Mass/1_1_00001900_011.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Mass/1_1_00001900_018.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Mass/1_1_00001900_021.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Mass/1_1_00022369_006.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Mass/1_1_00022572_027.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Mass/1_1_00022837_011.png}
+    \end{subfigure}
+
+    \caption[short]{Masa. Radiografías detectadas con la patología de masa por los
+                    radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
+                    de la patología como positivo por el modelo CNN.}
+\end{figure}
+
+\begin{figure}[b]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Nodule/1_1_00000370_000.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Nodule/1_1_00000370_008.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Nodule/1_1_00001093_013.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Nodule/1_1_00001320_002.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Nodule/1_1_00001332_000.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Nodule/1_1_00001456_000.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Nodule/1_1_00001517_006.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Nodule/1_1_00001673_001.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Nodule/1_1_00025368_019.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Nodule/1_1_00026319_000.png}
+    \end{subfigure}
+
+    \caption[short]{Nódulo. Radiografías detectadas con la patología de nódulo por los
+                    radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
+                    de la patología como positivo por el modelo CNN.}
+\end{figure}
+
+\begin{figure}[b]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pleural-Thickening/1_1_00000013_043.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pleural-Thickening/1_1_00000457_001.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pleural-Thickening/1_1_00000732_008.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pleural-Thickening/1_1_00001093_001.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pleural-Thickening/1_1_00001248_006.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pleural-Thickening/1_1_00001320_005.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pleural-Thickening/1_1_00002236_000.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pleural-Thickening/1_1_00003996_012.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pleural-Thickening/1_1_00023283_020.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pleural-Thickening/1_1_00023325_014.png}
+    \end{subfigure}
+
+    \caption[short]{Engrosamiento pleural. Radiografías detectadas con la patología de engrosamiento pleural por los
+                    radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
+                    de la patología como positivo por el modelo CNN.}
+\end{figure}
+
+\begin{figure}[b]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pneumonia/1_1_8cf6c451-dd08-4054-a52c-743a4236a058.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pneumonia/1_1_6f37008d-c8a4-45b0-a1cd-7b215df62cfc.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pneumonia/1_1_3f2b878e-9e3b-410b-a739-b43d81b98692.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pneumonia/1_1_2e4b20f7-69c4-4680-9c8b-6984c195b1cf.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pneumonia/1_1_2a4489f6-6f7b-46f5-a937-281206307943.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pneumonia/1_1_1f447431-e2b3-4d18-8c22-30684ab71ffb.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pneumonia/1_1_1f0a35e1-1cd4-4d07-bacc-f22368f3cd08.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pneumonia/1_1_1db7e52d-7a40-49ff-9f24-bc72a33f9c23.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pneumonia/1_1_0ebc8268-df3d-45d8-8ee7-b34880c62830.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pneumonia/1_1_1d9ec3ad-0120-428b-9778-3805f9348092.png}
+    \end{subfigure}
+
+    \caption[short]{Neumonía. Radiografías detectadas con la patología de neumonía por los
+                    radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
+                    de la patología como positivo por el modelo CNN.}
+\end{figure}
+
+\begin{figure}[b]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pneumothorax/1_1_00000744_005.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pneumothorax/1_1_00000744_006.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pneumothorax/1_1_00000744_007.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pneumothorax/1_1_00000744_009.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pneumothorax/1_1_00000744_010.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pneumothorax/1_1_00001006_000.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pneumothorax/1_1_00001006_001.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pneumothorax/1_1_00001006_015.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pneumothorax/1_1_00001006_018.png}
+    \end{subfigure}
+    \begin{subfigure}{0.4\textwidth}
+        \centering
+        \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pneumothorax/1_1_00001006_021.png}
+    \end{subfigure}
+
+    \caption[short]{Neumotórax. Radiografías detectadas con la patología de neumotórax por los
+                    radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
+                    de la patología como positivo por el modelo CNN.}
+    \label{fig-ntorx}
+\end{figure}
+
+
+\subsubsection{Extensión para detección de Tuberculosis}
+
+La tabla \ref{table_tb1} muestra la Matriz de Confusión del clasificador binario para datos con
+tuberculosis y los que no presentan tuberculosis. Los resultados corresponden a un F1 score igual a
+$0.707$ y un accuracy igual a $0.846$, estos resultados son comprables como los métodos implementados
+para esta tarea en \cite{puttagunta2021detection}.
+
+\begin{table}[b]
+    \centering
+    \begin{tabular}{lcr}
+                                          & \multicolumn{2}{c}{Prediction}                                \\ \cline{2-3}
+    \multicolumn{1}{l|}{}                 & \multicolumn{1}{c|}{Positive} & \multicolumn{1}{c|}{Negative} \\ \hline
+    \multicolumn{1}{|l|}{Tuberculosis}    & \multicolumn{1}{r|}{388}      & \multicolumn{1}{r|}{100}      \\ \hline
+    \multicolumn{1}{|l|}{Non-Tuberculosis} & \multicolumn{1}{r|}{222}      & \multicolumn{1}{r|}{1378}     \\ \hline
+    \end{tabular}
+    \caption{Confusion matrix of the binary classifier for the test dataset of Tuberculosis and non-Tuberculosis classes.}
+    \label{table_tb1}
+\end{table}
