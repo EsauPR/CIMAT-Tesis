@@ -64,8 +64,8 @@ dataset completo usado en este trabajo.
      ---&  Healthy           & 2 & 8661  & 1926 \\
      \hline
     \end{tabular}
-    \caption{Number of chest radiography's per case in the dataset. Sources (DS): (1) ChestX-ray14,
-             (2) Internet datasets compilation. Pleural-Thick. means Pleural-Thickening.}
+    \caption{Número de radiografías de pecho por patología en el conjunto de datos. Fuentes (DS): (1) ChestX-ray14,
+             (2) Compilación de bases de datos de internet. Pleural-Thick. es una abreviación para Pleural-Thickening.}
     \label{table_dataset}
 \end{table}
 
@@ -177,7 +177,9 @@ densas y una operación de \textit{Dropout} intermedia con probabilidad de $25\%
     Sigmoid      &     15          &     15       & --         \\
     \hline
     \end{tabular}
-    \caption{Deep neural network architecture used in the proposed model. The Dense layers include the bias term. Drop-0.25 means a Dropout layer with a probability of 0.25.}
+    \caption{Arquitectura de la red neuronal usada en el modelo propuesto basado en ResNet50. Las capas
+    densas incluyen el término de bias. \textit{Drop-0.25} significa una capa \textit{Dropout} con
+    probabilidad de 0.25.}
     \label{table_resnet50}
 \end{table}
 
@@ -274,7 +276,7 @@ de $25\%$, similar al modelo de CNN propuesto anteriormente.
     Sigmoid      &     15          &     15       & --         \\
     \hline
     \end{tabular}
-    \caption{ViT architecture usada en el modelo propuesto. Las capas densas incluyen el término de bias.
+    \caption{Arquitectura ViT usada en el modelo propuesto. Las capas densas incluyen el término de bias.
     Drop-0.25 significa una capa de Dropout con una probabilidad de 0.25.}
     \label{table_ViT}
 \end{table}
@@ -938,7 +940,7 @@ modelo basado en ViT requiere un consumo de memoria mucho mayor para su procesam
         \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Atelectasis/1_1_00028974_018.png}
     \end{subfigure}
 
-    \caption[short]{Atelectasis. Radiografías detectadas con la patología de atelectasis por los
+    \caption{Atelectasis. Radiografías detectadas con la patología de atelectasis por los
                     radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
                     de la patología como positivo por el modelo CNN.}
     \label{fig-atelectasis}
@@ -987,7 +989,7 @@ modelo basado en ViT requiere un consumo de memoria mucho mayor para su procesam
         \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Cardiomegaly/1_1_00016291_042.png}
     \end{subfigure}
 
-    \caption[short]{Cardiomegalia. Radiografías detectadas con la patología de cardiomegalia por los
+    \caption{Cardiomegalia. Radiografías detectadas con la patología de cardiomegalia por los
                     radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
                     de la patología como positivo por el modelo CNN.}
 
@@ -1037,7 +1039,7 @@ modelo basado en ViT requiere un consumo de memoria mucho mayor para su procesam
         \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Consolidation/1_1_00018187_052.png}
     \end{subfigure}
 
-    \caption[short]{Consolidación pulmunar. Radiografías detectadas con la patología de consolidación pulmunar por los
+    \caption{Consolidación pulmunar. Radiografías detectadas con la patología de consolidación pulmunar por los
                     radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
                     de la patología como positivo por el modelo CNN.}
 \end{figure}
@@ -1085,7 +1087,7 @@ modelo basado en ViT requiere un consumo de memoria mucho mayor para su procesam
         \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/COVID-19/1_1_covid-19-pneumonia-20-pa-on-admission.jpg}
     \end{subfigure}
 
-    \caption[short]{Covid-19. Radiografías detectadas con la patología de Covid-19 por los
+    \caption{Covid-19. Radiografías detectadas con la patología de Covid-19 por los
                     radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
                     de la patología como positivo por el modelo CNN.}
 \end{figure}
@@ -1133,7 +1135,7 @@ modelo basado en ViT requiere un consumo de memoria mucho mayor para su procesam
         \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Edema/1_1_00011583_006.png}
     \end{subfigure}
 
-    \caption[short]{Edema. Radiografías detectadas con la patología de edema pulmonar por los
+    \caption{Edema. Radiografías detectadas con la patología de edema pulmonar por los
                     radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
                     de la patología como positivo por el modelo CNN.}
 \end{figure}
@@ -1181,7 +1183,7 @@ modelo basado en ViT requiere un consumo de memoria mucho mayor para su procesam
         \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Effusion/1_1_00022899_009.png}
     \end{subfigure}
 
-    \caption[short]{Derrame pleural. Radiografías detectadas con la patología de derrame pleural por los
+    \caption{Derrame pleural. Radiografías detectadas con la patología de derrame pleural por los
                     radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
                     de la patología como positivo por el modelo CNN.}
 \end{figure}
@@ -1229,7 +1231,7 @@ modelo basado en ViT requiere un consumo de memoria mucho mayor para su procesam
         \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Emphysema/1_1_00023078_006.png}
     \end{subfigure}
 
-    \caption[short]{Enfisema pulmonar. Radiografías detectadas con la patología de enfisema pulmonar por los
+    \caption{Enfisema pulmonar. Radiografías detectadas con la patología de enfisema pulmonar por los
                     radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
                     de la patología como positivo por el modelo CNN.}
 \end{figure}
@@ -1277,7 +1279,7 @@ modelo basado en ViT requiere un consumo de memoria mucho mayor para su procesam
         \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Fibrosis/1_1_00013993_125.png}
     \end{subfigure}
 
-    \caption[short]{Fibrosis. Radiografías detectadas con la patología de fibrosis por los
+    \caption{Fibrosis. Radiografías detectadas con la patología de fibrosis por los
                     radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
                     de la patología como positivo por el modelo CNN.}
 \end{figure}
@@ -1325,7 +1327,7 @@ modelo basado en ViT requiere un consumo de memoria mucho mayor para su procesam
         \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Hernia/1_1_00029188_001.png}
     \end{subfigure}
 
-    \caption[short]{Hernia. Radiografías detectadas con la patología de hernia por los
+    \caption{Hernia. Radiografías detectadas con la patología de hernia por los
                     radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
                     de la patología como positivo por el modelo CNN.}
 \end{figure}
@@ -1373,7 +1375,7 @@ modelo basado en ViT requiere un consumo de memoria mucho mayor para su procesam
         \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Infiltration/1_1_00022215_012.png}
     \end{subfigure}
 
-    \caption[short]{Infiltración pulmonar. Radiografías detectadas con la patología de infiltración pulmonar por los
+    \caption{Infiltración pulmonar. Radiografías detectadas con la patología de infiltración pulmonar por los
                     radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
                     de la patología como positivo por el modelo CNN.}
 \end{figure}
@@ -1421,7 +1423,7 @@ modelo basado en ViT requiere un consumo de memoria mucho mayor para su procesam
         \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Mass/1_1_00022837_011.png}
     \end{subfigure}
 
-    \caption[short]{Masa. Radiografías detectadas con la patología de masa por los
+    \caption{Masa. Radiografías detectadas con la patología de masa por los
                     radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
                     de la patología como positivo por el modelo CNN.}
 \end{figure}
@@ -1469,7 +1471,7 @@ modelo basado en ViT requiere un consumo de memoria mucho mayor para su procesam
         \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Nodule/1_1_00026319_000.png}
     \end{subfigure}
 
-    \caption[short]{Nódulo. Radiografías detectadas con la patología de nódulo por los
+    \caption{Nódulo. Radiografías detectadas con la patología de nódulo por los
                     radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
                     de la patología como positivo por el modelo CNN.}
 \end{figure}
@@ -1517,7 +1519,7 @@ modelo basado en ViT requiere un consumo de memoria mucho mayor para su procesam
         \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pleural-Thickening/1_1_00023325_014.png}
     \end{subfigure}
 
-    \caption[short]{Engrosamiento pleural. Radiografías detectadas con la patología de engrosamiento pleural por los
+    \caption{Engrosamiento pleural. Radiografías detectadas con la patología de engrosamiento pleural por los
                     radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
                     de la patología como positivo por el modelo CNN.}
 \end{figure}
@@ -1565,7 +1567,7 @@ modelo basado en ViT requiere un consumo de memoria mucho mayor para su procesam
         \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pneumonia/1_1_1d9ec3ad-0120-428b-9778-3805f9348092.png}
     \end{subfigure}
 
-    \caption[short]{Neumonía. Radiografías detectadas con la patología de neumonía por los
+    \caption{Neumonía. Radiografías detectadas con la patología de neumonía por los
                     radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
                     de la patología como positivo por el modelo CNN.}
 \end{figure}
@@ -1613,7 +1615,7 @@ modelo basado en ViT requiere un consumo de memoria mucho mayor para su procesam
         \includegraphics[width=1.0\textwidth]{Chapters/5. Conclusiones/img/Pneumothorax/1_1_00001006_021.png}
     \end{subfigure}
 
-    \caption[short]{Neumotórax. Radiografías detectadas con la patología de neumotórax por los
+    \caption{Neumotórax. Radiografías detectadas con la patología de neumotórax por los
                     radiólogos. A la izquierda de cada imagen el GradCam correspondiente a la detección
                     de la patología como positivo por el modelo CNN.}
     \label{fig-ntorx}
@@ -1625,16 +1627,80 @@ modelo basado en ViT requiere un consumo de memoria mucho mayor para su procesam
 La tabla \ref{table_tb1} muestra la Matriz de Confusión del clasificador binario para datos con
 tuberculosis y los que no presentan tuberculosis. Los resultados corresponden a un F1 score igual a
 $0.707$ y un accuracy igual a $0.846$, estos resultados son comprables como los métodos implementados
-para esta tarea en \cite{puttagunta2021detection}.
+para esta tarea en \cite{puttagunta2021detection}. Es importante mencionar que también se evaluaron
+los 488 casos de tuberculosis en nuestro detectores para 15 patologías, en particular los datos
+observados en la tabla \ref{table_tb1_15} corresponden al modelo basado en ResNet50. Como se observa
+en la tabla \ref{table_tb1_15} existen casos de tuberculosis detectados como neumonía o como COVID-19 (480).
+Puesto que el COVID-19 es un tipo especial de neumonía es de esperarse que dicha confusión en la
+clasificación se dé de tal forma puesto que las radiografías de tuberculosis no estaban inicialmente
+incluidas en los datos usados para los modelos propuestos. También se debe notar que sólo algunos casos
+de tuberculosis son identificados como neumonía (93); dejando en evidencia que los modelos pueden identificar
+diferencias entre tuberculosis y casos comunes de neumonía. Esto confirma que el proceso que se siguió
+para desarrollar el modelo detector de las 15 patologías es eficiente en estos casos y que si es
+necesario casos de tuberculosis también son detectados. El modelo basado en ViT muestra un
+comportamiento más diverso en sus predicciones, la mayor parte
+de los casos positivos a tuberculosis (481) determinar tienen la afección de COVID-19 y solo 2 con
+neumonía. Este modelo si clasifica en otras patologías como se ve en la tabla \ref{table_tb1vit_15}.
+Siendo indicativo que el modelo basado en transfers puede necesitar un entrenamiento más fino al
+momento de extender el detector a otras patologías.
 
-\begin{table}[b]
+
+\begin{table}[!ht]
     \centering
     \begin{tabular}{lcr}
-                                          & \multicolumn{2}{c}{Prediction}                                \\ \cline{2-3}
-    \multicolumn{1}{l|}{}                 & \multicolumn{1}{c|}{Positive} & \multicolumn{1}{c|}{Negative} \\ \hline
+                                          & \multicolumn{2}{c}{Predicción}                                \\ \cline{2-3}
+    \multicolumn{1}{l|}{}                 & \multicolumn{1}{c|}{Positivo} & \multicolumn{1}{c|}{Negativo} \\ \hline
     \multicolumn{1}{|l|}{Tuberculosis}    & \multicolumn{1}{r|}{388}      & \multicolumn{1}{r|}{100}      \\ \hline
-    \multicolumn{1}{|l|}{Non-Tuberculosis} & \multicolumn{1}{r|}{222}      & \multicolumn{1}{r|}{1378}     \\ \hline
+    \multicolumn{1}{|l|}{No-Tuberculosis} & \multicolumn{1}{r|}{222}      & \multicolumn{1}{r|}{1378}     \\ \hline
     \end{tabular}
-    \caption{Confusion matrix of the binary classifier for the test dataset of Tuberculosis and non-Tuberculosis classes.}
+    \caption{Matriz de confusión de la rama clasificadora binaria del modelo para el casos de prueba
+             de tuberculosis y no-tuberculosis.}
     \label{table_tb1}
+\end{table}
+
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{lcr}
+                                   & \multicolumn{2}{c}{Predicción ResNet50}                                \\ \cline{2-3}
+    \multicolumn{1}{l|}{}          & \multicolumn{1}{c|}{Positive} & \multicolumn{1}{c|}{Negative} \\ \hline
+    \multicolumn{1}{|l|}{Pneumonia}& \multicolumn{1}{r|}{93}      & \multicolumn{1}{r|}{395}      \\ \hline
+    \multicolumn{1}{|l|}{COVID-19}  & \multicolumn{1}{r|}{480}        & \multicolumn{1}{r|}{8}     \\ \hline
+    \multicolumn{1}{|l|}{Other pathologies}  & \multicolumn{1}{r|}{0}        & \multicolumn{1}{r|}{488}     \\ \hline
+    \end{tabular}
+    \caption{Predicciones de tuberculosis en el conjunto de datos de prueba (488 casos positivos) por el modelo
+             detector de 15 patologías basado en ResNet50. La mayoría de los casos de tuberculosis son
+             detectados como COVID-19, algunos pocos como neumonía y ninguno es detectado positivamente
+             en alguna otra patología.}
+    \label{table_tb1_15}
+\end{table}
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{lcr}
+                                   & \multicolumn{2}{c}{Predicción ResNet50}                                \\ \cline{2-3}
+    \multicolumn{1}{l|}{}          & \multicolumn{1}{c|}{Positive} & \multicolumn{1}{c|}{Negative} \\ \hline
+    \multicolumn{1}{|l|}{Pneumonia}& \multicolumn{1}{r|}{2}      & \multicolumn{1}{r|}{486}      \\ \hline
+    \multicolumn{1}{|l|}{COVID-19}  & \multicolumn{1}{r|}{481}        & \multicolumn{1}{r|}{7}     \\ \hline
+    \multicolumn{1}{|l|}{Cardiomegaly}  & \multicolumn{1}{r|}{486}        & \multicolumn{1}{r|}{2}     \\ \hline
+    \multicolumn{1}{|l|}{Emphysema}  & \multicolumn{1}{r|}{0}        & \multicolumn{1}{r|}{488}     \\ \hline
+    \multicolumn{1}{|l|}{Effusion}  & \multicolumn{1}{r|}{0}        & \multicolumn{1}{r|}{488}     \\ \hline
+    \multicolumn{1}{|l|}{Hernia}  & \multicolumn{1}{r|}{421}        & \multicolumn{1}{r|}{67}     \\ \hline
+    \multicolumn{1}{|l|}{Infiltration}  & \multicolumn{1}{r|}{0}        & \multicolumn{1}{r|}{488}     \\ \hline
+    \multicolumn{1}{|l|}{Mass}  & \multicolumn{1}{r|}{0}        & \multicolumn{1}{r|}{488}     \\ \hline
+    \multicolumn{1}{|l|}{Nodule}  & \multicolumn{1}{r|}{382}        & \multicolumn{1}{r|}{106}     \\ \hline
+    \multicolumn{1}{|l|}{Atelectasis}  & \multicolumn{1}{r|}{0}        & \multicolumn{1}{r|}{488}     \\ \hline
+    \multicolumn{1}{|l|}{Pneumothorax}  & \multicolumn{1}{r|}{488}        & \multicolumn{1}{r|}{0}     \\ \hline
+    \multicolumn{1}{|l|}{Pleural-Thickening }  & \multicolumn{1}{r|}{480}        & \multicolumn{1}{r|}{8}     \\ \hline
+    \multicolumn{1}{|l|}{Fibrosis}  & \multicolumn{1}{r|}{380}        & \multicolumn{1}{r|}{108}     \\ \hline
+    \multicolumn{1}{|l|}{Edema}  & \multicolumn{1}{r|}{488}        & \multicolumn{1}{r|}{488}     \\ \hline
+    \multicolumn{1}{|l|}{Consolidation}  & \multicolumn{1}{r|}{405}        & \multicolumn{1}{r|}{83}     \\ \hline
+
+
+    \end{tabular}
+    \caption{Predicciones de tuberculosis en el conjunto de datos de prueba (488 casos positivos) por el modelo
+             detector de 15 patologías basado en ViT. La predicción para los casos no vistos de tuberculosis
+             es mucho mas variada. Muestra que el modelo podría necesitar un proceso de afinación para la
+             detección correcta de los casos.}
+    \label{table_tb1vit_15}
 \end{table}

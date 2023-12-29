@@ -36,30 +36,30 @@ específicos para esta enfermedad. Los resultados obtenidos dieron lugar a un cl
 rendimiento comparable con el estado del arte de clasificadores desarrollados especialmente para la
 detección de tuberculosis. Por otro lado cuando se evaluaron los datos correspondiente a tuberculosis
 en los modelos de 15 patologías, estos fueron detectados como neumonía (unos pocos como COVID-19, otro
-tipo de neumonía) y ninguno en alguna otra patología. Con esto se puede mostrar que el entrenamiento
-del modelo fue adecuado y puede ser la base de implementación de nuevos detectores de otras patologías.
-
-Estos hallazgos sugieren que el Transformer y la atención son
+tipo de neumonía) y ninguno en alguna otra patología por uno de los modelos. Con esto se puede mostrar
+que el entrenamiento del modelo fue adecuado y puede ser la base de implementación de nuevos detectores
+de otras patologías. Así también, estos hallazgos sugieren que el Transformer y la atención son
 arquitecturas muy versátiles y potentes comparables con las redes convolucionales para el análisis
-de imágenes médicas, y que en un futuro puedan superar a estas.
+de imágenes médicas, pero que requieren mayor ajuste y tiempo de entrenamiento para tener buenos
+resultados. Con el incremento de datos y calidad en un futuro pueden llegar a competir a la par con
+los modelos convolucionales.
 
-Este trabajo aporta una contribución original e innovadora al campo de la detección de enfermedades
-pulmonares mediante imágenes de rayos X, al introducir el uso del Transformer y la atención como
+Este trabajo aporta dos nuevos modelos al campo de la salud en la detección de enfermedades
+pulmonares mediante imágenes de rayos X, introduciendo el uso de los Transformers y la atención como
 arquitecturas alternativas a las redes convolucionales. Además, el trabajo presenta una base de
 datos amplia y diversa de imágenes de rayos X de diferentes patologías y regiones, que puede servir
 como referencia para futuros trabajos en este ámbito. Sin embargo, el trabajo también reconoce algunas
 limitaciones importantes, como la calidad y la representatividad de los datos utilizados, que pueden
-afectar a la generalización y la robustez de los modelos, la falta de validación y explicabilidad de
-los modelos, que dificulta su interpretación y su aplicación clínica, y la escasez de recursos
-computacionales y humanos para el análisis y etiquetado de las imágenes, que limita el alcance y la
-profundidad del trabajo.
+afectar a la generalización y la robustez de los modelos, la falta de validación de datos para
+su aplicación clínica, y la escasez de recursos computacionales y humanos para el análisis y etiquetado
+de las imágenes así como las diversas fuentes y configuración de los dispositivos usados para la
+adquisición de las radiografías, que limita el alcance y la profundidad del trabajo.
 
-
-El trabajo plantea algunas líneas de investigación futuras, como el uso de otras arquitecturas y
+Por último ayuda a plantear algunas líneas de investigación futuras, como el uso de otras arquitecturas y
 técnicas de aprendizaje profundo, que puedan mejorar el rendimiento y la eficiencia de los modelos,
 el aumento y la diversificación de las bases de datos de imágenes de rayos X, que puedan cubrir más
 patologías y más variaciones, la incorporación de otras modalidades de datos, como la tomografía
 computarizada, que puedan ofrecer más información y más resolución, la regulación y la evaluación de
-los modelos, que puedan garantizar su seguridad y su calidad para su uso clínico, y la generación de
-mapas de calor, que puedan indicar las regiones de interés en las imágenes y facilitar el diagnóstico
-y el tratamiento.
+los modelos, que puedan garantizar su seguridad y su calidad para su uso clínico, y la generación y
+mejoras de mapas de calor y herramientas visuales, que puedan indicar las regiones de interés en las
+imágenes y facilitar el diagnóstico y el tratamiento.
