@@ -46,7 +46,7 @@ Estos desafíos requieren de soluciones innovadoras que puedan aprovechar el pot
 máquina para el diagnóstico de enfermedades pulmonares mediante imágenes de Rayos X y TC, y que al
 mismo tiempo puedan superar las barreras técnicas, éticas y sociales que impiden su aplicación clínica.
 
-Hay un trabajo continuo en la comunidad cientifica para poder aumentar y diversificar las bases de
+Hay un trabajo continuo en la comunidad científica para poder aumentar y diversificar las bases de
 datos de imágenes de rayos X y TC, asegurar su calidad, su anonimato y su accesibilidad para los
 investigadores y los médicos. Así en este trabajo se presenta un modelo basado en aprendizaje profundo
 que puede detectar 15 patologías
@@ -80,17 +80,17 @@ Uno de los modelos se basa en los \textit{Transformers}, una arquitectura recien
 \textit{Mecanismos de Atención} para procesar secuencias de datos, y que ha mostrado resultados
 sobresalientes en tareas de procesamiento de lenguaje natural y visión artificial.
 El modelo se compara con otros modelos basados en \textit{Redes Convolucionales} aplicando
-técnicas de \textit{Transfer Learning} en ambos. Se evalúan usando métricas de clasificación y
-visualización de las regiones de interés en las imágenes.
+técnicas de \emph{Transfer Learning} (Transferencia de conocimiento en español, en este trabajo
+usamos el término en inglés debido a su amplia difusión en la comunidad) en ambos. Se evalúan usando
+métricas de clasificación y visualización de las regiones de interés en las imágenes.
 
 El modelo propuesto tiene varias ventajas sobre los métodos existentes. Primero, es capaz de
 detectar múltiples patologías pulmonares simultáneamente, lo que permite un diagnóstico más
 completo y holístico. Segundo, es robusto a la variabilidad de los datos, ya que puede adaptarse a
 imágenes de rayos X de diferentes calidades, resoluciones, ángulos y contrastes.
 Tercero, es interpretable, ya que puede generar mapas de calor que indican las zonas más relevantes
-para la clasificación, lo que facilita la comprensión y la validación de las predicciones.
-
-Es importante mencionar que los modelos propuestos no pretende reemplazar un análisis profesional
+para la clasificación, lo que facilita la comprensión y la validación de las predicciones. Es
+importante mencionar que los modelos propuestos no pretende reemplazar un análisis profesional
 realizado por un médico, sino que busca ser una herramienta de apoyo para el análisis exploratorio
 de las radiografías.
 
@@ -100,12 +100,12 @@ otras enfermedades pulmonares que pueden afectar la salud y la calidad de vida d
 pesar de los esfuerzos en desarrollar diversos métodos de aprendizaje máquina para la detección de
 \textit{COVID-19} basados en Rayos X y Tomografías Computarizadas, los resultados obtenidos y
 reportados hasta el momento aún no están listos para uso clínico \cite{roberts2021common}.
-\citeauthor{shuja2021covid} presenta una relación de los conjuntos de datos abiertos de
+\citeauthor{shuja2021covid} presenta una relación de los conjuntos de datos abiertos (datasets) de
 \textit{COVID-19} categorizándolos por tipo (imágenes biomédicas,
 datos textuales y de audio), aplicaciones y métodos aplicados de \textit{IA}, \textit{Big Data} y
-estadísticos. Sin embargo, las imagenes en los datasets mencionados son reducidos y limitados a
+estadísticos. Sin embargo, las imágenes en los datasets mencionados son reducidos y limitados a
 regiones específicas alrededor del mundo. Por otro lado, \citeauthor{greenspan2020position} mencionan
-que la mayoria de los modelos reportados fueron probados en bajo en esquema de diagnóstico bastante
+que la mayoría de los modelos reportados fueron probados en bajo en esquema de diagnóstico bastante
 estrecho, puesto que los modelos deberían ser capaces de detectar \textit{COVID-19} en conjunto
 con una amplia variedad de patologías. De acuerdo a \citeauthor{roberts2021common} los fallos comunes
 son, entre otros, el sesgo en datasets pequeños o datasets no normalizados recolectados de una larga

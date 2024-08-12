@@ -68,14 +68,19 @@ cual no. Hay 3 de ellas, la \textit{Compuerta de Entrada}, la \textit{Compuerta 
 y la \textit{Compuerta de Salida}. La \textit{Compuerta de Entrada} $I^{(t)}$ (véase la figura
 \ref{fig:rnn_lstm}) determina cuanta información actual debe ser contemplada a través de la
 \textit{Memoria Candidata} $\tilde C^{(t)}$ para actualizar la \textit{Celda de Memoria} $C^{(t)}$.
-La \textit{Compuerta de Olvido} indica qué información del pasado debe ser desechada de la
+La \textit{Compuerta de Olvido} $F^{(t)}$ indica qué información del pasado debe ser desechada de la
 \textit{Celda de Memoria} $C^{(t-1)}$ y la \textit{Compuerta de Salida} ayuda a determinar el nuevo
 estado $h^{(t)}$ via la \textit{Celda de Memoria} actual $C^{(t)}$.
 
 \begin{figure}[ht!]
 \centering
 \includegraphics[width=1.0 \textwidth]{Chapters/2. Transformer/Figures/rnn/lstm.jpg}
-\caption{Descripción.}
+\caption{LSTM. La \textit{Compuerta de Entrada} $I^{(t)}$ determina cuánta información actual debe
+         ser considerada a través de la \textit{Memoria Candidata} $\tilde{C}^{(t)}$ para actualizar
+         la \textit{Celda de Memoria} $C^{(t)}$. La \textit{Compuerta de Olvido} $F^{(t)}$ indica
+         qué información del pasado debe ser desechada de la \textit{Celda de Memoria} $C^{(t-1)}$,
+         y la \textit{Compuerta de Salida} $O^{(t)}$ ayuda a determinar el nuevo estado $h^{(t)}$ a
+         través de la \textit{Celda de Memoria} actual $C^{(t)}$.}
 \label{fig:rnn_lstm}
 \end{figure}
 
@@ -149,6 +154,9 @@ véase la ecuación \ref{eq:gru_out}.
 \begin{figure}[ht!]
 \centering
 \includegraphics[width=1.0 \textwidth]{Chapters/2. Transformer/Figures/rnn/GRU.jpg}
-\caption{Descripción.}
+\caption{GRU. A diferencia de las \textit{LSTM}, las \textit{GRU} prescinden de la
+         \textit{Celda de Memoria} y utilizan un par de compuertas (la \textit{Compuerta de
+         Actualización} y la \textit{Compuerta de Olvido}) para decidir qué información es necesaria
+         que esté codificada dentro del estado oculto.}
 \label{fig:rnn_gru}
 \end{figure}
