@@ -1,18 +1,20 @@
 \section{De RNN's a Transformers}
 
-Las \textbf{Redes Neuronales Recurrentes} o \textbf{RNN} (por sus siglas en Inglés) basadas en el
+Las \textbf{Recurrent Neural Networks, RNN} (Redes Neuronales Recurrentes) basadas en el
 trabajo de \citeauthor{Rumelhart} datan del año 1986. Este tipo de redes están especializadas
 en el procesamiento de datos que contienen información temporal, mejorando los resultados obtenidos
-por otros tipos de redes como \textit{Redes FeedForward} o \textit{Redes Convolucionales}.
+por otros tipos de redes como \textit{FeedForward Neural Networks} (Redes neuronales de propagación
+hacia adelante) o \textit{Convolutional Neural Networks} (Redes neuronales convolucionales).
 
-La idea principal detrás de estos modelos de redes es el concepto de \textit{Parameter Sharing}.
-Usando \textit{Parameter Sharing} un modelo puede generalizar mejor cuando la información
+La idea principal detrás de estos modelos de redes es el concepto de \textit{parámetros compartidos}
+encontrado en la literatura de idioma ingles como \textit{Parameter Sharing}.
+Usando parámetros compartidos, un modelo puede generalizar mejor cuando la información
 está contenida en diferentes partes de una secuencia. Así, el modelo no necesita aprender
-independientemente todas las reglas que forman la secuencias, sino que ahora, la salida para cada
+independientemente todas las reglas que forman las secuencias, sino que ahora, la salida para cada
 elemento perteneciente a un tiempo $t$ está determinada por la salida del elemento anterior $t-1$.
-Resultando en una recurrencia con las mismas reglas de actualización aplicadas a cada elemento en el tiempo.
+Esto resulta en una recurrencia con las mismas reglas de actualización aplicadas a cada elemento en el tiempo.
 La ecuación \ref{eq:rnnh} representa este proceso; $h^{(t)}$ es el estado de la recurrencia definida
-por una función $f$ sobre un elemento $x^{(t)}t$ de la secuencia $X$ en el tiempo $t$ y $\theta$ son
+por una función $f$ sobre un elemento $x^{(t)}$ de la secuencia $X$ en el tiempo $t$ y $\theta$ son
 los parámetros compartidos.
 
 \begin{equation}
@@ -22,7 +24,7 @@ los parámetros compartidos.
 
 En una \textit{RNN} vista como un \textit{grafo computacional dirigido y acíclico}, cada nodo
 representa un estado en la recurrencia y procesa la información de la secuencia $X$ con los mismos
-parámetros $\theta$ en cada paso, observe la figura \ref{fig:rnn_cg}.
+parámetros $\theta$ en cada paso. Observe la figura \ref{fig:rnn_cg}.
 
 \begin{figure}[!ht]
 \centering

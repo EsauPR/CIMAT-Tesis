@@ -1,85 +1,86 @@
-\section{Detección de patologías en pulmones mediante imágenes de rayos-X}
+\section{Detección de patologías pulmonares con rayos-X}
 
-A pesar de diversos esfuerzos para desarrollar métodos basados en aprendizaje máquina basados en
-análisis de imágenes de Rayos-X y Tomografías Computarizadas aún no están listos para uso clínico.
-Limitaciones a sesgos presentados por el uso de bases de datos pequeñas o recopilaciones de diversas fuentes sin
-un tratamiento o normalización entre estos, así como enfoques de detección en enfermedades
-específicas dejando de lado la posible contribución a los modelos la inclusión de otras enfermedades.
-Por ello el trabajo presentado en este escrito se concentra en desarrollar un modelo basado en
-aprendizaje profundo atacando estás problemas. El modelo desarrollado es entrenado para la detección
-de 15 patologías de pulmones, incluyendo \textit{COVID-19}.
+A pesar de diversos esfuerzos para desarrollar métodos basados en aprendizaje automático para el
+análisis de imágenes de Rayos-X y Tomografías Computarizadas, aún no están listos para uso clínico.
+Las limitaciones incluyen sesgos presentados por el uso de bases de datos pequeñas o recopilaciones
+de diversas fuentes sin un tratamiento o normalización adecuados, así como enfoques de detección en
+enfermedades específicas, dejando de lado la posible contribución de la inclusión de otras
+enfermedades en los modelos. Por ello, el trabajo presentado en este escrito se concentra en
+desarrollar un modelo basado en aprendizaje profundo que ataque estos problemas. El modelo
+desarrollado está entrenado para la detección de 15 patologías pulmonares, incluyendo \textit{COVID-19}.
+
 
 El padecimiento por \textit{COVID-19} es una enfermedad contagiosa causada por el \textit{Síndrome
 Respiratorio Agudo Severo Coronavirus 2} o \textit{SARS-CoV-2} por sus siglas en inglés
-(\textit{Severe Acute Respiratory Syndrome Coronavirus 2}) reportada por primera vez en diciembre
-del año 2019 como un nuevo tipo de pneumonia viral \cite{huang2020clinical}. Pocos meses después,
-en marzo del 2020 el \textit{COVID-19} fue declarado como pandemia a nivel mundial por la
+(\textit{Severe Acute Respiratory Syndrome Coronavirus 2}), reportada por primera vez en diciembre
+del año 2019 como un nuevo tipo de neumonía viral \cite{huang2020clinical}. Pocos meses después,
+en marzo del 2020, el \textit{COVID-19} fue declarado como pandemia a nivel mundial por la
 Organización Mundial de la Salud (\textit{WHO}) \cite{world2020director}. Los métodos más eficaces
-de detección de \textit{COVID-19} son la prueba clínica de Reacción en Cadena de Polimerasa con
-Transcripción Inversa
-(\textit{RT-PCR}) también llamada genéricamente \textit{molecular photocopying test} pues es usada
-para amplificar-copiar pequeños
-segmentos de \textit{DNA} y detectar material genético de un organismo en específico como el virus
-\textit{SARS-CoV-2} y mediante la búsqueda de anticuerpos desarrollados por el organismo como
-respuesta a la enfermedad con la Prueba Rápida de Anticuerpos (\textit{RAT})
-\cite{Gupta2021, Apra2021, pub.1136450856, LIU2021112817}. Puesto que los
-anticuerpos tardan en generarse entre los 10 y 20 días después de la infección
-\cite{lou2020serology,o2021age,VABRET2020910}, la pruebas tipo \textit{PCR} es preferida como
-método de detección temprana. En la ausencia de prueba \textit{PCR}, los pacientes con sintomatología
-similar a la provocada por \textit{COVID-19} solo pueden ser diagnosticados con pneumonia atípica
-como padecimiento. Por ello, diversos métodos de análisis de imágenes basados en técnicas
-de Inteligencia Artificial han sido desarrollados para la detección de \textit{COVID-19} usando
-imágenes de Rayos X y Tomografías Computarizadas. Reportes clínicos indican que imágenes de Rayos X
-y Tomografías Computarizadas de pecho pueden mostrar efectos de afectaciones por \textit{COVID-19}.
-Dichos efectos pueden ser apreciados en los pulmones incluso en casos donde la prueba PCR resulta
-en Falso Negativo \cite{ai2020correlation, wong2020frequency}. Así, la principal motivación es
-desarrollar métodos alternativos que ayuden a la detección de \textit{COVID-19} dada la limitada
-disponibilidad, creciente demanda, costo asociado y la obtención de resultados inmediatos de la
-aplicación de técnicas como \textit{PCR} en todo el mundo.
+de detección de \textit{COVID-19} son la prueba clínica de \textit{Reacción en Cadena de Polimerasa con
+Transcripción Inversa} (\textit{RT-PCR}), también llamada genéricamente \textit{Molecular Photocopying Test},
+pues es usada para amplificar y copiar pequeños segmentos de \textit{DNA} y detectar material genético
+de un organismo en específico como el virus \textit{SARS-CoV-2}, y mediante la búsqueda de anticuerpos
+desarrollados por el organismo como respuesta a la enfermedad con la \textit{Prueba Rápida de Anticuerpos}
+(\textit{RAT}) \cite{Gupta2021, Apra2021, pub.1136450856, LIU2021112817}. Puesto que los anticuerpos
+tardan en generarse entre los 10 y 20 días después de la infección \cite{lou2020serology,o2021age,VABRET2020910},
+las pruebas tipo \textit{PCR} son preferidas como método de detección temprana. En ausencia de prueba
+\textit{PCR}, los pacientes con sintomatología similar a la provocada por \textit{COVID-19} solo pueden
+ser diagnosticados con neumonía atípica. Por ello, diversos métodos de análisis de imágenes basados en
+técnicas de Inteligencia Artificial han sido desarrollados para la detección de \textit{COVID-19} usando
+imágenes de rayos X y tomografías computarizadas. Reportes clínicos indican que imágenes de rayos X y
+tomografías computarizadas de pecho pueden mostrar efectos de afectaciones por \textit{COVID-19}. Dichos
+efectos pueden ser apreciados en los pulmones incluso en casos donde la prueba \textit{PCR} resulta en
+falso negativo \cite{ai2020correlation, wong2020frequency}. Así, la principal motivación es desarrollar
+métodos alternativos que ayuden a la detección de \textit{COVID-19} (conjuntamente con otras patologías)
+dada la limitada disponibilidad, creciente demanda, costo asociado y la obtención de resultados
+inmediatos de la aplicación de técnicas como \textit{PCR} en todo el mundo.
 
-Un práctico y exitoso enfoque en la implementación de Redes Neuronales Profundas (DNNs) de dominio
-específico \cite{liu2017survey} basados en técnicas de clasificación es usar Transferencia de
-Conocimiento (Deep Transfer Learning, DTL) \cite{long2016unsupervised,oquab2014learning,tan2018survey}.
-Esta técnica fue inicialmente desarrollada para implementar modelos de dominio en específico en
+
+Un práctico y exitoso enfoque en la implementación de \textit{Deep Neural Networks} (Redes Neuronales
+Profundas) de dominio
+específico \cite{liu2017survey}, basados en técnicas de clasificación, es usar \textit{Deep Transfer Learning},
+\cite{long2016unsupervised,oquab2014learning,tan2018survey}.
+Esta técnica fue inicialmente desarrollada para implementar modelos de dominio específico en
 situaciones en las que se cuenta con una cantidad de datos limitada, pero también se ha visto que
-usar técnicas de DTL resulta en un método efectivo para entrenar modelos de dominio en específico aún
-cuando se tiene suficientes datos. Particularmente, en problemas de clasificación, la Transferencia
-de Conocimiento consiste en reutilizar modelos de Aprendizaje Profundo entrenados en problemas de
+usar técnicas de \textit{Deep Transfer Learning} resulta en un método efectivo para entrenar modelos
+de dominio específico aun cuando se tiene suficientes datos. Particularmente, en problemas de
+clasificación, el \textit{Deep Transfer Learning} consiste en reutilizar modelos de Aprendizaje Profundo entrenados en problemas de
 dominio general en donde los conjuntos de datos son lo suficientemente grandes. Dado que la tarea de
 clasificación contiene un gran número de clases y datos, los modelos entrenados pueden generalizar y
-extraer mejores características de bajo nivel. Por lo que, el uso de Transferencia de Conocimiento
+extraer mejores características de bajo nivel. Por lo tanto, el uso de \textit{Deep Transfer Learning}
 también ha sido efectivo en el desarrollo de modelos específicos para el análisis de imágenes médicas
-\cite{deniz2018transfer,litjens2017survey, sufian2020survey}, tales como la detección de
+\cite{deniz2018transfer,litjens2017survey,sufian2020survey}, tales como la detección de
 \textit{COVID-19} a partir de imágenes de Rayos X, problema atacado ampliamente por la comunidad
-usando Transferencia de Conocimiento en Modelos basados en Aprendizaje Profundo
+usando Transferencia de Conocimiento en modelos basados en Aprendizaje Profundo
 \cite{agrawal2021focuscovid,ai2020correlation,sufian2020survey}.
 
-Un popular método par la detección de \textit{COVID-19} es \textit{CoroNet} \cite{wang2020covid}, un
-modelo con arquitectura basado en redes neuronales profundas. \textit{CoroNet} clasifica imágenes de
-radiografías de Rayos X en 4 clases: COVID-19, neumonía bacterial, neumonía viral e imágenes sin
-ninguno de los tres padecimientos anteriores. \citeauthor{bressem2020comparing} presenta un estudio
-sobre cuales arquitecturas usadas como configuración inicial de la red \textit{backbone} encargada
-de tareas principalmente de extracción de características es más adecuada para desarrollar modelos
+
+Un popular método para la detección de \textit{COVID-19} es \textit{CoroNet} \cite{wang2020covid}, un
+modelo con arquitectura basada en redes neuronales profundas. \textit{CoroNet} clasifica imágenes de
+radiografías de Rayos X en 4 clases: \textit{COVID-19}, neumonía bacteriana, neumonía viral e imágenes
+sin ninguno de los tres padecimientos anteriores. \citeauthor{bressem2020comparing} presenta un estudio
+sobre cuáles arquitecturas usadas como configuración inicial de la red \textit{backbone}, encargada
+principalmente de tareas de extracción de características, son más adecuadas para desarrollar modelos
 de clasificación con imágenes radiográficas. Limitan el estudio a la detección de solo 5 patologías:
-\textit{cardiomegalia, edema, consolidación, atelectasia y derrame pleural} encontrado que es mucho más
-importante el tamaño de lote que la red usada como \textit{backbone}, es decir, la mejoría de los
-modelos dependían mucho más del proceso de entrenamiento que de los datos y la arquitectura.
+\textit{cardiomegalia, edema, consolidación, atelectasia y derrame pleural}, encontrando que es mucho más
+importante el tamaño de lote que la red usada como \textit{backbone}. Es decir, la mejoría de los
+modelos dependía mucho más del proceso de entrenamiento que de los datos y la arquitectura.
 En \cite{zhong2021deep} se reporta un ejemplo de clasificador de \textit{COVID-19}, neumonía y
 no \textit{COVID-19}. Otro reciente estudio compara redes neuronales para la clasificación de
-radiografías de pecho entre \textit{COVID-19} y neumonía \cite{shazia2021comparative}. Para ello
-construyen clasificadores binarios usando redes pre-entrenadas con la base de datos ImageNet,
+radiografías de pecho entre \textit{COVID-19} y neumonía \cite{shazia2021comparative}. Para ello,
+construyen clasificadores binarios usando redes preentrenadas con la base de datos ImageNet,
 considerando los modelos VGG16 y VGG19, DenseNet121, Inception-ResNet-V2, InceptionV3, ResNet50 y
-Xception. Con base a los resultados los modelos basados en DenseNet121 121 tuvieron el mejor
-accuracy ($99.48\%$) seguidos muy cerca por ResNet50 y VGG19 con $99.32\%$ y $99.18\%$
+Xception. Con base en los resultados, los modelos basados en DenseNet121 tuvieron el mejor
+\textit{accuracy} ($99.48\%$), seguidos muy de cerca por ResNet50 y VGG19 con $99.32\%$ y $99.18\%$,
 respectivamente. Los resultados anteriores son muy cercanos a los reportados por
 \textit{InstaCovNet-19}, un clasificador binario de \textit{COVID-19} y no \textit{COVID-19}
 \cite{gupta2021instacovnet}. Por otro lado, \citeauthor{bassi2021deep} proponen una estrategia de
-Transferencia de Conocimiento que tomas los modelos DenseNet121 y DenseNet201 (los sufijos 121, y 201
-hacen referencia a el número de capas del modelo DenseNet) como backbone, posteriormente reemplazan
+Transferencia de Conocimiento que toma los modelos DenseNet121 y DenseNet201 (los sufijos 121 y 201
+hacen referencia al número de capas del modelo DenseNet) como \textit{backbone}, y posteriormente reemplazan
 las neuronas correspondientes a la capa de salida para clasificar radiografías de Rayos X entre
-\textit{COVID-19}, neumonía, y sin ninguna de las patologías anteriores. De acuerdo a
-\citeauthor{shoeibi2020automated} la mayoría de los modelos de redes neuronales basados en aprendizaje
-profundo tienen un accuracy dentro del $90\%$ al $100\%$ para clasificación binaria entre
+\textit{COVID-19}, neumonía y sin ninguna de las patologías anteriores. De acuerdo con
+\citeauthor{shoeibi2020automated}, la mayoría de los modelos de redes neuronales basados en aprendizaje
+profundo tienen un \textit{accuracy} dentro del $90\%$ al $100\%$ para clasificación binaria entre
 \textit{COVID-19} y no \textit{COVID-19}.
 
 
@@ -87,66 +88,69 @@ profundo tienen un accuracy dentro del $90\%$ al $100\%$ para clasificación bin
 
 \subsubsection{CXR8 Dataset}
 
-El dataset es extraído de las bases de datos del hospital clínico de investigación \textit{NIH
-Clinical Center} perteneciente al instituto \textit{National Institutes of Health}. Está formado por
-alrededor del 60 por ciento de imágenes de Rayos X frontales de pecho capturas en dicho hospital y
+El \textit{dataset} es extraído de las bases de datos del hospital clínico de investigación \textit{NIH
+Clinical Center}, perteneciente al instituto \textit{National Institutes of Health}. Está formado por
+alrededor del 60 por ciento de imágenes de rayos X frontales de pecho capturadas en dicho hospital y
 es considerado como uno de los conjuntos de datos más representativos. Contiene
-112,120 imágenes de Rayos X frontales (frontal-view) de un total de 30,805 pacientes únicos. Cada
+112,120 imágenes de Rayos X frontales (\textit{frontal-view}) de un total de 30,805 pacientes únicos. Cada
 imagen contiene etiquetas correspondientes a 14 enfermedades (más de una etiqueta puede estar
-asociada a una imagen) extraídas usando técnicas de
-Procesamiento de Lenguaje Natural (NLP) de los reportes médicos realizados por radiólogos asociados
-con un accuracy mayor al 90 por ciento \cite{8099852}. Las 14 patologías incluidas son las
-siguientes: atelectasia (atelectasis), consolidación (consolidation), infiltración (infiltration),
-neumotórax (pneumothorax), edema (Edema), enfisema (emphysema), fibrosis (fibrosis),
-efusión (effusion), neumonía (Pneumonia),  derrame pleural (pleural-thickening), cardiomegalia (Cardiomegaly),
-nódulo (Nodule), masa (mass) y hernia (hernia).
+asociada a una imagen) extraídas usando técnicas de \textit{Natural Language Processing, NLP}
+(Procesamiento de Lenguaje Natural) de los reportes médicos realizados por radiólogos asociados
+con un \textit{accuracy} mayor al 90 por ciento \cite{8099852}. Las 14 patologías incluidas son las
+siguientes: atelectasia (\textit{atelectasis}), consolidación (\textit{consolidation}), infiltración (\textit{infiltration}),
+neumotórax (\textit{pneumothorax}), edema (\textit{edema}), enfisema (\textit{emphysema}), fibrosis (\textit{fibrosis}),
+efusión (\textit{effusion}), neumonía (\textit{pneumonia}), derrame pleural (\textit{pleural-thickening}), cardiomegalia (\textit{cardiomegaly}),
+nódulo (\textit{nodule}), masa (\textit{mass}) y hernia (\textit{hernia}).
 
-\subsubsection{COVIDx  Dataset}
+
+\subsubsection{COVIDx Dataset}
 
 Es una base de datos de uso público construida a través de las contribuciones de la comunidad
-científica con la finalidad de construir método que ayuden a combatir el padecimiento y propagación
-de COVID-19 \cite{Wang2020}. Contiene 13,975 imágenes de Rayos X de un total de 13,870 casos de
-pacientes (las cifras pueden variar dado a su constante actualización) recopiladas a través de 5
-repositorios de datos; \textit{COVID-19 Image Data Collection} \cite{cohen2020covid19},
+científica con la finalidad de construir métodos que ayuden a combatir el padecimiento y propagación
+de \textit{COVID-19} \cite{Wang2020}. Contiene 13,975 imágenes de Rayos X de un total de 13,870 casos de
+pacientes (las cifras pueden variar debido a su constante actualización) recopiladas a través de 5
+repositorios de datos: \textit{COVID-19 Image Data Collection} \cite{cohen2020covid19},
 \textit{Figure 1 COVID-19 Chest X-ray Dataset Initiative} \cite{figure1_2020covid19},
 \textit{ActualMed COVID-19 Chest X-ray Dataset Initiative} \cite{actualmed_2020covid19},
 \textit{RSNA Pneumonia Detection Challenge dataset} \cite{rsna_det_challlenge},
-\textit{COVID-19 radiography database} y \cite{rsna_det_challenge2}. Los conjuntos de datos
-contienen casos de pacientes con y sin padecimientos de pulmonía causada por \textit{COVID-19}.
+\textit{COVID-19 radiography database} \cite{rsna_det_challenge2}. Los conjuntos de datos
+contienen casos de pacientes con y sin padecimientos de neumonía causada por \textit{COVID-19}.
+
 
 \subsubsection{SIIM-FISABIO-RSNA COVID-19 Detection Dataset}
 
 Es un conjunto de datos creado, organizado y liberado por la \textit{Society for Imaging Informatics
 in Medicine (SIIM)} en conjunto con la
 \textit{Foundation for the Promotion of Health and Biomedical Research of Valencia Region (FISABIO)},
-\textit{Medical Imaging Databank of the Valencia Region (BIMCV)}, y
+\textit{Medical Imaging Databank of the Valencia Region (BIMCV)} y la
 \textit{Radiological Society of North America (RSNA)} \cite{siim_det_challenge} a través de un
-concurso en la plataforma de \textit{Kaggle}. Esta competición está enfocada en localizar
+concurso en la plataforma \textit{Kaggle}. Esta competición está enfocada en localizar
 e identificar anormalidades en radiografías de pecho y clasificarlas en cuatro casos de neumonía
 causada por \textit{COVID-19} \cite{00005382-202011000-00004}:
 
 \begin{itemize}
-    \item \textit{Typical appearance}: Contiene observaciones típicas a neumonía causada por
-          \textit{COVID-19}. Sin embargo, estas pueden presentarse en conjunto con otros infecciones,
-          reacciones a medicamentos, u otras causas de lesiones agudas en los pulmones.
-    \item \textit{Indeterminate appearance}: Presenta observaciones indeterminadas a neumonía
-          causada por \textit{COVID-19} y que pueden ocurrir en conjunto con a una variedad de
-          condiciones infecciosas y no infecciosas.
-    \item \textit{Atypical appearance}: Observaciones atípicas a las reportadas a neumonía causada
-          por \textit{COVID-19} y otros diagnósticos alternativos deben ser considerados.
+    \item \textit{Typical appearance}: Contiene observaciones típicas de neumonía causada por
+        \textit{COVID-19}. Sin embargo, estas pueden presentarse en conjunto con otras infecciones,
+        reacciones a medicamentos u otras causas de lesiones agudas en los pulmones.
+    \item \textit{Indeterminate appearance}: Presenta observaciones indeterminadas de neumonía
+        causada por \textit{COVID-19} que pueden ocurrir en conjunto con una variedad de
+        condiciones infecciosas y no infecciosas.
+    \item \textit{Atypical appearance}: Observaciones atípicas a las reportadas en neumonía causada
+        por \textit{COVID-19}, y otros diagnósticos alternativos deben ser considerados.
     \item \textit{Negative for pneumonia}: No se encuentran observaciones de neumonía causada por
-          \textit{COVID-19}. Sin embargo, las radiografías pueden no presentar aún elementos visibles
-          en etapas tempranas de neumonía por \textit{COVID-19}.
-\end{itemize}
+        \textit{COVID-19}. Sin embargo, las radiografías pueden no presentar aún elementos visibles
+        en etapas tempranas de neumonía por \textit{COVID-19}.
+  \end{itemize}
 
 \subsubsection{Tuberculosis X-ray (TBX11K) dataset}
 
-Es uno de los datasets más grandes actualmente con imágenes de Rayos X con Tuberculosis. Este
-dataset contiene 11200 imágenes de Rayos X con anotaciones marcando los bounding boxes de las
-áreas donde con observaciones de este padecimiento. Se clasifican en 4 distintas categorías;
-saludable, Tuberculosis activa (active TB), Tuberculosis latente (latent TB), con padecimientos otros a
-Tuberculosis (unhealthy but non-TB). Las imágenes son de calidad mucho mayor a la mayoría de los
-datasets anteriores con una resolución de 3000x3000 pixeles, \citeauthor{9156613} mencionan que
+Es uno de los \textit{datasets} más grandes actualmente con imágenes de Rayos X con Tuberculosis. Este
+\textit{dataset} contiene 11,200 imágenes de Rayos X con anotaciones marcando los \textit{bounding boxes} de las
+áreas con observaciones de este padecimiento. Se clasifican en 4 distintas categorías:
+saludable, Tuberculosis activa (\textit{active TB}), Tuberculosis latente (\textit{latent TB}) y con
+padecimientos otros a
+Tuberculosis (\textit{unhealthy but non-TB}). Las imágenes son de calidad mucho mayor a la mayoría de los
+\textit{datasets} anteriores, con una resolución de 3000x3000 píxeles. \citeauthor{9156613} mencionan que
 usar una resolución de 500x500 es suficiente para entrenar modelos de aprendizaje profundo de
 detección y clasificación de Tuberculosis.
 

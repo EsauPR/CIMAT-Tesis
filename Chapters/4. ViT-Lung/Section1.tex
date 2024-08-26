@@ -1,41 +1,45 @@
 \section{Detección de patologías en pulmones con Rayos X}
 
 Diferentes trabajos se han limitado a clasificar \textit{COVID-2019} y \textit{no COVID-2019} (o
-neumonía), es por ello que durante este trabajo desarrollamos un sistemas más completo para {
+neumonía). Es por ello que, durante este trabajo, desarrollamos un sistema más completo para
 distinguir 15 diferentes enfermedades pulmonares.
 
-En este trabajo se desarrolla un método basado en aprendizaje profundo usando una red \textit{ResNet50}
-como \textit{backbone}, una red ampliamente usada por la comunidad para implementar diferentes métodos
-de análisis de imágenes. Se tomó como base el dataset \textit{ChestX-Ray14} y se realizó una extensión
-incluyendo radiografías de pacientes infectados y no infectados por \textit{COVID-19}. El entrenamiento
-usando el este nuevo dataset, consiste en 3 etapas; la primera basada en \textit{data transfer learning}
-con la red \textit{ResNet50} pre-entrenada con el dataset de ImageNet y remplazando la capa de clasificación
-por un nuevo clasificador para las 15 patologías, una etapa de \textit{fine-tuning} para ajustar las
-últimas capas convolucionales y una última etapa \textit{full-tuning} para ajustar los pesos enteramente
-de la red. Los experimentos completados muestran que esta propuesta es capaz de preservar el rendimiento
-de los clasificadores entrenados para las 14 patologías previas del estado del arte, y al mismo tiempo,
-alcanzar el rendimiento de los clasificadores binarios para \textit{COVID-19} mostrados en la literatura
-actual. Adicionalmente, se demuestra que el modelo y entrenamiento propuesto puede ser usado para
-fácilmente realizar una extension hacia alguna otra patología, con la implementación de un clasificador
-binario para la detección de Tuberculosis, una particular neumonía bacterial \cite{stirenko2018chest},
-con rendimiento comparable con diversos métodos de deep learning \emph{ad hoc} \cite{puttagunta2021detection}.
+En este trabajo se desarrolla un método basado en aprendizaje profundo usando una red
+\textit{ResNet50} como \textit{backbone}, una red ampliamente usada por la comunidad para implementar
+diferentes métodos de análisis de imágenes. Se tomó como base el dataset \textit{ChestX-Ray14} y se
+realizó una extensión incluyendo radiografías de pacientes infectados y no infectados por
+\textit{COVID-19}. El entrenamiento usando este nuevo dataset consiste en 3 etapas: la primera basada
+en \textit{data transfer learning} con la red \textit{ResNet50} preentrenada con el dataset de
+ImageNet y reemplazando la capa de clasificación por un nuevo clasificador para las 15 patologías;
+una etapa de \textit{fine-tuning} para ajustar las últimas capas convolucionales; y una última etapa
+de \textit{full-tuning} para ajustar completamente los pesos de la red. Los experimentos completados
+muestran que esta propuesta es capaz de preservar el rendimiento de los clasificadores entrenados
+para las 14 patologías previas del estado del arte y, al mismo tiempo, alcanzar el rendimiento de los
+clasificadores binarios para \textit{COVID-19} mostrados en la literatura actual. Adicionalmente, se
+demuestra que el modelo y entrenamiento propuesto puede ser usado para realizar fácilmente una
+extensión hacia alguna otra patología, con la implementación de un clasificador binario para la
+detección de Tuberculosis, una particular neumonía bacteriana \cite{stirenko2018chest}, con
+rendimiento comparable con diversos métodos de deep learning \emph{ad hoc} \cite{puttagunta2021detection}.
+
 
 La evaluación del modelo propuesto para el diagnóstico de las 15 patologías demuestra la obtención de
-resultados competitivos, en particular para \textit{COVID-19}. Se realiza la comparación del modelo con
-trabajos recientes que clasifican las primeras 14 patologías (excluyendo \textit{COVID-19}). Los
-resultados en términos del \textit{Area Bajo la Curva del Operador del Receptor de Características  - AUC }
-muestra un rendimiento competitivo contra el método propuesto para detección de patologías
+resultados competitivos, en particular para \textit{COVID-19}. Se realiza la comparación del modelo
+con trabajos recientes que clasifican las primeras 14 patologías (excluyendo \textit{COVID-19}). Los
+resultados en términos del \textit{Área Bajo la Curva del Operador del Receptor de Características - AUC}
+muestran un rendimiento competitivo contra el método propuesto para detección de patologías
 \textit{ChestX-Ray14} y un notable rendimiento en la detección de neumonía para \textit{COVID-19}.
 
-En la ejecución de este trabajo se usa de la base de datos \textit{ChestX}
-\cite{wang2017chestx} y se incluye imágenes de Rayos-X para \text{COVID-19} y \textit{saludables}
-(imágenes de personas sin alguna enfermedad de pulmón identificada). El dataset \textit{ChestX-ray14}
-contiene 112,120 radiografías de tórax de vista frontal (frontal-view) \textit{AP} y \textit{PA}
-(anterior-posterior y posterior-anterior) de 30,805 pacientes únicos. Cada imagen esta anotada con
+\section{Materiales y Métodos}
+En la ejecución de este trabajo se usa la base de datos \textit{ChestX} \cite{wang2017chestx} y se
+incluyen imágenes de Rayos-X para \textit{COVID-19} y \textit{saludables} (imágenes de personas sin
+alguna enfermedad de pulmón identificada). El dataset \textit{ChestX-ray14} contiene 112,120
+radiografías de tórax de vista frontal (\textit{frontal-view}) \textit{AP} y \textit{PA}
+(anterior-posterior y posterior-anterior) de 30,805 pacientes únicos. Cada imagen está anotada con
 algunas de las etiquetas correspondientes a las 14 patologías descritas previamente. Este dataset es
-enriquecido durante el previamente al proceso de entrenamiento descrito aquí con radiografías de
-personas con neumonía y \textit{saludables}. La tabla \ref{table_dataset} resume la composición del
-dataset completo usado en este trabajo.
+enriquecido previamente al proceso de entrenamiento descrito aquí con radiografías de personas con
+neumonía y \textit{saludables}. La tabla \ref{table_dataset} resume la composición del dataset
+completo usado en este trabajo.
+
 
 \begin{table}[!ht]
     \centering
@@ -72,93 +76,98 @@ dataset completo usado en este trabajo.
 \subsubsection{Re-etiquetamiento de datos}
 \label{ssec_relabelling}
 
-Para lograr un entrenamiento del modelo exitosamente, se usa la versión re-etiquetada de la base de
+Para lograr un entrenamiento del modelo exitoso, se usa la versión re-etiquetada de la base de
 \textit{ChestX-ray14} propuesta por los autores de \textit{CheXNet} \cite{rajpurkar2018deep}. De
-acuerdo a \cite{rajpurkar2018deep}, los datos re-etiquetados permiten mejorar el proceso de entrenamiento
-significativamente. Cada re-etiquetado es realizado a través del entrenamiento de múltiples modelos
-de redes neuronales con los datos originales como entrada, los modelos con mejor accuracy en la
-evaluación del dataset original son conservados. Después, las predicciones individuales de cada
-modelo son promediadas y un detector binario para cada patología es construido usando un umbral que
-que permita maximizar la métrica F1-score en todas las patologías, (véase la sección \ref{sec_metrics}
-para la definición de F1-score). Finalmente, cada dato es re-etiquetado, como positivo si este fue
-originalmente etiquetado como positivo o el clasificador construido en el paso previo resulta positiva.
-A pesar de este re-etiquetado, en estos experimentos los datos preservan su estructura de acuerdo a
-los datos de entrenamiento y validación proporcionados originalmente; para para el conjunto de datos
-orinales, solo los datos de entrenamiento re-etiquetados son usados, es decir, solo se usan los datos
+acuerdo con \cite{rajpurkar2018deep}, los datos re-etiquetados permiten mejorar el proceso de
+entrenamiento significativamente. Cada re-etiquetado se realiza a través del entrenamiento de
+múltiples modelos de redes neuronales con los datos originales como entrada. Los modelos con mejor
+precisión en la evaluación del dataset original son conservados. Después, las predicciones
+individuales de cada modelo son promediadas y se construye un detector binario para cada patología
+usando un umbral que permita maximizar la métrica F1-score en todas las patologías (véase la sección
+\ref{sec_metrics} para la definición de F1-score). Finalmente, cada dato es re-etiquetado como
+positivo si este fue originalmente etiquetado como positivo o si el clasificador construido en el
+paso previo resulta positivo.
+
+A pesar de este re-etiquetado, en estos experimentos los datos preservan su estructura de acuerdo
+con los datos de entrenamiento y validación proporcionados originalmente. Para el conjunto de datos
+originales, solo se usan los datos de entrenamiento re-etiquetados, es decir, solo se usan los datos
 con etiquetas modificadas en la etapa de entrenamiento, preservando la evaluación intacta al proceso
-usado por otro los otros métodos. Aún así, se muestra el reporte correspondiente a el conjunto de
-validación re-etiquetado solo como referencia adjunto en el Apéndice.
+usado por otros métodos. Aun así, se muestra el reporte correspondiente al conjunto de validación
+re-etiquetado solo como referencia adjunto en el Apéndice.
+
 
 \subsubsection{Procesamiento de los datos}
 
-El procesamiento las imágenes radiográficas sigue un camino simple, se implementa un proceso de
-equalización por histograma, seguido de un redimensionamiento a $1024 \times 1024$ pixeles. Siendo
-los datos de entrada a el modelo neuronal generado imágenes de 1024  columnas y 1024 filas con 3
-canales idénticos. Siguiendo la propuesta de \textit{CheXNet}, se hace uso de multiples funciones de
-perdida tipo \textit{Binary Cross-Entropy} con distintos pesos para solventar el desbalanceamiento
-de clases.
+El procesamiento de las imágenes radiográficas sigue un camino simple: se implementa un proceso de
+equalización por histograma, seguido de un redimensionamiento a $1024 \times 1024$ píxeles. Los datos
+de entrada al modelo neuronal son imágenes de 1024 columnas y 1024 filas con 3 canales idénticos.
+Siguiendo la propuesta de \textit{CheXNet}, se hace uso de múltiples funciones de pérdida tipo
+\textit{Binary Cross-Entropy} con distintos pesos para solventar el desbalanceamiento de clases.
+
 
 \begin{equation} \label{eq:loss}
     L(\hat y, y) = \sum_{c=0}^{15} \left[ w_c^{(p)} y_c \log \hat y_c + w_c^{(n)} (1-y_c) \log (1- \hat y_c) \right],
 \end{equation}
 
-donde $y$ es el vector de etiquetas reales, $\hat y$ es el vector de etiquetas predichas,
-$w_c^{(p)}$ y $w_c^{(n)}$ son los pesos para los casos positivos y negativos de cada clase $c$
+\noindent donde $y$ es el vector de etiquetas reales, $\hat{y}$ es el vector de etiquetas predichas,
+$w_c^{(p)}$ y $w_c^{(n)}$ son los pesos para los casos positivos y negativos de cada clase $c$,
 respectivamente. Dichos pesos son calculados como sigue:
 
 \begin{equation}\label{eq:weights}
     w_c^{(n)} = \frac{n_c}{N} \;\;\;\; \text{and} \;\;\;\; w_c^{(p)} = 1-  w_c^{(n)};
 \end{equation}
 
-donde $N$ es el tamaño del conjunto de datos, y $n_c$ el número de imágenes radiográficas con
-etiquetas $c$ (el número elementos del vector de la $c$-ésima clase iguales a 1). Nótese que los
-pesos son inversamente proporcional al número de casos en la clase.
+\noindent donde $N$ es el tamaño del conjunto de datos, y $n_c$ el número de imágenes radiográficas con
+etiquetas $c$ (el número de elementos del vector de la $c$-ésima clase iguales a 1). Nótese que los
+pesos son inversamente proporcionales al número de casos en la clase.
+
 
 
 \section{Arquitecturas usadas}
 
 \subsection{CNN y Transfer Learning}
 
-El modelo desarrollado es construido tomando \textit{CheXNet} como referencia
-\cite{rajpurkar2018deep}, el cual clasifica entre 14 enfermedades
-usando el conjunto de datos \textit{ChestX-Ray14} \cite{wang2017chestx}. El modelo propuesto es
-construido desde cero y extiende la propuesta de \textit{CheXNet} para incluir la clasificación de
-imágenes con \textit{COVID-19}.
+El modelo desarrollado se construye tomando \textit{CheXNet} como referencia \cite{rajpurkar2018deep},
+el cual clasifica entre 14 enfermedades usando el conjunto de datos \textit{ChestX-Ray14}
+\cite{wang2017chestx}. El modelo propuesto se construye desde cero y extiende la propuesta de
+\textit{CheXNet} para incluir la clasificación de imágenes con \textit{COVID-19}.
 
 \textit{CheXNet} es un modelo basado en redes neuronales para detectar la presencia de 14 diferentes
-enfermedades de pulmón. \textit{CheXNet} Usa imágenes de Rayos X de vista frontal como entrada y
-un modelo convolucional pre-entrenado como backbone \cite{rajpurkar2018deep}. El modelo backbone usado
-por \textit{CheXNet} es la red \textit{DenseNet121} \cite{huang2017densely} que contiene 121 capas
+enfermedades de pulmón. \textit{CheXNet} usa imágenes de Rayos X de vista frontal como entrada y un
+modelo convolucional preentrenado como backbone \cite{rajpurkar2018deep}. El modelo backbone usado
+por \textit{CheXNet} es la red \textit{DenseNet121} \cite{huang2017densely}, que contiene 121 capas
 convolucionales entrenadas con la base de datos de \textit{ImageNet} \cite{ILSVRC15}. Las imágenes
 analizadas por el modelo pueden corresponder a vistas anterior-posterior o posterior-anterior. La
-implementación de Transferencia de Conocimiento es lograda removiendo la etapa de clasificación
-(formada por capas densas) mientras que la etapa convolucional previa permanece intacta funcionando
-como un extractor de características. Posteriormente, una nueva etapa de clasificación construida
-para la detección de 14 enfermedades es colocada en su lugar. Finalmente, la nueva red compuesta
-es entrenada usando la base de datos \textit{ChestX-Ray14} manteniendo fijos los pesos
-correspondientes a la etapa convolucional de la red.
+implementación de Transferencia de Conocimiento se logra removiendo la etapa de clasificación
+(formada por capas densas) mientras que la etapa convolucional previa permanece intacta, funcionando
+como un extractor de características. Posteriormente, se coloca una nueva etapa de clasificación
+construida para la detección de 14 enfermedades en su lugar. Finalmente, la nueva red compuesta se
+entrena usando la base de datos \textit{ChestX-Ray14}, manteniendo fijos los pesos correspondientes
+a la etapa convolucional de la red.
 
 Así como en \textit{CheXNet}, un modelo usado como backbone y entrenado con la base de datos de
-\textit{ImageNet} define la red entrenada para detectar patologías toráxicas. Motivados por
-\citeauthor{bressem2020comparing, shazia2021comparative} que muestran que una red backbone en
+\textit{ImageNet} define la red entrenada para detectar patologías torácicas. Motivados por
+\citeauthor{bressem2020comparing, shazia2021comparative}, quienes muestran que una red backbone en
 particular no es un elemento definitivo en el rendimiento de detección del modelo, sino el proceso
-de entrenamiento. Adicionalmente \citeauthor{huang2017densely, luo2020comparison} presentan
+de entrenamiento. Adicionalmente, \citeauthor{huang2017densely, luo2020comparison} presentan
 comparaciones de modelos evaluados en la clasificación de ImageNet donde \textit{ResNet50} y
 \textit{DenseNet201} obtienen un accuracy de $76\%$ y $74\%$ respectivamente. Por ello, se realiza
 la elección del modelo \textit{ResNet50} como backbone en la implementación de la red convolucional.
 \textit{ResNet50} fue propuesta por \citeauthor{he2016deep} y es una opción popular en la
-implementación de sistemas de reconocimiento generales dado su eficiencia computacional y relativamente
-sencillez de entrenamiento (por su grafo de gradientes con poco caminos) en comparación del candidato
-natural \textit{DenseNet121} usando en \textit{CheXNet}, cuyas versiones alternativas del modelo
-\textit{CheXNet} están disponibles en \cite{chexnet_code}. A pesar de lo anterior, no se descarta el uso
-e investigación en un futuro de otros modelos como backbone ya sea inclusive \textit{DenseNet} o
-\textit{efficientNet} \cite{tan2019efficientnet}. Sabiendo que este mismo procedimiento puede
-guiarnos a incluir nuevas patologías tales como Tuberculosis Pulmonar \cite{stirenko2018chest}; un
-tipo de neumonía bacterial mayormente común en países en vías de desarrollo y también frecuentemente
-reportado en pacientes con síndrome de inmunodeficiencia adquirida (AIDS) \cite{matsuura2018tuberculous}.
+implementación de sistemas de reconocimiento generales, dada su eficiencia computacional y
+relativa sencillez de entrenamiento (por su grafo de gradientes con pocos caminos) en comparación
+con el candidato natural \textit{DenseNet121} usado en \textit{CheXNet}, cuyas versiones alternativas
+del modelo \textit{CheXNet} están disponibles en \cite{chexnet_code}. A pesar de lo anterior, no se
+descarta el uso e investigación en un futuro de otros modelos como backbone, ya sea inclusive
+\textit{DenseNet} o \textit{efficientNet} \cite{tan2019efficientnet}. Sabiendo que este mismo
+procedimiento puede guiarnos a incluir nuevas patologías tales como Tuberculosis Pulmonar
+\cite{stirenko2018chest}; un tipo de neumonía bacteriana mayormente común en países en vías de
+desarrollo y también frecuentemente reportado en pacientes con síndrome de inmunodeficiencia
+adquirida (AIDS) \cite{matsuura2018tuberculous}.
 
-En la red detectora, la etapa clasificadora del modelo \textit{ResNet50} es remplazada con dos capas
-densas y una operación de \textit{Dropout} intermedia con probabilidad de $25\%$. La tabla
+
+En la red detectora, la etapa clasificadora del modelo \textit{ResNet50} es reemplazada con dos capas
+densas y una operación de \textit{Dropout} intermedia con una probabilidad del $25\%$. La tabla
 \ref{table_resnet50} resume la arquitectura de la red.
 
 \begin{table}[!ht]
@@ -185,12 +194,14 @@ densas y una operación de \textit{Dropout} intermedia con probabilidad de $25\%
 
 \subsection{Vision Transformers}
 
-Los modelos \textit{Vision Transformers} (\textit{ViT}) \cite{DBLP:journals/corr/abs-2010-11929} propuestos en el
-año 2020 son una variante de los modelos Transformer diseñados para resolver tareas de visión por
-computadora. En lugar de utilizar convoluciones como tradicionalmente se haría con otros modelos
-para extraer las distintas características de la imagen, los modelos Vision Transformers descomponen
-la imagen de entrada en una serie de parches, que posteriormente les son asignados un token y se
-aplica la arquitectura de Transformer estándar presentada anteriormente, véase la figura \ref{fig_ViT}.
+Los modelos \textit{Vision Transformers} (\textit{ViT}) \cite{DBLP:journals/corr/abs-2010-11929},
+propuestos en el año 2020, son una variante de los modelos Transformer diseñados para resolver tareas
+de visión por computadora. En lugar de utilizar convoluciones, como tradicionalmente se haría con
+otros modelos para extraer las distintas características de la imagen, los modelos Vision Transformers
+descomponen la imagen de entrada en una serie de parches, a los que posteriormente se les asigna un
+token y se aplica la arquitectura de Transformer estándar presentada anteriormente, véase la figura
+\ref{fig_ViT}.
+
 
 \begin{figure}[htp]
     \centering
@@ -202,31 +213,30 @@ parches generados son proyectados a una dimension linear agregándose informaci�
 \end{figure}
 
 El mecanismo de atención en el modelo ViT transforma continuamente los vectores de representación de
-los parches de la imagen, incorporando relaciones semánticas entre los parches de la imagen.
-Análogamente a como se usaría en el área de Procesamiento de Lenguaje Natural, mientras los vectores
-avanzan en profundidad en el modelo Transformer, las relaciones semánticas formadas entre los parches
-son cada vez más complejos. Esto remplaza así, las características extraídas a través de operaciones
-convolucionales. Para realizar dichas tareas el modelo ViT solo utiliza la parte codificadora de la
-arquitectura general del Transformer, codificando y extrayendo la información relevante de las imágenes
-en las etapas de multi-atención.
+los parches de la imagen, incorporando relaciones semánticas entre ellos. Análogamente a como se usa
+en el área de Procesamiento de Lenguaje Natural, mientras los vectores avanzan en profundidad en el
+modelo Transformer, las relaciones semánticas formadas entre los parches se vuelven más complejas.
+Esto reemplaza las características extraídas a través de operaciones convolucionales. Para realizar
+estas tareas, el modelo ViT solo utiliza la parte codificadora de la arquitectura general del Transformer,
+codificando y extrayendo la información relevante de las imágenes en las etapas de multi-atención.
 
 A pesar de que los enfoques dirigidos con modelos ViT y CNN son diferentes, algunas investigaciones
-indican que la representación de la información en capas inferiores es bastante similar, esto es
+indican que la representación de la información en capas inferiores es bastante similar, es decir,
 convoluciones más internas que guardan características locales y cabezas de atención más profundas
-\cite{DBLP:journals/corr/abs-2108-08810}. Aún así, los modelos ViT incorporan más información global
-que los modelos CNNs en capas inferiores y los \textit{skip connections} incorporados a los modelos
-influyen más en los modelos ViTs
-que en los modelos basados en CNNs. Además, como describen en su artículo \citeauthor{DBLP:journals/corr/abs-2010-11929}
-los modelos ViT se benefician de entrenamientos conjuntos de datos mucho más grandes a comparación
-de los datos necesarios para obtener resultados favorables en CNNs.
+\cite{DBLP:journals/corr/abs-2108-08810}. Aun así, los modelos ViT incorporan más información global
+que los modelos CNN en capas inferiores y los \textit{skip connections} influyen más en los modelos
+ViT que en los basados en CNN. Además, como describen en su artículo \citeauthor{DBLP:journals/corr/abs-2010-11929},
+los modelos ViT se benefician de entrenamientos con conjuntos de datos mucho más grandes en comparación
+con los datos necesarios para obtener resultados favorables en CNN.
 
 Basados en las propuestas de \citeauthor{DBLP:journals/corr/abs-2010-11929}, la red clasificadora
 implementada se deriva de los modelos entrenados que describen. Los modelos se entrenan utilizando
-varios conjuntos de datos; el conjunto de datos ILSVRC-2012 de ImageNet, que consta de 1k clases y
-1.3 millones de imágenes, el conjunto de datos ImageNet-21k, que contiene 21k clases y 14 millones
-de imágenes y el conjunto de datos JFT, que incluye 18k clases y 303 millones de imágenes de alta
+varios conjuntos de datos: el conjunto de datos ILSVRC-2012 de ImageNet, que consta de 1k clases y
+1.3 millones de imágenes; el conjunto de datos ImageNet-21k, que contiene 21k clases y 14 millones
+de imágenes; y el conjunto de datos JFT, que incluye 18k clases y 303 millones de imágenes de alta
 resolución. Estos conjuntos de datos proporcionan una amplia variedad de ejemplos que permiten al
 modelo aprender y generalizar eficazmente.
+
 
 \begin{table}[!ht]
     \centering
@@ -247,19 +257,19 @@ modelo aprender y generalizar eficazmente.
 \label{table_ViTBase}
 \end{table}
 
-La arquitectura del modelo ViT está basado en las implementaciones de los Transformers
+La arquitectura del modelo ViT está basada en las implementaciones de los Transformers
 mostrados en \textit{BERT} \cite{DBLP:journals/corr/abs-1810-04805}. Presentan distintas nomenclaturas
-para definir el tamaño del modelo generado. En particular se ha usado en este trabajo la arquitectura
-\textit{ViT-Base-patch32-384}. \quotes{Base} hace referencia al modelo base de
-\textit{BERT}, \quotes{patch32} a la variante que trabaja con parches de tamaño $32 \times 32$ y
-\quotes{384} a la dimensiones de las imágenes de entrada al modelo. En la tabla \ref{table_ViTBase}
-y \ref{table_ViT}
+para definir el tamaño del modelo generado. En particular, se ha usado en este trabajo la arquitectura
+\textit{ViT-Base-patch32-384}. \quotes{Base} hace referencia al modelo base de \textit{BERT},
+\quotes{patch32} a la variante que trabaja con parches de tamaño $32 \times 32$ y \quotes{384} a las
+dimensiones de las imágenes de entrada al modelo. En la tabla \ref{table_ViTBase} y \ref{table_ViT}
 se ejemplifica la arquitectura mencionada; 12 capas codificadoras del Transformer conforman el modelo
-ViT, con 12 cabezas de atención con un tamaño de 768 y finalmente las componentes MLP de tamaño 3072.
+ViT, con 12 cabezas de atención con un tamaño de 768 y, finalmente, las componentes MLP de tamaño 3072.
 
-En la red detectora basa en ViT, la etapa clasificadora del modelo \textit{ResNet50} también es
-remplazada con dos capas densas y una operación de \textit{Dropout} intermedia con probabilidad
-de $25\%$, similar al modelo de CNN propuesto anteriormente.
+En la red detectora basada en ViT, la etapa clasificadora del modelo \textit{ResNet50} también es
+reemplazada con dos capas densas y una operación de \textit{Dropout} intermedia con una probabilidad
+del $25\%$, similar al modelo de CNN propuesto anteriormente.
+
 
 \begin{table}[!ht]
     \centering
@@ -340,107 +350,104 @@ de $25\%$, similar al modelo de CNN propuesto anteriormente.
 % we present the procedure to train our models to detect the 15 pathology's (including COVID-19) from a network pre-trained with ImageNet.
 \begin{enumerate}
     \item \textbf{Entrenamiento inicial}.\\
-          \textbf{Modelo CNN}: Una vez seleccionada la red convolucional pre-entrenada
-          con la base de datos de ImageNet, se reemplaza la etapa de clasificación con por una nueva
-          compuesta por dos capas densas. En la tabla \ref{table_resnet50} se presentan los detalles
-          de la red \textit{ResNet50} usada en este modelo. De esta forma, la red convolucional
-          \textit{ResNet50} funciona como un extractor de características; se transforma los datos
-          originales (las imágenes de radiografías) en una nueva representación que contiene las
-          características que permiten distinguir entre las distintas patologías. El clasificador es
-          implementado agregando dos capas densas a esta red base. En la etapa de entrenamiento la
-          red se comporta como como una red Perceptrón Multicapa (\textit{Multilayer Perceptron},
-          MLP) donde la entrada es el tensor de características calculados por la red base o
-          backbone. Para entrenar el clasificador, los pesos que corresponden a la red base son
-          congelados y solamente son actualizados los pesos que pertenecen a la etapa de
-          clasificación (las capas densas descritas en la tabla \ref{table_resnet50}). El
-          entrenamiento se realiza durante 35 épocas conservando el mejor modelo de acuerdo al
-          \textit{accuracy} obtenido usando el conjunto de validación.
-          \textbf{Modelo ViT}: al igual que el modelo CNN, con la red basada en Transformers y pre-entrenada con la base de datos
-          ILSVRC-2012 de ImageNet, se remplaza la etapa de clasificación
-          por la misma red compuesta por dos capas densas. En la tabla \ref{table_ViTBase}
-          y \ref{table_ViT} se presentan los detalles de la arquitectura de la red \textit{ViT}.
-          Similar al modelo convolucional el modelo \textit{ViT} trabaja extrayendo carácterísticas y
-          y encontrando relaciones a través de la atención. Esto le permite determinar características
-          esenciales para poder identificar las distintas patologías trabajadas. El clasificador
-          añadido a la red contiene dos capas densas que procesa la información del modelo ViT y
-          determina finalmente la clasificación correspondiente para cada dato. Durante la primer
-          etapa de entrenamiento los pesos entrenables asociados al modelo \textit{ViT} que conforma
-          la red son congelados permitiendo solo el entrenamiento del modelo clasificador. El entrenamiento
-          se realiza durante 25 épocas conservando el mejor modelo de acuerdo al valor de \textit{accuracy}
-          obtenido usando el conjunto de validación.
+        \textbf{Modelo CNN}: Una vez seleccionada la red convolucional pre-entrenada con la base de datos de
+        ImageNet, se reemplaza la etapa de clasificación por una nueva compuesta por dos capas densas. En la
+        tabla \ref{table_resnet50} se presentan los detalles de la red \textit{ResNet50} usada en este modelo.
+        De esta forma, la red convolucional \textit{ResNet50} funciona como un extractor de características;
+        transforma los datos originales (las imágenes de radiografías) en una nueva representación que contiene
+        las características que permiten distinguir entre las distintas patologías. El clasificador se implementa
+        agregando dos capas densas a esta red base. En la etapa de entrenamiento, la red se comporta como una red
+        Perceptrón Multicapa (\textit{Multilayer Perceptron}, MLP) donde la entrada es el tensor de características
+        calculado por la red base o backbone. Para entrenar el clasificador, los pesos que corresponden a la red
+        base son congelados y solamente se actualizan los pesos que pertenecen a la etapa de clasificación (las
+        capas densas descritas en la tabla \ref{table_resnet50}). El entrenamiento se realiza durante 35 épocas,
+        conservando el mejor modelo de acuerdo al \textit{accuracy} obtenido usando el conjunto de validación.
+
+        \textbf{Modelo ViT}: Al igual que el modelo CNN, con la red basada en Transformers y pre-entrenada con la
+        base de datos ILSVRC-2012 de ImageNet, se reemplaza la etapa de clasificación por la misma red compuesta
+        por dos capas densas. En la tabla \ref{table_ViTBase} y \ref{table_ViT} se presentan los detalles de la
+        arquitectura de la red \textit{ViT}. Similar al modelo convolucional, el modelo \textit{ViT} trabaja
+        extrayendo características y encontrando relaciones a través de la atención. Esto le permite determinar
+        características esenciales para poder identificar las distintas patologías trabajadas. El clasificador
+        añadido a la red contiene dos capas densas que procesan la información del modelo ViT y determinan
+        finalmente la clasificación correspondiente para cada dato. Durante la primera etapa de entrenamiento,
+        los pesos entrenables asociados al modelo \textit{ViT} que conforma la red son congelados, permitiendo
+        solo el entrenamiento del modelo clasificador. El entrenamiento se realiza durante 25 épocas,
+        conservando el mejor modelo de acuerdo al valor de \textit{accuracy} obtenido usando el conjunto de
+        validación.
+
 
     \item \textbf{Fine-tuning}\\
-          \textbf{Modelo CNN}: Hasta este punto, el enfoque usado es un \textit{aprendizaje superficial}
-          y la etapa de extracción de características está completamente desasociado de la etapa de
-          clasificación. La ventaja de implementar el sistema a través de dos redes neuronales (la
-          red backbone y la red MLP) es que podemos mejorar la extracción de características en
-          términos de la tarea de interés. Para ello, se procede a descongelar las últimas capas
-          convolucionales de la red backbone y continuar el entrenamiento en conjunto con las capas
-          densas de la etapa clasificadora. Las capas a descongelar corresponden al último bloque
-          construido de de la 5° etapa convolucional (\textit{layer conv5\_3}) \cite{he2016deep}.
-          Así, permitimos que el tensor obtenido a la salida de la red backbone sea particularizado
-          a la tarea de clasificación actual. El procedimiento de \textit{Fine-tuning} es realizado
-          por 20 épocas más.\\
-          \textbf{Modelo ViT}: Siguiendo un procedimiento similar al modelo propuesto basado en
-          \textit{ResNet50} se procede a descongelar lo dos últimos bloques del modelo ViT, esto es
-          los correspondientes a los bloques 11 y 12 de acuerdo a la arquitectura vista en la tabla
-          \ref{table_ViT}. Permitiendo similarmente que los salidas del modelo ViT sean más particulares
-          a la tarea de clasificación en cuestión. 12 épocas más de entrenamiento le siguen a este
-          modelo.
+        \textbf{Modelo CNN}: Hasta este punto, el enfoque usado es un \textit{aprendizaje superficial} y la
+        etapa de extracción de características está completamente desasociada de la etapa de clasificación. La
+        ventaja de implementar el sistema a través de dos redes neuronales (la red backbone y la red MLP) es que
+        podemos mejorar la extracción de características en términos de la tarea de interés. Para ello, se procede
+        a descongelar las últimas capas convolucionales de la red backbone y continuar el entrenamiento en conjunto
+        con las capas densas de la etapa clasificadora. Las capas a descongelar corresponden al último bloque
+        construido de la 5° etapa convolucional (\textit{layer conv5\_3}) \cite{he2016deep}. Así, permitimos que el
+        tensor obtenido a la salida de la red backbone sea particularizado a la tarea de clasificación actual. El
+        procedimiento de \textit{Fine-tuning} es realizado por 20 épocas más.\\
+
+        \textbf{Modelo ViT}: Siguiendo un procedimiento similar al modelo propuesto basado en \textit{ResNet50}, se
+        procede a descongelar los dos últimos bloques del modelo ViT, esto es, los correspondientes a los bloques 11
+        y 12 de acuerdo a la arquitectura vista en la tabla \ref{table_ViT}. Esto permite, de manera similar, que las
+        salidas del modelo ViT sean más particulares a la tarea de clasificación en cuestión. 12 épocas más de
+        entrenamiento le siguen a este modelo.
+
 
     \item \textbf{Full-tuning}\\
-          \textbf{Modelo CNN}: Las razones por las cuales solamente son reentrenadas las últimas
-          capas convolucionales son que tenemos que lidiar con el problema del desvanecimiento del
-          gradiente y el sistema completo puede terminar sobre ajustando sus parámetros a la base de
-          datos de entrenamiento. El primer problema no es tan relevante en este punto, el
-          rendimiento obtenido por el modelo es satisfactorio y si no fuese posible mejorar las
-          mejorar los parámetros de las capas convolucionales tampoco sufren un deterioro. El segundo
-          problema es de importancia si la muestra de imágenes radiográficas son suficientemente
-          representativas de las patologías de interés. Puesto que el sistema es suficientemente
-          general para predecir el conjunto de imágenes de prueba correctamente. En este trabajo
-          consideramos que tenemos suficientes datos y por lo tanto, como etapa final del entrenamiento
-          se realiza una afinación completa del modelo. Esto es, entrenando completamente la red,
-          la etapa de extracción de características (backbone) y la etapa de clasificación (MLP).
-          Para evitar el over-fitting, el entrenamiento es continuado solamente por 10 épocas
-          conservando el mejor modelo de acuerdo al accuracy obtenido en el conjunto de validación.\\
-          \textbf{Modelo ViT}: De acuerdo a la premisa anterior, el modelo \textit{ViT} es descongelado completamente
-          permitiendo el entrenamiento de todos los bloques de la red. Esto permite al modelo especializarse
-          en la tarea de detección de patologías pulmonares al ajustar sus pesos por algunas más épocas.
-          De la misma manera, el modelo \textit{ViT} es entrenado por 8 épocas más. A diferencia del
-          modelo basado en \textit{ResNet50} el número de épocas es menor en cada etapa para el modelo
-          \textit{ViT} puesto que se observó una convergencia más rápida.
+        \textbf{Modelo CNN}: Las razones por las cuales solamente son reentrenadas las últimas capas
+        convolucionales son que tenemos que lidiar con el problema del desvanecimiento del gradiente y el sistema
+        completo puede terminar sobreajustando sus parámetros a la base de datos de entrenamiento. El primer
+        problema no es tan relevante en este punto, el rendimiento obtenido por el modelo es satisfactorio y si no
+        fuese posible mejorar los parámetros de las capas convolucionales, tampoco sufren un deterioro. El segundo
+        problema es de importancia si la muestra de imágenes radiográficas es suficientemente representativa de las
+        patologías de interés, puesto que el sistema es suficientemente general para predecir el conjunto de imágenes
+        de prueba correctamente. En este trabajo consideramos que tenemos suficientes datos y, por lo tanto, como
+        etapa final del entrenamiento se realiza una afinación completa del modelo. Esto es, entrenando completamente
+        la red, la etapa de extracción de características (backbone) y la etapa de clasificación (MLP). Para evitar
+        el \textit{over-fitting}, el entrenamiento es continuado solamente por 10 épocas, conservando el mejor modelo
+        de acuerdo al \textit{accuracy} obtenido en el conjunto de validación.\\
+
+        \textbf{Modelo ViT}: De acuerdo a la premisa anterior, el modelo \textit{ViT} es descongelado completamente,
+        permitiendo el entrenamiento de todos los bloques de la red. Esto permite al modelo especializarse en la
+        tarea de detección de patologías pulmonares al ajustar sus pesos por algunas épocas más. De la misma manera,
+        el modelo \textit{ViT} es entrenado por 8 épocas más. A diferencia del modelo basado en \textit{ResNet50}, el
+        número de épocas es menor en cada etapa para el modelo \textit{ViT} puesto que se observó una convergencia
+        más rápida.
+
 
 \end{enumerate}
 
-Similar a \citeauthor{rajpurkar2018deep}, usamos, al inicio de cada etapa de entrenamiento en ambas
-redes, las imágenes de entrenamiento son volteadas horizontalmente con 0.5 de probabilidad como técnica de
-augmentation de datos.
+Similar a \citeauthor{rajpurkar2018deep}, al inicio de cada etapa de entrenamiento en ambas redes,
+las imágenes de entrenamiento son volteadas horizontalmente con 0.5 de probabilidad como técnica de
+aumento de datos.
 
-La salida de la red basada en \textit{ResNet50} y \textit{ViT} es un vector de tamaño igual a el
-número de patologías detectadas, 15. Cada
-elemento del vector $\tilde y_i \in [0,1]$ puede ser interpretado como la probabilidad que la
-i-ésima patología esta presente en la imagen analizada. El vector $\tilde y$ no necesariamente tiene
-que sumar 1, puesto que varias patologías pueden estar presentes en la radiografía. Una patologías
-detectada como positiva ocurre si  $\tilde y > \theta$, donde $\theta$ es el umbral. El valor típico
-para este umbral es de $0.5$ y puede ser modificado dependiendo del análisis de la curva del
-\textit{Receiver Operator Characteristic}, o \textit{Curva ROC}. Como algoritmo de entrenamiento se
-usa \emph{Adam}
-\cite{kingma2017adam} con un factor de aprendizaje (LR) de $1\times 10^{-4}$ para el modelo basado
-en \textit{ResNet50} y $1\times 10^{-5}$ para el modelo basado en \textit{ViT}, con parámetros de inercia
-$\beta_1=0.9$ y $\beta_2=0.999$ en ambos modelos y con un decaimiento (LR-decay) de $0.1$ si después de 10 iteraciones
-no se detecta una reducción en el valor de la función de pérdida mayor a $1\times 10^{-4}$ (plateau
-escape).
+La salida de la red basada en \textit{ResNet50} y \textit{ViT} es un vector de tamaño igual al número
+de patologías detectadas, 15. Cada elemento del vector $\tilde y_i \in [0,1]$ puede ser interpretado
+como la probabilidad de que la i-ésima patología esté presente en la imagen analizada. El vector
+$\tilde y$ no necesariamente tiene que sumar 1, puesto que varias patologías pueden estar presentes
+en la radiografía. Una patología es detectada como positiva si $\tilde y > \theta$, donde $\theta$ es
+el umbral. El valor típico para este umbral es de $0.5$ y puede ser modificado dependiendo del análisis
+de la curva del \textit{Receiver Operator Characteristic}, o \textit{Curva ROC}. Como algoritmo de
+entrenamiento se usa \emph{Adam} \cite{kingma2017adam} con un factor de aprendizaje (LR) de
+$1\times 10^{-4}$ para el modelo basado en \textit{ResNet50} y $1\times 10^{-5}$ para el modelo basado
+en \textit{ViT}, con parámetros de inercia $\beta_1=0.9$ y $\beta_2=0.999$ en ambos modelos y con un
+decaimiento (LR-decay) de $0.1$ si después de 10 iteraciones no se detecta una reducción en el valor
+de la función de pérdida mayor a $1\times 10^{-4}$ (plateau escape).
+
 
 \subsubsection{Transfer Learning para la detección de Neumonía por Tuberculosis}
 
-El propósito de esta sección es demostrar que el backbone del  modelo propuesto basado en ResNet50
-y entrenado con las 15 patologías mencionadas anteriormente, puede ser la base para desarrollar
-detectores para otras enfermedades de pulmón. La idea en esta etapa es no repetir el proceso
-completo de entrenamiento sino usar en vez una simple estrategia de Transfer Learning. Así, se
-procede a extender el modelo para detectar (junto con las otras enfermedades) neumonía causada por
-Tuberculosis \cite{stirenko2018chest}, un tipo de neumonía bacterial común en países en estado vias
-de desarrollo y también frecuentemente reportado en pacientes con síndrome de inmunodeficiencia
-adquirida (AIDS) \cite{matsuura2018tuberculous}.
+El propósito de esta sección es demostrar que el \textit{backbone} del modelo propuesto basado en
+\textit{ResNet50} y entrenado con las 15 patologías mencionadas anteriormente, puede ser la base para
+desarrollar detectores para otras enfermedades de pulmón. La idea en esta etapa es no repetir el proceso
+completo de entrenamiento, sino usar una simple estrategia de \textit{Transfer Learning}. Así, se procede
+a extender el modelo para detectar (junto con las otras enfermedades) neumonía causada por Tuberculosis
+\cite{stirenko2018chest}, un tipo de neumonía bacteriana común en países en vías de desarrollo y también
+frecuentemente reportada en pacientes con síndrome de inmunodeficiencia adquirida (AIDS)
+\cite{matsuura2018tuberculous}.
+
 
 \begin{table}[!ht]
     \centering
@@ -456,18 +463,17 @@ adquirida (AIDS) \cite{matsuura2018tuberculous}.
 \label{table_dataset_tb}
 \end{table}
 
-El dataset considerado incluye casos de
-\textit{Tuberculosis} y \textit{no Tuberculosis} pero es
-importante aclarar que la condición en particular de los casos de \textit{no Tuberculosis} no es
+El dataset considerado incluye casos de \textit{Tuberculosis} y \textit{no Tuberculosis}, pero es
+importante aclarar que la condición en particular de los casos de \textit{no Tuberculosis} no está
 especificada por completo, es decir, incluyen tanto pacientes saludables como pacientes con otras
 afecciones.
 
-
 La base de datos (indicada proveniente de la fuente 3 en la tabla \ref{table_dataset_tb}) está
-compuesta por radiografías provenientes de: TBX11K dataset \cite{liu2020rethinking},
-India (DA and DB) dataset \cite{chauhan2014role}, Montgomery County dataset \cite{jaeger2014two}, y
-Shenzhen Hospital dataset \cite{jaeger2014two}. En este trabajo se usa las listas originales para el
-entrenamiento y Evaluación definidos para este dataset.
+compuesta por radiografías provenientes de: TBX11K dataset \cite{liu2020rethinking}, India (DA and DB)
+dataset \cite{chauhan2014role}, Montgomery County dataset \cite{jaeger2014two}, y Shenzhen Hospital
+dataset \cite{jaeger2014two}. En este trabajo se usan las listas originales para el entrenamiento y
+evaluación definidos para este dataset.
+
 
 \begin{table}[!ht]
     \centering
@@ -498,15 +504,16 @@ entrenamiento y Evaluación definidos para este dataset.
 \end{table}
 
 Para poder detectar Tuberculosis, se realiza la implementación de un clasificador binario usando como
-backbone la red ResNet50 entrenada previamente para la detección de las 15 patologías anteriores.
-La nueva rama de clasificación incluye dos nuevas capas densas (con sus respectivas funciones de
-activación). Conservamos los parámetros correspondientes al backbone no entrenables y solo se entrena
-las nuevas capas densas usando la estrategia mencionada en la subsección de {\bf Entrenamiento Inicial}
-\ref{ss:archiecture} con el optimizador, factor de aprendizaje y otros parámetros sin cambios y
+\textit{backbone} la red \textit{ResNet50} entrenada previamente para la detección de las 15 patologías
+anteriores. La nueva rama de clasificación incluye dos nuevas capas densas (con sus respectivas funciones
+de activación). Conservamos los parámetros correspondientes al \textit{backbone} no entrenables y solo se
+entrenan las nuevas capas densas usando la estrategia mencionada en la subsección de {\bf Entrenamiento
+Inicial} \ref{ss:archiecture} con el optimizador, factor de aprendizaje y otros parámetros sin cambios y
 \textit{Weighted Binary Cross-Entropy} como función de pérdida similar a \eqref{eq:loss}. Este modelo
 extendido aún detecta las 15 enfermedades comentadas previamente con una salida binaria extra para
-Tuberculosis. La arquitectura extendida incluyendo la nueva rama está descrita en la tabla
+Tuberculosis. La arquitectura extendida, incluyendo la nueva rama, está descrita en la tabla
 \ref{table_resnet50_tb}.
+
 
 \begin{figure}[htp]
     \centering
@@ -523,13 +530,15 @@ Considerando un problema de clasificación binario donde cada radiografía tiene
 $y = \{1, 0\}$ con $1$ indicando la presencia del padecimiento en el paciente y $0$ significando
 que se encuentra sano, los detectores pueden tener dos posibles resultados: una detección positiva (P)
 para la enfermedad o una detección negativa (N). La tabla \ref{table_cm} muestra la caracterización
-de la etiqueta predicha de acuerdo a los valores reales (Ground Truth, GT). Si un paciente enfermo
-es correctamente detectado, tenemos un \textit{Verdadero Positivo} (True Positive, TP) y si la
-predicción falla, es una \textit{Falso Positivo} (False Negativo, FN). Por otro lado, si una etiqueta
-positiva es erróneamente predicha en un paciente saludable entonces tenemos un \textit{Falso Positivo}
-(False Positive, FP), y si el paciente saludable es correctamente predicho es un
-\textit{Verdadero Negativo} (True Negative, TN). La tabla \ref{table_cm} muestra la \textit{Matiz de
-Confusión} con el conteo de cada tipo de predicción en el conjunto de prueba.
+de la etiqueta predicha de acuerdo a los valores reales (\textit{Ground Truth}, GT). Si un paciente
+enfermo es correctamente detectado, tenemos un \textit{Verdadero Positivo} (\textit{True Positive}, TP)
+y si la predicción falla, es un \textit{Falso Negativo} (\textit{False Negative}, FN). Por otro lado,
+si una etiqueta positiva es erróneamente predicha en un paciente saludable, entonces tenemos un
+\textit{Falso Positivo} (\textit{False Positive}, FP), y si el paciente saludable es correctamente
+predicho, es un \textit{Verdadero Negativo} (\textit{True Negative}, TN). La tabla \ref{table_cm}
+muestra la \textit{Matriz de Confusión} con el conteo de cada tipo de predicción en el conjunto de
+prueba.
+
 
 \begin{table*}[!ht]
     \centering
@@ -541,7 +550,7 @@ Confusión} con el conteo de cada tipo de predicción en el conjunto de prueba.
     \cline{3-4}
     \multicolumn{1}{c}{\multirow{6}{*}{GT} } &
     \\
-    \multicolumn{1}{c}{} & Emfermo & TP & FN   &  $ \longrightarrow  R = \frac{TP}{TP+FN}$  \\
+    \multicolumn{1}{c}{} & Enfermo & TP & FN   &  $ \longrightarrow  R = \frac{TP}{TP+FN}$  \\
     \\
     \cline{3-4}
     \multicolumn{1}{ c }{}                    &
@@ -561,10 +570,11 @@ Confusión} con el conteo de cada tipo de predicción en el conjunto de prueba.
     \label{table_cm}
 \end{table*}
 
-Para este trabajo asumimos que una patología en particular es correctamente detectada si su
-correspondiente puntuación en el vector de predicho es más significante que cierto umbral. En particular,
+Para este trabajo, asumimos que una patología en particular es correctamente detectada si su
+correspondiente puntuación en el vector predicho es más significativa que cierto umbral. En particular,
 asumimos un umbral igual para todas las patologías de $0.5$ en ambos modelos. Usando la Matriz de
 Confusión podemos definir varias métricas de rendimiento.
+
 
 \begin{enumerate}
     \item Accuracy ($A$). Esta métrica es quizás la más obvia. Corresponde al razón de los datos
@@ -605,29 +615,29 @@ Confusión podemos definir varias métricas de rendimiento.
     \end{equation}
 
     \item $F_1$ Score ($F_1$).  Durante la creación de los modelos buscamos un balance entre Precision y
-          Recall. El incremento
-          de alguna de estas dos métricas es en compensación de la otra. Un modelo que predice la
-          mayoría de los datos como positivos tendrá un Recall más cercano a 1 pues el conteo de
-          Falsos Negativos será mucho menor pero los Falsos positivos incrementarán reduciendo la
-          Precision del modelo. En caso contrario si el modelo predice la mayoría de lo datos como
-          negativos el conteo de Falsos Positivos será menor incrementado la métrica de Precision
-          pero los Falsos Negativos incrementan provocando que el Recall decremente. F1-Score
-          busca un balance entre las dos métricas (Precision-Recall Trade-Off). Un imbalance
-          entre ellas indica una sesgo en cualquiera de las dos maneras descritas anteriormente.
-          Por ello, es más informativo como medida de rendimiento usar una media geométrica entre
-          las dos métricas.
+        Recall. El incremento de alguna de estas dos métricas es en compensación de la otra. Un modelo que predice
+        la mayoría de los datos como positivos tendrá un \textit{Recall} más cercano a 1, pues el conteo de
+        \textit{Falsos Negativos} será mucho menor, pero los \textit{Falsos Positivos} incrementarán, reduciendo
+        la \textit{Precision} del modelo. En caso contrario, si el modelo predice la mayoría de los datos como
+        negativos, el conteo de \textit{Falsos Positivos} será menor, incrementando la métrica de \textit{Precision},
+        pero los \textit{Falsos Negativos} incrementan, provocando que el \textit{Recall} decremente. El
+        \textit{F1-Score} busca un balance entre las dos métricas (\textit{Precision-Recall Trade-Off}). Un
+        desequilibrio entre ellas indica un sesgo en cualquiera de las dos maneras descritas anteriormente. Por
+        ello, es más informativo como medida de rendimiento usar una media geométrica entre las dos métricas.
+
     \begin{equation}
         \label{eq:f1}
         F_1 = \frac{2\; P \, R}{P + R}.
     \end{equation}
 
-    \item  Area Under Curve of Receiver Operator Characteristic, (AUC-ROC). La Curva Característica
-    Operativa del Receptor es un gráfico que muestra las capacidades de diagnóstico de clasificadores
-    binarios. Como se mencionó anteriormente, una patología es detectada como positiva si su puntaje
-    predicho is más significativo que un umbral dado. Así, ajustando dicho umbral en valores más
-    bajos, permite en general incrementar el TPR, aunque el FPR también puede ser incrementado.
-    La Curva ROC resulta de gráficas los valores de TPR contra FPR variando el umbral en el intervalo
-    $[0,1]$. El AUC corresponde al área bajo la Curva de ROC.
+    \item  Area Under Curve of Receiver Operator Characteristic (AUC-ROC). La Curva Característica
+        Operativa del Receptor es un gráfico que muestra las capacidades de diagnóstico de clasificadores
+        binarios. Como se mencionó anteriormente, una patología es detectada como positiva si su puntaje
+        predicho es más significativo que un umbral dado. Así, ajustando dicho umbral a valores más bajos,
+        se permite en general incrementar el TPR, aunque el FPR también puede ser incrementado. La Curva ROC
+        resulta de graficar los valores de TPR contra FPR variando el umbral en el intervalo $[0,1]$. El AUC
+        corresponde al área bajo la Curva de ROC.
+
 
 \end{enumerate}
 
@@ -635,26 +645,24 @@ Confusión podemos definir varias métricas de rendimiento.
 \subsection{Resultados}
 
 La Tabla~\ref{table:res-model-covid} y \ref{table:vit-model-covid} muestra un resumen del rendimiento
-de los modelos propuestos.
-Las imágenes que conforman los conjuntos de entrenamiento, validación y prueba corresponden a los definidos
-originalmente en dataset. En ChestX-ray14, se redefinen las etiquetas de entrenamiento de acuerdo a
-CheXNet \cite{rajpurkar2018deep}; excepto para las imágenes de \textit{COVID-19} y sin patologías
-identificadas. Es válido usar cualquier modificación de etiquetas en la etapa de entrenamiento
-siempre y cuando se mantenga el conjunto de datos de prueba sin cambios (imágenes de radiografía y
-sus etiquetas).
+de los modelos propuestos. Las imágenes que conforman los conjuntos de entrenamiento, validación y prueba
+corresponden a los definidos originalmente en el dataset. En \textit{ChestX-ray14}, se redefinen las etiquetas
+de entrenamiento de acuerdo a \textit{CheXNet} \cite{rajpurkar2018deep}; excepto para las imágenes de
+\textit{COVID-19} y sin patologías identificadas. Es válido usar cualquier modificación de etiquetas en la
+etapa de entrenamiento siempre y cuando se mantenga el conjunto de datos de prueba sin cambios (imágenes de
+radiografía y sus etiquetas).
 
-Los resultados presentes se ajustan a el procedimiento de entrenamiento y prueba antes descrito para
-ambos modelos.
-Las métricas que se incluyen son: \textit{Area Under the the Precision Recovery Curve} (AUC-PR),
+Los resultados presentes se ajustan al procedimiento de entrenamiento y prueba antes descrito para ambos
+modelos. Las métricas que se incluyen son: \textit{Area Under the Precision Recovery Curve} (AUC-PR),
 \textit{Area Under the Receiver Operating Characteristic Curve} (AUC-ROC), \textit{F1-Score} y
-\textit{Accuracy} (Acc.). \textit{Global-14} muestra el rendimiento en las patologías de
-\textit{ChestX-ray-14} (clasificaciones correctas vs clasificaciones incorrectas), \textit{Global-15}
-muestra incluyendo \textit{COVID-19}. Nótese que los modelos propuestos tienen su mejor
-rendimiento en la detección de \textit{COVID-19}, la enfermedad anexada. También se han incluido
-datos de clases sin patologías detectadas (healthy) debido a la importancia de tener un buen desempeño
-en la detección de sujetos saludables. El rendimiento global sobre los datos de \textit{ChestX-ray14}
-y \textit{COVID-19} se muestran en el último renglón de la tabla \ref{table:res-model-covid} y
-y \ref{table:vit-model-covid}.
+\textit{Accuracy} (Acc.). \textit{Global-14} muestra el rendimiento en las patologías de \textit{ChestX-ray-14}
+(clasificaciones correctas vs clasificaciones incorrectas), \textit{Global-15} muestra incluyendo
+\textit{COVID-19}. Nótese que los modelos propuestos tienen su mejor rendimiento en la detección de
+\textit{COVID-19}, la enfermedad anexada. También se han incluido datos de clases sin patologías detectadas
+(\textit{healthy}) debido a la importancia de tener un buen desempeño en la detección de sujetos saludables.
+El rendimiento global sobre los datos de \textit{ChestX-ray14} y \textit{COVID-19} se muestra en el último
+renglón de la tabla \ref{table:res-model-covid} y \ref{table:vit-model-covid}.
+
 
 \begin{table*}[tb]
     \centering
@@ -734,44 +742,46 @@ y \ref{table:vit-model-covid}.
 
 Es importante recalcar que no es apropiado usar \textit{Accuracy} como único criterio de rendimiento
 bajo este contexto. El \textit{Accuracy} de cada clase es calculado como el número de clasificaciones
-correctas (TP y TN) entre la suma total de radiografías analizadas. Con clases desbalanceadas,
-tales como las que analizamos ahora (patología vs no patología), un modelo podría ser engañoso en cuanto
-a su eficiencia segando su clasificación sobre la o las clases más representativas. Si el desbalance
-es grande, el modelo puede asignar todos los datos como la clase que representa mayor peso y por tanto
+correctas (TP y TN) entre la suma total de radiografías analizadas. Con clases desbalanceadas, tales
+como las que analizamos ahora (patología vs no patología), un modelo podría ser engañoso en cuanto a
+su eficiencia, sesgando su clasificación sobre la o las clases más representativas. Si el desbalance
+es grande, el modelo puede asignar todos los datos como la clase que representa mayor peso y, por tanto,
 tener un buen rendimiento en la métrica de \textit{Accuracy}. A pesar de ello, los datos presentados
 son resultados que sirven como referencia para el lector. Una manera más apropiada de medir el desempeño
 del modelo es calcular la gráfica de TPR vs FPR para obtener el área bajo la curva, en otras palabras,
 calcular AUC-ROC como la métrica de rendimiento \cite{Hanley1983-tu}. A pesar de que la curva de ROC
 es preferida sobre la de PR a causa de su convexidad, existe un mapeo uno a uno entre ellas
-\cite{10.1145/1143844.1143874}, al final, ambas curvas son calculadas usando la misma matriz de
-confusión. Por tanto, también se
-incluye la métrica AUC-PR para mejores comparaciones mayormente informativas que solo usar la
-curva de ROC \cite{Saito2015-db}.
+\cite{10.1145/1143844.1143874}. Al final, ambas curvas son calculadas usando la misma matriz de
+confusión. Por tanto, también se incluye la métrica AUC-PR para comparaciones más informativas que
+solo usar la curva de ROC \cite{Saito2015-db}.
+
 
 La tabla \ref{table_roc_auc} muestra una comparación de la métrica AUC-ROC para los modelos DR-CNN
 \cite{DBLP:journals/corr/abs-1808-05744}, CRAL \cite{GUAN2020259}, TSNC \cite{CHEN2020221}, CheXNet
-\cite{rajpurkar2018deep} y las dos propuesta descritas aquí, el modelo basado en ViT y el modelo basado
-en ResNet50. También se realiza la comparativa del modelo
-ResNet-38-large-meta (LargeMeta). Este modelo emplea ResNet-38 como backbone, un tamaño de imagen de
-$480 x 480$ pixeles y, a diferencia de los modelos comparados restantes utiliza datos adjuntos a la
-imagen (metadata). Las tres últimas columnas presentan la AUC-ROC para los modelos propuestos y la
-detección lograda un grupo de radiólogos \cite{rajpurkar2018deep}. Se indica en negritas el modelo
-con el mejor rendimiento por patología.
-En general la métrica AUC-ROC en el dataset original ChestX-ray14 muestra
-una ligera ventaja para el modelo propuesto basado en ResNet50 sobre el modelo CheXNet. La inclusión
-de COVID-19 mejora dicha métrica de rendimiento en favor del modelo propuesto. Además, es visible que
-los resultamos obtenidos también superan a aquellos reportados por otros métodos investigados en
-\cite{baltruschat2019comparison}. Es importante notar que la métrica AUC-ROC para CheXNet corresponde
-a la media de 1000 salidas de usando boostraping para un Intervalo de Confianza de $95\%$
-\cite{rajpurkar2018deep}. Una actualización reciente de la implementación de CheXNet en el repositorio
-\cite{chexnet_code} reporta un AUC-ROC para Global-14 igual a 0.847. La última columna en la tabla 7 presenta
-el rendimiento promedio para los radiólogos que evalúan la radiografía para ChestX-ray14. Para
-mayor detalle del cómputo de la evaluación de los radiólogos véase \cite{rajpurkar2018deep}. Las }
-marcas con asterisco $(*)$ indican donde los radiólogos tiene mejor rendimiento que cualquier de los
-modelos evaluados. La tabla \ref{table_dl_human} resume el rendimiento de la métrica AUC-ROC de los
-mejores métodos basados en DL (incluyendo el propio analizado basado en ResNet50) contra rendimiento
-de los radiólogos. Podemos notar una ventaja si unimos los métodos basados en DL, los cuales superar
-a los radiólogos en detectar seis patologías (sin tomar en cuenta COVID-19).
+\cite{rajpurkar2018deep} y las dos propuestas descritas aquí, el modelo basado en ViT y el modelo basado
+en ResNet50. También se realiza la comparativa del modelo ResNet-38-large-meta (LargeMeta). Este modelo
+emplea ResNet-38 como \textit{backbone}, un tamaño de imagen de $480 \times 480$ píxeles y, a diferencia
+de los modelos comparados restantes, utiliza datos adjuntos a la imagen (metadata). Las tres últimas
+columnas presentan la AUC-ROC para los modelos propuestos y la detección lograda por un grupo de radiólogos
+\cite{rajpurkar2018deep}. Se indica en negritas el modelo con el mejor rendimiento por patología.
+
+En general, la métrica AUC-ROC en el dataset original \textit{ChestX-ray14} muestra una ligera ventaja
+para el modelo propuesto basado en \textit{ResNet50} sobre el modelo \textit{CheXNet}. La inclusión de
+\textit{COVID-19} mejora dicha métrica de rendimiento en favor del modelo propuesto. Además, es visible
+que los resultados obtenidos también superan a aquellos reportados por otros métodos investigados en
+\cite{baltruschat2019comparison}. Es importante notar que la métrica AUC-ROC para \textit{CheXNet}
+corresponde a la media de 1000 salidas usando \textit{boostraping} para un Intervalo de Confianza del
+$95\%$ \cite{rajpurkar2018deep}. Una actualización reciente de la implementación de \textit{CheXNet} en
+el repositorio \cite{chexnet_code} reporta un AUC-ROC para \textit{Global-14} igual a 0.847. La última
+columna en la tabla 7 presenta el rendimiento promedio para los radiólogos que evalúan la radiografía
+para \textit{ChestX-ray14}. Para mayor detalle del cómputo de la evaluación de los radiólogos, véase
+\cite{rajpurkar2018deep}. Las marcas con asterisco $(*)$ indican donde los radiólogos tienen mejor
+rendimiento que cualquiera de los modelos evaluados. La tabla \ref{table_dl_human} resume el rendimiento
+de la métrica AUC-ROC de los mejores métodos basados en DL (incluyendo el propio analizado basado en
+\textit{ResNet50}) contra el rendimiento de los radiólogos. Podemos notar una ventaja si unimos los
+métodos basados en DL, los cuales superan a los radiólogos en detectar seis patologías (sin tomar en
+cuenta \textit{COVID-19}).
+
 
 \begin{table*}[tb]
     \centering
@@ -845,22 +855,24 @@ a los radiólogos en detectar seis patologías (sin tomar en cuenta COVID-19).
 
 
 La figura \ref{roc-curves-cnn} y \ref{roc-curves-vit} representan las curvas de ROC correspondientes
-a las propuestas para basadas en ResNet50 y ViT respectivamente de todas las patologías incluyendo las
-clases COVID-19 y Healthy. Como pueden verse en cada uno de los
-gráficos, las curvas se encuentran sobre la diagonal, en particular para COVID-19. La figura
-\ref{img-results} ilustra la detección obtenida mediante el método propuesto: una diagnóstico previo
-y la región de interés detectado usando GradCAM; una técnica de visualización de redes neuronales
-profundas propuesta en \cite{selvaraju2017grad}. La primer fila muestra cuatro radiografías de
-pacientes con diferentes patologías, la segunda fila se encuentra su correspondiente GradCAM
+a las propuestas basadas en \textit{ResNet50} y \textit{ViT} respectivamente, de todas las patologías
+incluyendo las clases \textit{COVID-19} y \textit{Healthy}. Como puede verse en cada uno de los
+gráficos, las curvas se encuentran sobre la diagonal, en particular para \textit{COVID-19}. La figura
+\ref{img-results} ilustra la detección obtenida mediante el método propuesto: un diagnóstico previo
+y la región de interés detectada usando \textit{GradCAM}; una técnica de visualización de redes neuronales
+profundas propuesta en \cite{selvaraju2017grad}. La primera fila muestra cuatro radiografías de
+pacientes con diferentes patologías, en la segunda fila se encuentra su correspondiente \textit{GradCAM}
 indicando la región que contribuye a la detección. Las imágenes radiográficas de la figura están
 correctamente clasificadas de acuerdo con las etiquetas originales. Las regiones rojas son aquellas
-con mayor contribución a la detección de la enfermedad. La radiografía de la primer columna claramente
+con mayor contribución a la detección de la enfermedad. La radiografía de la primera columna claramente
 muestra un corazón de tamaño mayor de lo normal. La segunda columna corresponde a neumonía, la
-tercer columna muestra una formación inusual en el pulmón (mass), la última columna indica el caso
-de COVID-19. A su vez se muestran imágenes de las radiografías correspondientes a cada una de las 15
-patologías en las figuras \ref{fig-atelectasis} a la figura \ref{fig-ntorx}. En estas se observa
-la imagen radiográfica original de los pulmones así como el GradCAM correspondiente de la detección
-del clasificador basado en ResNet50 y cuya predicción fue positiva a la enfermedad en cuestión.
+tercera columna muestra una formación inusual en el pulmón (\textit{mass}), y la última columna indica
+el caso de \textit{COVID-19}. A su vez, se muestran imágenes de las radiografías correspondientes a cada
+una de las 15 patologías en las figuras \ref{fig-atelectasis} a \ref{fig-ntorx}. En estas se observa
+la imagen radiográfica original de los pulmones, así como el \textit{GradCAM} correspondiente de la
+detección del clasificador basado en \textit{ResNet50} y cuya predicción fue positiva a la enfermedad
+en cuestión.
+
 
 \begin{figure}
     \begin{center}
@@ -890,12 +902,14 @@ del clasificador basado en ResNet50 y cuya predicción fue positiva a la enferme
     \label{img-results}
 \end{figure}
 
-De manera general el rendimiento del modelo convolucional basado en ResNet50 es mayor al modelo de
-atención basado en ViT. Cabe resaltar que solo existe una diferencia en ambos modelos que podría mejorar
-los resultados en favor al modelo ViT, la resolución de las imágenes. El modelo ViT trabaja con imágenes
-más pequeñas que el modelo ResNet50, $384\times384$ y $1024\times1024$ respectivamente. Dicha limitante
-se debe a la capacidad computacional requerida y con la que se contó para el entrenamiento ya que el
-modelo basado en ViT requiere un consumo de memoria mucho mayor para su procesamiento.
+De manera general, el rendimiento del modelo convolucional basado en \textit{ResNet50} es mayor al
+modelo de atención basado en \textit{ViT}. Cabe resaltar que solo existe una diferencia en ambos modelos
+que podría mejorar los resultados en favor del modelo \textit{ViT}: la resolución de las imágenes. El
+modelo \textit{ViT} trabaja con imágenes más pequeñas que el modelo \textit{ResNet50}, $384\times384$ y
+$1024\times1024$ respectivamente. Dicha limitante se debe a la capacidad computacional requerida y con la
+que se contó para el entrenamiento, ya que el modelo basado en \textit{ViT} requiere un consumo de memoria
+mucho mayor para su procesamiento.
+
 
 \begin{figure}[b]
     \centering
@@ -1626,23 +1640,23 @@ modelo basado en ViT requiere un consumo de memoria mucho mayor para su procesam
 
 La tabla \ref{table_tb1} muestra la Matriz de Confusión del clasificador binario para datos con
 tuberculosis y los que no presentan tuberculosis. Los resultados corresponden a un F1 score igual a
-$0.707$ y un accuracy igual a $0.846$, estos resultados son comprables como los métodos implementados
-para esta tarea en \cite{puttagunta2021detection}. Es importante mencionar que también se evaluaron
-los 488 casos de tuberculosis en nuestro detectores para 15 patologías, en particular los datos
-observados en la tabla \ref{table_tb1_15} corresponden al modelo basado en ResNet50. Como se observa
-en la tabla \ref{table_tb1_15} existen casos de tuberculosis detectados como neumonía o como COVID-19 (480).
-Puesto que el COVID-19 es un tipo especial de neumonía es de esperarse que dicha confusión en la
-clasificación se dé de tal forma puesto que las radiografías de tuberculosis no estaban inicialmente
-incluidas en los datos usados para los modelos propuestos. También se debe notar que sólo algunos casos
-de tuberculosis son identificados como neumonía (93); dejando en evidencia que los modelos pueden identificar
-diferencias entre tuberculosis y casos comunes de neumonía. Esto confirma que el proceso que se siguió
-para desarrollar el modelo detector de las 15 patologías es eficiente en estos casos y que si es
-necesario casos de tuberculosis también son detectados. El modelo basado en ViT muestra un
-comportamiento más diverso en sus predicciones, la mayor parte
-de los casos positivos a tuberculosis (481) determinar tienen la afección de COVID-19 y solo 2 con
-neumonía. Este modelo si clasifica en otras patologías como se ve en la tabla \ref{table_tb1vit_15}.
-Siendo indicativo que el modelo basado en transfers puede necesitar un entrenamiento más fino al
-momento de extender el detector a otras patologías.
+$0.707$ y un \textit{accuracy} igual a $0.846$. Estos resultados son comparables con los métodos
+implementados para esta tarea en \cite{puttagunta2021detection}. Es importante mencionar que también
+se evaluaron los 488 casos de tuberculosis en nuestros detectores para 15 patologías, en particular
+los datos observados en la tabla \ref{table_tb1_15} corresponden al modelo basado en \textit{ResNet50}.
+Como se observa en la tabla \ref{table_tb1_15}, existen casos de tuberculosis detectados como neumonía
+o como \textit{COVID-19} (480). Puesto que el \textit{COVID-19} es un tipo especial de neumonía, es de
+esperarse que dicha confusión en la clasificación se dé de tal forma, ya que las radiografías de
+tuberculosis no estaban inicialmente incluidas en los datos usados para los modelos propuestos. También
+se debe notar que solo algunos casos de tuberculosis son identificados como neumonía (93), dejando en
+evidencia que los modelos pueden identificar diferencias entre tuberculosis y casos comunes de neumonía.
+Esto confirma que el proceso que se siguió para desarrollar el modelo detector de las 15 patologías es
+eficiente en estos casos y que, si es necesario, casos de tuberculosis también son detectados. El modelo
+basado en \textit{ViT} muestra un comportamiento más diverso en sus predicciones. La mayor parte de los
+casos positivos a tuberculosis (481) determinan que tienen la afección de \textit{COVID-19} y solo 2 con
+neumonía. Este modelo sí clasifica en otras patologías, como se ve en la tabla \ref{table_tb1vit_15},
+siendo indicativo de que el modelo basado en \textit{transfers} puede necesitar un entrenamiento más fino
+al momento de extender el detector a otras patologías.
 
 
 \begin{table}[!ht]

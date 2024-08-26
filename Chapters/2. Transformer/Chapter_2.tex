@@ -1,9 +1,10 @@
 \subsection{Compuertas LSTM y GRU}
 
 Hasta el momento, se ha hecho mención de las salidas $o^{(t)}$ y estados ocultos $h^{(t)}$ solo como
-el resultado de operaciones aplicadas por dos funciones; $g$ y $f$ respectivamente. Existen varias
-alternativas de construir una \textit{RNN}, una de las maneras más comunes es usando
+el resultado de operaciones aplicadas por dos funciones: $g$ y $f$, respectivamente. Existen varias
+alternativas para construir una \textit{RNN}; una de las maneras más comunes es usando
 \ref{eq:rnn_Ht} y \ref{eq:rnn_Ot}:
+
 
 \begin{equation}
     h^{(t)} = \phi(x^{(t)} W_{x} + h^{(t-1)} W_h + b)
@@ -16,15 +17,14 @@ alternativas de construir una \textit{RNN}, una de las maneras más comunes es u
 \end{equation}
 
 Los parámetros compartidos de la red ahora son descritos por las matrices
-$W_x \in \mathbb{R}^{d \times k}$, $W_h \in \mathbb{R}^{k \times k}$ y $
-W_{out} \in \mathbb{R}^{k \times q}$ con $k$ como la dimensión del estado oculto, $q$ la dimensión
+$W_x \in \mathbb{R}^{d \times k}$, $W_h \in \mathbb{R}^{k \times k}$ y
+$W_{out} \in \mathbb{R}^{k \times q}$ con $k$ como la dimensión del estado oculto, $q$ la dimensión
 de las salidas $o^{(t)}$, $b \in \mathbb{R} ^ {1 \times q}$ el parámetro de sesgo y $\phi$ es la
 función de activación. De esta manera, los pesos de los parámetros aprendidos en la matriz $W_h$
 determinan cómo será usada la información del pasado, codificada en $h^{(t-1)}$. Posteriormente,
-es incluida a la codificación de la información del tiempo actual $t$ calculada por $W_x$. La figura
-\ref{fig:rnn_cell} representa gráficamente la lógica usada para calcular los estados ocultos y las
-salidas de la red.
-
+es incluida a la codificación de la información del tiempo actual $t$ calculada por $W_x$.
+La figura \ref{fig:rnn_cell} representa gráficamente la lógica usada para calcular los estados
+ocultos y las salidas de la red.
 
 \begin{figure}[ht!]
 \centering
@@ -33,44 +33,47 @@ salidas de la red.
 \label{fig:rnn_cell}
 \end{figure}
 
-Sin embargo el cálculo de los estados ocultos mediante \ref{eq:rnn_Ht} presenta algunos problemas.
+Sin embargo, el cálculo de los estados ocultos mediante \ref{eq:rnn_Ht} presenta algunos problemas.
 La interacción entre la información del pasado y la actual siempre es \quotes{plana}, es decir, la información
 fluye a través del tiempo de la misma manera sin forma de dar prioridad o ignorar parte de
-esta. Por lo que resulta una tarea un poco más complicada preservar información relevante a en cada paso
-o desechar información que ya no es util para la red. También, causado por este mismo flujo de los
+esta. Por lo tanto, resulta una tarea un poco más complicada preservar información relevante en cada paso
+o desechar información que ya no es útil para la red. Además, debido a este mismo flujo de los
 datos, la información del pasado poco a poco es opacada por nueva información, impidiendo que se
 puedan encontrar dependencias de información en secuencias largas en tiempos distantes;
 comúnmente se hace referencia a este problema como \textit{The Short-term Memory Problem} en inglés
 \cite{VanishinGradient2}, aunado a problemas como el
 \textit{Desvanecimiento o Explosión del Gradiente} \cite{VanishinGradient} \cite{pmlr-v28-pascanu13},
-y acentuándose aun más
+y acentuándose aún más
 debido a las matrices de pesos compartidos en la recurrencia. Dichas
 multiplicaciones de las matrices en la recurrencia tienen similitud a las realizadas en el
 \textit{método de potencia}, en donde cualquier
 componente en la matriz inicial que no esté alineada con el vector propio asociado al mayor valor
-propio son eventualmente descartados \cite[pp.~390-392]{GoodBengCour16}). Por ende, los resultados
-de este producto tendrán a ser cercanos a cero (desvanecerse) o explotar dependiendo de la magnitud
+propio es eventualmente descartado \cite[pp.~390-392]{GoodBengCour16}. Por ende, los resultados
+de este producto tenderán a ser cercanos a cero (desvanecerse) o explotar dependiendo de la magnitud
 de la matriz de pesos.
 
+
 Una manera de solventar los problemas anteriores son las \textbf{Redes Neuronales con Compuertas},
-creadas con la idea de crear conexiones a través del tiempo de tal manera de tener gradientes que no
-se desvanezcan o exploten, convirtiéndose además en un mecanismo para olvidar información pasada y
-decidiendo automáticamente cuándo y cuánto de la información debe prevalecer.
+creadas con la idea de establecer conexiones a través del tiempo de tal manera que los gradientes no
+se desvanezcan ni exploten, convirtiéndose además en un mecanismo para olvidar información pasada y
+decidir automáticamente cuándo y cuánto de la información debe prevalecer.
+
 
 \subsubsection{LSTM}
 
-\textbf{Long Short-Term Memory}, \textbf{LSTM} por sus siglas en inglés, fue propuesta en 1997 por
-\citeauthor{LSTM}, como un método de preservar dependencias de información relevante
-distantes a corto plazo. Las \textit{LSTM} introducen un nuevo componente la
-\textit{Celda de Memoria} cuya función es guardar información a través del tiempo y es
-controlada por distintas compuertas. Las compuertas aprenden a distinguir que información es relevante y
-cual no. Hay 3 de ellas, la \textit{Compuerta de Entrada}, la \textit{Compuerta de Olvido}
+\textbf{Long Short-Term Memory} (\textbf{LSTM}, por sus siglas en inglés) fue propuesta en 1997 por
+\citeauthor{LSTM} como un método para preservar dependencias de información relevante
+a corto y largo plazo. Las \textit{LSTM} introducen un nuevo componente: la
+\textit{Celda de Memoria}, cuya función es guardar información a través del tiempo y es
+controlada por distintas compuertas. Las compuertas aprenden a distinguir qué información es relevante y
+cuál no. Hay tres de ellas: la \textit{Compuerta de Entrada}, la \textit{Compuerta de Olvido}
 y la \textit{Compuerta de Salida}. La \textit{Compuerta de Entrada} $I^{(t)}$ (véase la figura
-\ref{fig:rnn_lstm}) determina cuanta información actual debe ser contemplada a través de la
-\textit{Memoria Candidata} $\tilde C^{(t)}$ para actualizar la \textit{Celda de Memoria} $C^{(t)}$.
+\ref{fig:rnn_lstm}) determina cuánta información actual debe ser contemplada a través de la
+\textit{Memoria Candidata} $\tilde{C}^{(t)}$ para actualizar la \textit{Celda de Memoria} $C^{(t)}$.
 La \textit{Compuerta de Olvido} $F^{(t)}$ indica qué información del pasado debe ser desechada de la
-\textit{Celda de Memoria} $C^{(t-1)}$ y la \textit{Compuerta de Salida} ayuda a determinar el nuevo
-estado $h^{(t)}$ via la \textit{Celda de Memoria} actual $C^{(t)}$.
+\textit{Celda de Memoria} $C^{(t-1)}$, y la \textit{Compuerta de Salida} ayuda a determinar el nuevo
+estado $h^{(t)}$ vía la \textit{Celda de Memoria} actual $C^{(t)}$.
+
 
 \begin{figure}[ht!]
 \centering
@@ -124,16 +127,17 @@ respectivamente.
 
 \subsubsection{GRU}
 
-\textbf{Gated Recurrent Units} o \textbf{GRU} por sus siglas en inglés, fueron propuestas en 2014
-\cite{GRU1} como una alternativa computacionalmente más rápida y con similar rendimiento que las
-\textit{LSTM} \cite{GRU2}. A diferencia de anteriores, las \textit{GRU} prescinden de la
+\textbf{Gated Recurrent Units} (\textbf{GRU}, por sus siglas en inglés) fueron propuestas en 2014
+\cite{GRU1} como una alternativa computacionalmente más rápida y con rendimiento similar al de las
+\textit{LSTM} \cite{GRU2}. A diferencia de estas últimas, las \textit{GRU} prescinden de la
 \textit{Celda de Memoria} y utilizan un par de compuertas (la \textit{Compuerta de Actualización} y
-la de \textit{Olvido}) para decidir que información aún es necesaria que esté codificada dentro del
+la \textit{Compuerta de Olvido}) para decidir qué información aún es necesaria que esté codificada dentro del
 estado oculto, véase la ecuación \ref{eq:gru_gates}.
-La \textit{Compuerta de Olvido} permite decidir que del pasado aún debe ser transmitido a futuros
-estados o de otro modo ser desechada. La \textit{Compuerta de Actualización} indica que información nueva es relevante y
+La \textit{Compuerta de Olvido} permite decidir qué del pasado aún debe ser transmitido a futuros
+estados o, de otro modo, ser desechada. La \textit{Compuerta de Actualización} indica qué información nueva es relevante y
 necesita ser incorporada al no estar codificada dentro del estado oculto,
 véase la ecuación \ref{eq:gru_out}.
+
 
 \begin{equation}
     \begin{split}
