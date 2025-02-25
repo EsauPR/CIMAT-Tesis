@@ -98,10 +98,44 @@ re-etiquetado solo como referencia adjunto en el Apéndice.
 
 \subsubsection{Procesamiento de los datos}
 
-El procesamiento de las imágenes radiográficas sigue un camino simple: se implementa un proceso de
-equalización por histograma, seguido de un redimensionamiento a $1024 \times 1024$ píxeles. Los datos
-de entrada al modelo neuronal son imágenes de 1024 columnas y 1024 filas con 3 canales idénticos.
-Siguiendo la propuesta de \textit{CheXNet}, se hace uso de múltiples funciones de pérdida tipo
+El procesamiento de las imágenes radiográficas sigue un camino simple: se realiza un redimensionamiento a
+$1024 \times 1024$ y $384 \times 384$ píxeles para cada modelo como es descrito en la siguiente sección. Dicho
+redimensionamiento se realiza mediante la interpolación basada en área; calculando el valor del píxel en la imagen de
+salida como el promedio de los píxeles que cubren la región correspondiente en la imagen de entrada. Este enfoque es
+especialmente útil para evitar artefactos y conservar la calidad de la imagen cuando se reduce su tamaño.
+Posteriormente, sigue un proceso de ecualización por histograma a cada imagen resultante, con la intención de mejorar
+el contraste de esta misma. La idea es distribuir los valores de intensidad de los píxeles de manera más uniforme en la
+imagen. La ecualización por histograma se realiza en el canal de luminancia de la imagen (Y), ya que es el canal que
+contiene la información de brillo de la imagen.
+El canal de luminancia se extrae de la imagen original en el espacio de color YUV y se equaliza. Finalmente, la imagen
+se reconstruye combinando el canal de luminancia ecualizado con los canales de crominancia originales.
+
+Como paso final del preprocesamiento de los datos, se realizó una normalización a la imágen usando los valores de
+media y desviación estándar del conjunto
+de datos de \text{ImageNet}. Básicamente, se ajustan los valores de los píxeles de la imagen para que tengan una
+distribución más uniforme y características similares a las imágenes de usadas para el modelo pre-entrenado.
+Cabe mencionar que cuando se aplica la ecualización de histograma al canal Y del espacio YUV, se ajusta el contraste de
+la imagen, mejorando la distribución de los niveles de brillo. Este paso realza detalles en la imagen, haciendo que las
+áreas oscuras sean más claras y viceversa. Después de esta ecualización, cuando se normaliza la imagen, la normalización
+se aplicará sobre los valores ajustados. La normalización tiene como objetivo ajustar los valores de los píxeles a un
+rango específico basado en la media y la desviación estándar de la base de datos original del modelo preentrado
+(\textit{ImageNEt}), pero no anula la ecualización de histograma aplicada previamente; es decir, ambos pasos son
+complementarios: la ecualización de histograma mejora la distribución del brillo y la normalización ajusta los valores
+de los píxeles para ser más adecuados para el modelo de aprendizaje automático. De los resultados observables de este
+proceso y como se ve en las imágenes de las secciones siguientes, no generaron artefactos en las dichas imágenes y al
+contrario su objetivo es mejorar su calidad y proceso de entrenamiento.
+
+Los datos de entrada al modelo neuronal basado en \textit{ResNet50} son imágenes de 1024 columnas y 1024 filas con 3
+canales idénticos y de 384 columnas y 384 filas con 3 canales idénticos para el modelo basado en \textit{ViT}.
+La principal decisión de la diferencia entre los tamaños de entrada de las imágenes radica en la arquitectura de la red
+neuronal y el costo en consumo de memoria de cada una limitada por la infraestrucura computacional usada.
+La red \textit{ResNet50} es una red convolucional profunda caracterizada por su capacidad de captar características
+espaciales locales mediante convoluciones. Por otro lado, la red \textit{ViT} es una red basada en transformers que
+captura relaciones a largo plazo y patrones globales en la imagen a través de la atención. Bajo esta premisa, creemos
+que la red de \textit{ViT} funciona bien con imágenes de menor tamaño, ya que los transformers no dependen tanto de las
+convoluciones locales como las redes convolucionales.
+
+Finalmente, siguiendo la propuesta de \textit{CheXNet}, se hace uso de múltiples funciones de pérdida tipo
 \textit{Binary Cross-Entropy} con distintos pesos para solventar el desbalanceamiento de clases.
 
 
@@ -120,7 +154,6 @@ respectivamente. Dichos pesos son calculados como sigue:
 \noindent donde $N$ es el tamaño del conjunto de datos, y $n_c$ el número de imágenes radiográficas con
 etiquetas $c$ (el número de elementos del vector de la $c$-ésima clase iguales a 1). Nótese que los
 pesos son inversamente proporcionales al número de casos en la clase.
-
 
 
 \section{Arquitecturas usadas}
@@ -773,7 +806,7 @@ que los resultados obtenidos también superan a aquellos reportados por otros m�
 corresponde a la media de 1000 salidas usando \textit{boostraping} para un Intervalo de Confianza del
 $95\%$ \cite{rajpurkar2018deep}. Una actualización reciente de la implementación de \textit{CheXNet} en
 el repositorio \cite{chexnet_code} reporta un AUC-ROC para \textit{Global-14} igual a 0.847. La última
-columna en la tabla 7 presenta el rendimiento promedio para los radiólogos que evalúan la radiografía
+columna en la \ref{table_roc_auc} presenta el rendimiento promedio para los radiólogos que evalúan la radiografía
 para \textit{ChestX-ray14}. Para mayor detalle del cómputo de la evaluación de los radiólogos, véase
 \cite{rajpurkar2018deep}. Las marcas con asterisco $(*)$ indican donde los radiólogos tienen mejor
 rendimiento que cualquiera de los modelos evaluados. La tabla \ref{table_dl_human} resume el rendimiento
@@ -807,8 +840,8 @@ cuenta \textit{COVID-19}).
         Edema	        &	0.850	&	0.820	&	0.849	&	0.846	&\bf{0.888}	&	0.879	& 0.828 &	0.910*	\\
         Consolidation	&	0.754	&	0.787	&	0.754	&	0.749	&\bf{0.790}	&	0.776	& 0.715 &	0.841*	\\
         \hline
-        COVID-19	    &	---	    &	---	    &	---	    &	---	    &	---	    &\bf{0.991}	& \bf 0.982 &	---	    \\
-        Healthy	        &	---	    &	---	    &	---	    &	0.727	&	---	    &	0.736	& 0.705 &	---	    \\
+        COVID-19	    &	---	    &	---	    &	---	    &	---	    &	---	    &\bf{0.991}	& 0.982 &	---	    \\
+        Healthy	        &	---	    &	---	    &	---	    &	0.727	&	---	    &\bf{0.736}	& 0.705 &	---	    \\
         \hline\hline
         Global-14	    &	0.816	&	0.775	&	0.823	&	0.807	&	0.841	&\bf{0.842}	& 0.778 &	0.872*	\\
         Global-15	    &	---	    &	---	    &	---	    &	---	    &	---	    &\bf{0.852}	& 0.791 &	---	    \\
@@ -1659,6 +1692,24 @@ siendo indicativo de que el modelo basado en \textit{transfers} puede necesitar 
 al momento de extender el detector a otras patologías.
 
 
+Los resultados obtenidos en la detección de tuberculosis son prometedores al utilizar el modelo propuesto que abarca 15
+patologías. Sin embargo, es necesario hacer un ajuste fino para mejorar la detección de nuevas enfermedades y evitar
+falsos positivos en otras patologías, como se observa en el caso de la tuberculosis. Es importante mencionar que, aunque
+la tuberculosis puede causar un tipo de neumonía (neumonía tuberculosa o neumonitis tuberculosa), de manera similar,
+el COVID-19 puede provocar neumonía viral. Ambas comparten características radiológicas con otras formas de neumonía,
+como la inflamación pulmonar y la acumulación de líquido en los alvéolos. Así mismo, observando la Tabla
+\ref{table_tb1_15} indica que el modelo sin extensión presenta confusión en la clasificación de tuberculosis, COVID-19
+y neumonía. Esto sugiere un posible sesgo hacia la clasificación de patologías no vistas anteriormente como COVID-19,
+cuando estas presentan características similares a las provocadas por la neumonía. La inclusión de más patologías podría
+mejorar significativamente la detección de enfermedades con características similares a las causadas por la neumonía.
+
+No obstante, la Tabla \ref{table_tb1_15} muestra que el modelo alcanza un AUC-ROC de 0.991 para COVID-19, lo cual es un
+valor significativamente alto que indica una discriminación efectiva entre COVID-19 y otras patologías pulmonares,
+incluyendo la diferenciación de otros casos de neumonía. Este resultado respalda la hipótesis de que el modelo es capaz
+de aprender a identificar características relevantes comunes en las neumonías y diferenciar entre diversas patologías,
+lo que explica su alto rendimiento en la clasificación de COVID-19.
+
+
 \begin{table}[!ht]
     \centering
     \begin{tabular}{lcr}
@@ -1707,7 +1758,7 @@ al momento de extender el detector a otras patologías.
     \multicolumn{1}{|l|}{Pneumothorax}  & \multicolumn{1}{r|}{488}        & \multicolumn{1}{r|}{0}     \\ \hline
     \multicolumn{1}{|l|}{Pleural-Thickening }  & \multicolumn{1}{r|}{480}        & \multicolumn{1}{r|}{8}     \\ \hline
     \multicolumn{1}{|l|}{Fibrosis}  & \multicolumn{1}{r|}{380}        & \multicolumn{1}{r|}{108}     \\ \hline
-    \multicolumn{1}{|l|}{Edema}  & \multicolumn{1}{r|}{488}        & \multicolumn{1}{r|}{488}     \\ \hline
+    \multicolumn{1}{|l|}{Edema}  & \multicolumn{1}{r|}{0}        & \multicolumn{1}{r|}{488}     \\ \hline
     \multicolumn{1}{|l|}{Consolidation}  & \multicolumn{1}{r|}{405}        & \multicolumn{1}{r|}{83}     \\ \hline
 
 
