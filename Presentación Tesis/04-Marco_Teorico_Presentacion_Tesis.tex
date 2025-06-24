@@ -1,0 +1,59 @@
+% 04-Marco_Teorico_Presentacion_Tesis.tex
+% Diapositivas de la sección Marco Teórico
+
+\section{Marco Teórico}
+
+\begin{frame}
+\frametitle{Redes Neuronales Convolucionales (CNN)}
+\begin{itemize}
+    \item Las CNN son la base del análisis de imágenes médicas.
+    \item Permiten extraer características espaciales relevantes de las imágenes.
+    \item Se utilizan ampliamente en tareas de clasificación, segmentación y detección.
+\end{itemize}
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{../Chapters/2. Transformer/Figures/rnn/rnn_cell.jpg}
+    \caption{Esquema de una red neuronal (referencial).}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{ResNet50: Arquitectura Residual}
+\begin{itemize}
+    \item ResNet50 es una arquitectura profunda con 50 capas y conexiones residuales.
+    \item Facilita el entrenamiento de redes muy profundas evitando el problema del desvanecimiento del gradiente.
+    \item En esta tesis, ResNet50 se emplea como backbone para la extracción de características en imágenes de rayos X.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Redes Neuronales Recurrentes (RNN)}
+\begin{itemize}
+    \item Las RNN procesan secuencias de datos, manteniendo información temporal.
+    \item Son útiles para tareas donde el contexto previo es importante.
+    \item Existen variantes como LSTM y GRU que mejoran la capacidad de memoria.
+\end{itemize}
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../Chapters/2. Transformer/Figures/rnn/rnn_cgraph.png}
+    \caption{Grafo computacional de una RNN desenrollada.}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Mecanismos de Atención y Transformers}
+\begin{itemize}
+    \item Los mecanismos de atención permiten al modelo enfocarse en partes relevantes de la entrada.
+    \item Los Transformers revolucionaron el procesamiento de secuencias al permitir el procesamiento paralelo y el uso de atención múltiple (Multi-Head Attention).
+    \item Vision Transformer (ViT) aplica estos conceptos a imágenes.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Resumen del Marco Teórico}
+\begin{itemize}
+    \item Se combinan arquitecturas convolucionales (ResNet50) y modelos basados en atención (Transformers) para la detección de patologías pulmonares.
+    \item El uso de Transfer Learning y Fine-Tuning permite adaptar modelos preentrenados a imágenes médicas.
+    \item Estas técnicas mejoran la precisión y la interpretabilidad en el diagnóstico asistido por IA.
+\end{itemize}
+\end{frame}

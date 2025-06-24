@@ -1,0 +1,79 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+
+\usepackage{utopia}
+\setbeamerfont{caption}{series=\normalfont,size=\fontsize{8}{10}}
+
+\usetheme{Madrid}
+\usecolortheme{default}
+
+\definecolor{RedCIMAT}{rgb}{0.44921875, 0.13671875, 0.234375}
+\usecolortheme[named=RedCIMAT]{structure}
+
+\setbeamertemplate{caption}[numbered]
+
+\newcommand\Fontvi{\fontsize{10}{12.2}\selectfont}
+\newcommand\FontEq{\fontsize{8}{12.2}\selectfont}
+
+%------------------------------------------------------------
+% Información de portada
+\title[Detección de patologías pulmonares]{Detección de patologías pulmonares a través de modelos de aprendizaje profundo}
+\subtitle{Tesis de Maestría}
+\author[Oscar Esaú Peralta]{Oscar Esaú Peralta Rosales\\Director: Mariano JJ Rivera Meraz}
+\institute[CIMAT]{Centro de Investigación en Matemáticas A.C.}
+\date{Junio 2025}
+\logo{\includegraphics[height=0.7cm]{logo.jpg}}
+%------------------------------------------------------------
+
+\AtBeginSection[]
+{
+  \begin{frame}
+    \frametitle{Tabla de Contenido}
+    \tableofcontents[currentsection]
+  \end{frame}
+}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+\frametitle{Tabla de Contenido}
+\tableofcontents
+\end{frame}
+
+% --- INTRODUCCIÓN ---
+
+\input{01-Introduccion_Presentacion_Tesis}
+
+% --- MOTIVACIÓN Y OBJETIVOS ---
+
+\input{02-Motivacion_Objetivos_Presentacion_Tesis}
+
+% --- MARCO TEÓRICO ---
+
+\input{04-Marco_Teorico_Presentacion_Tesis}
+
+% --- METODOLOGÍA ---
+
+\input{05-Metodologia_Presentacion_Tesis}
+
+% --- RESULTADOS ---
+
+\input{06-Resultados_Presentacion_Tesis}
+
+% --- CONCLUSIONES Y TRABAJO FUTURO ---
+
+\input{07-Conclusiones_TrabajoFuturo_Presentacion_Tesis}
+
+% --- AGRADECIMIENTOS ---
+
+\input{08-Agradecimientos_Presentacion_Tesis}
+
+\begin{frame}
+\begin{center}
+    Gracias por su atención.
+\end{center}
+\end{frame}
+
+\end{document}
