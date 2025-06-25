@@ -6,7 +6,7 @@
 
 ### Slide 1: Contexto: COVID-19 y Salud Pública
 
-"La pandemia de COVID-19 ha tenido un impacto sin precedentes en la salud y el bienestar de las personas, así como en el funcionamiento de los sistemas de salud a nivel mundial. La alta demanda de atención médica provocó la saturación de hospitales y evidenció la vulnerabilidad de los trabajadores de la salud. En este contexto, surge la necesidad de desarrollar métodos que apoyen el diagnóstico y tratamiento de enfermedades pulmonares."
+"La pandemia de COVID-19 ha tenido un impacto sin precedentes en la salud y el bienestar de las personas, así como en el funcionamiento de los sistemas de salud a nivel mundial. La alta demanda de atención médica provocó la saturación de hospitales y evidenció la vulnerabilidad de los trabajadores de la salud. En este contexto, surge la necesidad urgente de desarrollar métodos que apoyen el diagnóstico y tratamiento de enfermedades pulmonares."
 
 ---
 
@@ -22,18 +22,6 @@
 
 ---
 
-### Slide 4: Limitaciones de los Métodos Actuales
+### Slide 4: Estado Actual de la Investigación
 
-"A pesar de los avances, los métodos actuales enfrentan limitaciones importantes: sesgos por bases de datos pequeñas o no normalizadas, enfoques limitados a enfermedades específicas, falta de regulación y explicabilidad, y escasez de recursos para el procesamiento y etiquetado de imágenes."
-
----
-
-### Slide 5: Desafíos y Necesidades
-
-"Estos desafíos requieren soluciones innovadoras que aprovechen el potencial del aprendizaje automático. Es fundamental superar barreras técnicas, éticas y sociales para lograr una aplicación clínica efectiva. Además, la comunidad científica trabaja continuamente para mejorar y diversificar las bases de datos de imágenes."
-
----
-
-### Slide 6: Propuesta de la Tesis
-
-"En este trabajo se propone el desarrollo de modelos basados en redes neuronales convolucionales y Transformers para la detección de 15 patologías pulmonares, incluyendo COVID-19, usando imágenes de rayos X de diferentes fuentes. La evaluación se realiza mediante métricas de clasificación y visualización de regiones de interés, buscando aportar herramientas robustas y útiles para el diagnóstico médico."
+"A pesar de los avances en el desarrollo de métodos basados en aprendizaje automático, los enfoques actuales enfrentan limitaciones importantes: sesgos por bases de datos pequeñas o no normalizadas, enfoques limitados a enfermedades específicas, y falta de regulación, validación y explicabilidad de los modelos. Estas limitaciones dificultan su aplicación clínica efectiva."

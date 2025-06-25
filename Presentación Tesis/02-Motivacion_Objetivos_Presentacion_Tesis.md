@@ -12,16 +12,22 @@
 
 ### Slide 2: Limitaciones de los Métodos Existentes
 
-"A pesar de los avances, los métodos actuales presentan limitaciones importantes, como el sesgo de los datos y el enfoque en enfermedades específicas. Además, muchos modelos carecen de generalización y explicabilidad, lo que dificulta su adopción clínica. Por ello, es necesario desarrollar métodos robustos y confiables para el diagnóstico automatizado."
+"A pesar de los avances, los métodos actuales presentan limitaciones importantes, como el sesgo de los datos y el enfoque en enfermedades específicas. Además, muchos modelos carecen de generalización y explicabilidad, lo que dificulta su adopción clínica. También existe escasez de recursos para el procesamiento y etiquetado de imágenes."
 
 ---
 
 ### Slide 3: Propuesta de la Tesis
 
-"En este trabajo se propone desarrollar modelos de Deep Learning capaces de detectar múltiples patologías pulmonares, incluyendo COVID-19, utilizando imágenes de rayos X provenientes de diferentes fuentes y regiones. Se comparan modelos basados en Transformers y en redes convolucionales, ambos empleando técnicas de Transfer Learning."
+"En este trabajo se propone desarrollar modelos de Deep Learning capaces de detectar múltiples patologías pulmonares, incluyendo COVID-19, utilizando imágenes de rayos X provenientes de diferentes fuentes y regiones. Se comparan modelos basados en Transformers y en redes convolucionales, ambos empleando técnicas de Transfer Learning, y se evalúan mediante métricas de clasificación y visualización de regiones de interés."
 
 ---
 
 ### Slide 4: Ventajas del Modelo Propuesto
 
 "El modelo propuesto ofrece varias ventajas: permite un diagnóstico múltiple y holístico, es robusto ante la variabilidad de los datos, y es interpretable gracias a la generación de mapas de calor que validan las predicciones. Es importante destacar que estos modelos buscan ser una herramienta de apoyo para el análisis exploratorio, no un reemplazo del médico."
+
+---
+
+### Slide 5: Objetivos Específicos
+
+"Los objetivos específicos de esta investigación incluyen: desarrollar modelos de clasificación multiclase para 15 patologías pulmonares, implementar y comparar arquitecturas basadas en Transformers y CNNs, evaluar la robustez de los modelos ante diferentes fuentes de datos, y generar visualizaciones interpretables para validación clínica."
