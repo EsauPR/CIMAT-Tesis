@@ -6,13 +6,13 @@
 
 ### Slide 1: Motivación: Problema Relevante
 
-"La detección de COVID-19 y otras patologías pulmonares mediante imágenes de rayos X representa un reto relevante y desafiante. Un diagnóstico temprano y preciso puede mejorar significativamente el pronóstico y tratamiento de los pacientes, además de reducir el riesgo de contagio y la carga sobre el sistema de salud."
+"La detección de COVID-19 y otras patologías pulmonares mediante imágenes de rayos X representa un reto relevante y desafiante. Puesto que un diagnóstico temprano y preciso puede mejorar significativamente el pronóstico y tratamiento de los pacientes, además de reducir el riesgo de contagio y la carga sobre el sistema de salud."
 
 ---
 
-### Slide 2: Limitaciones de los Métodos Existentes
+### Slide 2: Oportunidades y Retos Específicos
 
-"A pesar de los avances, los métodos actuales presentan limitaciones importantes, como el sesgo de los datos y el enfoque en enfermedades específicas. Además, muchos modelos carecen de generalización y explicabilidad, lo que dificulta su adopción clínica. También existe escasez de recursos para el procesamiento y etiquetado de imágenes."
+"En el contexto actual, existe una oportunidad única para mejorar el diagnóstico automatizado de enfermedades pulmonares mediante el uso de grandes volúmenes de datos y nuevas arquitecturas de deep learning. Sin embargo, persisten retos específicos como la integración de datos heterogéneos, la necesidad de modelos que sean interpretables y validados clínicamente, y la adaptación a escenarios reales con recursos limitados. Estos retos motivan el desarrollo de soluciones innovadoras y aplicables en la práctica clínica."
 
 ---
 
