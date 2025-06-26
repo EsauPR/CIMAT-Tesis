@@ -12,8 +12,33 @@
 \end{itemize}
 \begin{figure}[ht!]
     \centering
-    \includegraphics[width=0.5\textwidth]{../Chapters/2. Transformer/Figures/rnn/rnn_cell.jpg}
-    \caption{Esquema de una red neuronal (referencial).}
+    \includegraphics[width=0.5\textwidth]{images/convolutional_network.png}
+    \caption{Esquema de referencia de una red neuronal convolucional.}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Estructura de una red convolucional}
+\begin{itemize}
+    \item \textbf{Capa de Convolución}: Extrae características locales (bordes, texturas, patrones) mediante filtros (kernels).
+    \item \textbf{Capa de Activación} (ReLU, LeakyReLU, etc.): Introduce no linealidad y elimina valores negativos.
+    \item \textbf{Capa de Pooling}: Reduce la dimensionalidad conservando la información más relevante.
+    \item \textbf{Capas Fully Connected} (Dense): Al final de la red, se aplanan los feature maps y se conectan a neuronas tradicionales para clasificación/regresión.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Aplicaciones de una red convolucional}
+\begin{itemize}
+    \item \textbf{Clasificación de imágenes}: ResNet, VGG
+    \item \textbf{Detección de objetos}: YOLO, Faster R-CNN
+    \item \textbf{Segmentación semántica}: U-Net
+    \item \textbf{Procesamiento de lenguaje natural}: CNNs para texto
+\end{itemize}
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.4\textwidth]{images/cnn_applications.png}
+    \caption{Aplicaciones de una red neuronal convolucional.}
 \end{figure}
 \end{frame}
 
@@ -23,6 +48,17 @@
     \item ResNet50 es una arquitectura profunda con 50 capas y conexiones residuales.
     \item Facilita el entrenamiento de redes muy profundas evitando el problema del desvanecimiento del gradiente.
     \item En esta tesis, ResNet50 se emplea como backbone para la extracción de características en imágenes de rayos X.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{¿Por qué ResNet50 para esta tesis?}
+\begin{itemize}
+    \item \textbf{Excelente rendimiento}: Probado en tareas de clasificación de imágenes médicas
+    \item \textbf{Arquitectura establecida}: Ampliamente validada en la comunidad científica
+    \item \textbf{Balance óptimo}: Entre profundidad y eficiencia computacional
+    \item \textbf{Transfer learning efectivo}: Desde ImageNet a imágenes médicas
+    \item \textbf{Capacidad de captura}: Características complejas en imágenes de rayos X
 \end{itemize}
 \end{frame}
 
