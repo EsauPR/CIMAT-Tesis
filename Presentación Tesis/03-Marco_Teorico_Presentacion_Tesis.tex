@@ -49,12 +49,17 @@
     \item Facilita el entrenamiento de redes muy profundas evitando el problema del desvanecimiento del gradiente.
     \item En esta tesis, ResNet50 se emplea como backbone para la extracción de características en imágenes de rayos X.
 \end{itemize}
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/resnet50_architecture.png}
+    \caption{Arquitectura base de un modelo ResNet.}
+\end{figure}
 \end{frame}
 
 \begin{frame}
 \frametitle{¿Por qué ResNet50 para esta tesis?}
 \begin{itemize}
-    \item \textbf{Excelente rendimiento}: Probado en tareas de clasificación de imágenes médicas
+    \item \textbf{Buen rendimiento}: Probado en tareas de clasificación de imágenes médicas
     \item \textbf{Arquitectura establecida}: Ampliamente validada en la comunidad científica
     \item \textbf{Balance óptimo}: Entre profundidad y eficiencia computacional
     \item \textbf{Transfer learning efectivo}: Desde ImageNet a imágenes médicas
