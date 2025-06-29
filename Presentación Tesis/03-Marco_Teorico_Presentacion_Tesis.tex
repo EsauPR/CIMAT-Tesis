@@ -76,7 +76,7 @@
 \end{itemize}
 \begin{figure}[ht!]
     \centering
-    \includegraphics[width=0.7\textwidth]{../Chapters/2. Transformer/Figures/rnn/rnn_cgraph.png}
+    \includegraphics[width=0.4\textwidth]{images/rnn.png}
     \caption{Grafo computacional de una RNN desenrollada.}
 \end{figure}
 \end{frame}
@@ -88,13 +88,72 @@
     \item Los Transformers revolucionaron el procesamiento de secuencias al permitir el procesamiento paralelo y el uso de atención múltiple (Multi-Head Attention).
     \item Vision Transformer (ViT) aplica estos conceptos a imágenes.
 \end{itemize}
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.3\textwidth]{images/self-attention-final.png}
+    \caption{Ilustración de un mecanismo de atención.}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Mecanismos de Atención y Transformers}
+\begin{table}[h!]
+    \centering
+    \fontsize{8}{9}\selectfont
+    \begin{tabular}{|p{3cm}|p{3.5cm}|p{3.5cm}|}
+        \hline
+        \textbf{Característica} & \textbf{Transformers (con atención)} & \textbf{RNNs / BiRNNs} \\
+        \hline
+        Paralelización & Totalmente paralelizable durante el entrenamiento & Procesamiento secuencial, difícil de paralelizar \\
+        \hline
+        Dependencias a largo plazo & Captura relaciones entre tokens distantes fácilmente & Difícil de mantener contexto a largo plazo \\
+        \hline
+        Velocidad de entrenamiento & Más rápido gracias a la paralelización & Más lento por la naturaleza secuencial \\
+        \hline
+        Acceso al contexto global & Cada token puede atender a todos los demás directamente & Acceso limitado al contexto anterior (o posterior en BiRNNs) \\
+        \hline
+        Escalabilidad & Escala bien con grandes cantidades de datos y capas & Escalabilidad limitada por problemas de gradiente \\
+        \hline
+        Multi-head attention & Permite aprender múltiples representaciones en paralelo & No tiene un mecanismo equivalente \\
+        \hline
+        Representación contextual rica & Cada token se representa en función de todos los demás & Representación más local y secuencial \\
+        \hline
+    \end{tabular}
+    \caption{Comparación entre Transformers y RNNs/BiRNNs en tareas de modelado de secuencias}
+    \label{tab:comparacion_transformers_rnns}
+\end{table}    
 \end{frame}
 
 \begin{frame}
 \frametitle{Resumen del Marco Teórico}
 \begin{itemize}
-    \item Se combinan arquitecturas convolucionales (ResNet50) y modelos basados en atención (Transformers) para la detección de patologías pulmonares.
-    \item El uso de Transfer Learning y Fine-Tuning permite adaptar modelos preentrenados a imágenes médicas.
-    \item Estas técnicas mejoran la precisión y la interpretabilidad en el diagnóstico asistido por IA.
+    \item Se presentan dos modelos de arquitecturas para el procesamiento y detección de patologías pulmonares
+        \begin{itemize}
+            \item Convolucionales (ResNet50). Extrayendo características de las imágenes, a través de la convolución de filtros.
+            \item Modelos basados en atención (Transformers). Procesando imágenes como secuencias de datos, manteniendo información temporal.
+        \end{itemize}
 \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Resumen del Marco Teórico}
+\begin{table}[h!]
+    \centering
+    \fontsize{8}{9}\selectfont
+    \begin{tabular}{|p{3cm}|p{3.5cm}|p{3.5cm}|}
+        \hline
+        \textbf{Aspecto} & \textbf{CNNs} & \textbf{Vision Transformers (ViT)} \\
+        \hline
+        Extracción de características & Local y jerárquica & Global desde el inicio \\
+        \hline
+        Interpretación espacial & Implícita por la estructura convolucional & Necesita codificación posicional \\
+        \hline
+        Campo receptivo (Receptive field) & Aumenta con la profundidad & Global desde la primera capa \\
+        \hline
+        Transferencia de conocimiento & Muy efectiva con preentrenamiento & Requiere mucho preentrenamiento para funcionar bien \\
+        \hline
+    \end{tabular}
+    \caption{Comparación entre redes convolucionales (CNNs) y Vision Transformers (ViT)}
+    \label{tab:comparacion_cnns_vit}
+\end{table}
 \end{frame}

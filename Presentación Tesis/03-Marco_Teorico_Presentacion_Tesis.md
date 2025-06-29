@@ -45,7 +45,7 @@ Una CNN típica consta de las siguientes capas principales
 
 ### Slide 3: Redes Neuronales Recurrentes (RNN)
 
-"Las redes neuronales recurrentes, o RNN, procesan secuencias de datos y mantienen información temporal, lo que es útil para tareas donde el contexto previo es importante. Existen variantes como LSTM y GRU que mejoran la capacidad de memoria de estas redes. Aquí se muestra el grafo computacional de una RNN desenrollada."
+"Las redes neuronales recurrentes, o RNN, procesan secuencias de datos y mantienen información temporal, lo que es útil para tareas donde el contexto previo es importante. Existen variantes como LSTM y GRU que mejoran la capacidad de memoria de estas redes, agregando la capacidad de discriminar y preservar parte de la información temporal a corto o largo plazo."
 
 ---
 
@@ -58,3 +58,12 @@ Una CNN típica consta de las siguientes capas principales
 ### Slide 5: Resumen del Marco Teórico
 
 "En resumen, se combinan arquitecturas convolucionales como ResNet50 y modelos basados en atención como los Transformers para la detección de patologías pulmonares. El uso de Transfer Learning y Fine-Tuning permite adaptar modelos preentrenados a imágenes médicas, mejorando la precisión y la interpretabilidad en el diagnóstico asistido por inteligencia artificial."
+
+### Slide 5: Resumen del Marco Teórico
+
+"A diferencia de las redes convolucionales, los transformers en lugar de aplicar convoluciones divide la imagen en pequeños segmentos.
+
+El mecanismo de atención se aplica sobre todos los parches simultaneamentem Esto permite que cada parche vea a todos los demás, capturando relaciones espaciales globales desde el principio.
+
+Como los transformers no tienen una noción inherente del orden o la estructura espacial, se agregan codificaciones posicionales para que el modelo sepa dónde está cada parche en la imagen.
+"
