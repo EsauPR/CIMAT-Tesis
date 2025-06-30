@@ -16,9 +16,52 @@
 \frametitle{Bases de Datos y Composición}
 \begin{itemize}
     \item Uso del dataset ChestX-ray14 (112,120 imágenes, 30,805 pacientes, 14 patologías).
+    \begin{itemize}
+        \item National Institutes of Health (NIH)
+    \end{itemize}
     \item Extensión con imágenes de COVID-19 y saludables.
+    \begin{itemize}
+        \item bimcv-covid19. Banco de Imágenes Médicas de la Comunidad Valenciana (BIMCV)
+        \item covid-chestxray-dataset. Universidad de Montreal
+    \end{itemize}
     \item Re-etiquetado de datos usando modelos automáticos para mejorar la calidad de las etiquetas.
 \end{itemize}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Composición del Dataset por Patología}
+    \begin{table}[!ht]
+        \centering
+        \fontsize{7}{8}\selectfont
+        \begin{tabular}{| r |l | c | c | c |}
+         \hline
+         Clase & Patología & Fuente & Entrenamiento & Prueba  \\
+         \hline\hline
+         1  & Cardiomegaly       & 1 & 5897  & 1069 \\
+         2  & Emphysema          & 1 & 3496  & 1093 \\
+         3  & Effusion           & 1 & 13737 & 4658 \\
+         4  & Hernia             & 1 & 4470  & 86   \\
+         5  & Infiltration       & 1 & 17122 & 6112 \\
+         6  & Mass               & 1 & 7862  & 1748 \\
+         7  & Nodule             & 1 & 9250  & 1623 \\
+         8  & Atelectasis        & 1 & 13762 & 3279 \\
+         9  & Pneumothorax       & 1 & 6303  & 2665 \\
+         10 & Pleural-Thick.     & 1 & 8022  & 1143 \\
+         11 & Pneumonia          & 1 & 6031  & 555  \\
+         12 & Fibrosis           & 1 & 9072  & 435  \\
+         13 & Edema              & 1 & 6953  & 925  \\
+         14 & Consolidation      & 1 & 9796  & 1815 \\
+         ---&  Healthy           & 1 & 35645 & 9861 \\
+         \hline
+         11 & Pneumonia          & 2 & 5475  & 594  \\
+         15 & COVID-19           & 2 & 2873  & 1904 \\
+         ---&  Healthy           & 2 & 8661  & 1926 \\
+         \hline
+        \end{tabular}
+        \caption{Número de radiografías de pecho por patología en el conjunto de datos. Fuentes (DS): (1) ChestX-ray14,
+                 (2) BIMCV-COVID19 y covid-chestxray-dataset. Pleural-Thick. es una abreviación para Pleural-Thickening.}
+        \label{table_dataset}
+    \end{table}
 \end{frame}
 
 \begin{frame}
