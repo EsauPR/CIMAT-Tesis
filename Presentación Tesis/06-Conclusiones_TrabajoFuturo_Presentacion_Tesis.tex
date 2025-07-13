@@ -1,33 +1,262 @@
-% 07-Conclusiones_TrabajoFuturo_Presentacion_Tesis.tex
+% 06-Conclusiones_TrabajoFuturo_Presentacion_Tesis.tex
 % Diapositivas de la sección Conclusiones y Trabajo Futuro
 
 \section{Conclusiones y Trabajo Futuro}
 
 \begin{frame}
-\frametitle{Conclusiones}
+\frametitle{Logros Principales}
 \begin{itemize}
-    \item Se desarrollaron dos modelos de aprendizaje profundo para el diagnóstico de 15 patologías pulmonares, incluyendo COVID-19, a partir de imágenes de rayos X.
-    \item Ambos modelos muestran rendimiento comparable o superior al estado del arte, especialmente en la detección de COVID-19.
-    \item El uso de Transfer Learning y arquitecturas como ResNet50 y Vision Transformer permite extender fácilmente la detección a nuevas patologías.
+    \item \textbf{Desarrollo exitoso} de dos modelos de aprendizaje profundo para 15 patologías pulmonares
+    \begin{itemize}
+        \item ResNet50: AUC-ROC Global-15 = 0.852 (nuevo estándar)
+        \item ViT: AUC-ROC Global-15 = 0.791 (limitado por resolución)
+    \end{itemize}
+    \item \textbf{Rendimiento excepcional en COVID-19}
+    \begin{itemize}
+        \item ResNet50: AUC-ROC = 0.991, F1-Score = 0.799
+        \item ViT: AUC-ROC = 0.982, F1-Score = 0.801
+    \end{itemize}
+    \item \textbf{Superación del estado del arte} en múltiples patologías
+    \item \textbf{Capacidad de extensión} demostrada con tuberculosis
 \end{itemize}
 \end{frame}
 
 \begin{frame}
-\frametitle{Ventajas y Limitaciones}
+\frametitle{Contribuciones Científicas}
 \begin{itemize}
-    \item Modelos robustos y precisos, útiles como herramienta de apoyo para radiólogos.
-    \item Facilidad de extensión a otras enfermedades pulmonares, como la tuberculosis.
-    \item Limitaciones: calidad y representatividad de los datos, falta de validación clínica, y recursos computacionales limitados.
+    \item \textbf{Introducción de Vision Transformers} en análisis de imágenes médicas
+    \begin{itemize}
+        \item Demostración de viabilidad vs CNNs tradicionales
+        \item Requiere mayor ajuste pero ofrece atención global
+    \end{itemize}
+    \item \textbf{Estrategia de Transfer Learning} de tres etapas
+    \begin{itemize}
+        \item Entrenamiento inicial (backbone congelado)
+        \item Fine-tuning (últimas capas)
+        \item Full-tuning (modelo completo)
+    \end{itemize}
+    \item \textbf{Preservación del rendimiento} en patologías originales
+    \item \textbf{Incorporación exitosa} de COVID-19 sin degradación
 \end{itemize}
 \end{frame}
 
 \begin{frame}
-\frametitle{Trabajo Futuro}
+\frametitle{Capacidad de Extensión Demostrada}
 \begin{itemize}
-    \item Mejorar la calidad y diversidad de las bases de datos de imágenes.
-    \item Explorar nuevas arquitecturas y técnicas de aprendizaje profundo.
-    \item Incorporar otras modalidades de imagen, como tomografía computarizada.
-    \item Desarrollar herramientas visuales y mapas de calor para facilitar el diagnóstico.
-    \item Validación clínica y regulación de los modelos para su uso real.
+    \item \textbf{Extensión a tuberculosis} exitosa
+    \begin{itemize}
+        \item F1-Score: 0.707
+        \item Accuracy: 0.846
+        \item Verdaderos positivos: 388/488 casos
+    \end{itemize}
+    \item \textbf{Comparabilidad} con métodos específicos para tuberculosis
+    \item \textbf{Plataforma versátil} para futuras patologías
+    \item \textbf{Proceso de extensión} simple y eficiente
+    \begin{itemize}
+        \item Reutilización del backbone pre-entrenado
+        \item Adición de rama clasificadora específica
+        \item Entrenamiento solo de nuevas capas
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Comparación con Radiólogos Humanos}
+\begin{columns}
+\column{0.5\textwidth}
+\textbf{Modelos superan a radiólogos en:}
+\begin{itemize}
+    \item Emphysema (0.938 vs 0.911)
+    \item Nodule (0.806 vs 0.899*)
+    \item Pneumothorax (0.906 vs 0.940*)
+    \item Pleural-Thickening (0.820 vs 0.779)
+    \item Fibrosis (0.852 vs 0.897*)
+\end{itemize}
+
+\column{0.5\textwidth}
+\textbf{Radiólogos mantienen ventaja en:}
+\begin{itemize}
+    \item Effusion (0.900*)
+    \item Hernia (0.985*)
+    \item Mass (0.886*)
+    \item Edema (0.910*)
+    \item Consolidation (0.841*)
+\end{itemize}
+
+\textbf{Conclusión:} Herramientas de apoyo, no reemplazo
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Limitaciones Identificadas}
+\begin{itemize}
+    \item \textbf{Calidad y representatividad de datos}
+    \begin{itemize}
+        \item Diversidad geográfica limitada
+        \item Variabilidad en dispositivos de adquisición
+        \item Posibles sesgos en etiquetado
+    \end{itemize}
+    \item \textbf{Falta de validación clínica}
+    \begin{itemize}
+        \item No probado en entornos hospitalarios reales
+        \item Ausencia de estudios prospectivos
+        \item Necesidad de certificación médica
+    \end{itemize}
+    \item \textbf{Recursos computacionales}
+    \begin{itemize}
+        \item ViT limitado a 384x384 píxeles
+        \item Consumo de memoria alto
+        \item Tiempo de entrenamiento extenso
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Líneas de Trabajo Futuro - Arquitecturas}
+\begin{itemize}
+    \item \textbf{Exploración de nuevas arquitecturas}
+    \begin{itemize}
+        \item EfficientNet y DenseNet avanzados
+        \item Variantes mejoradas de Vision Transformers
+        \item Arquitecturas híbridas CNN-Transformer
+    \end{itemize}
+    \item \textbf{Técnicas de atención sofisticadas}
+    \begin{itemize}
+        \item Mecanismos de atención adaptativos
+        \item Atención multi-escala
+        \item Atención específica para patologías
+    \end{itemize}
+    \item \textbf{Interpretabilidad mejorada}
+    \begin{itemize}
+        \item Técnicas de explicabilidad avanzadas
+        \item Visualización de decisiones
+        \item Justificación clínica de predicciones
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Líneas de Trabajo Futuro - Datos y Validación}
+\begin{itemize}
+    \item \textbf{Mejora de bases de datos}
+    \begin{itemize}
+        \item Diversificación geográfica y demográfica
+        \item Más patologías y variaciones
+        \item Datos de alta calidad y anotación precisa
+    \end{itemize}
+    \item \textbf{Validación clínica rigurosa}
+    \begin{itemize}
+        \item Estudios prospectivos multicéntricos
+        \item Validación en entornos hospitalarios reales
+        \item Comparación con estándares clínicos
+    \end{itemize}
+    \item \textbf{Regulación y certificación}
+    \begin{itemize}
+        \item Cumplimiento de estándares médicos
+        \item Certificación FDA/CE para uso clínico
+        \item Protocolos de seguridad y privacidad
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Líneas de Trabajo Futuro - Multimodalidad}
+\begin{itemize}
+    \item \textbf{Integración de múltiples modalidades}
+    \begin{itemize}
+        \item Tomografía computarizada (CT)
+        \item Resonancia magnética (MRI)
+        \item Ultrasonido pulmonar
+    \end{itemize}
+    \item \textbf{Modelos multimodales}
+    \begin{itemize}
+        \item Fusión de información de diferentes fuentes
+        \item Arquitecturas que procesen múltiples tipos de imagen
+        \item Técnicas de alineación multimodal
+    \end{itemize}
+    \item \textbf{Datos clínicos adicionales}
+    \begin{itemize}
+        \item Historiales médicos
+        \item Síntomas del paciente
+        \item Resultados de laboratorio
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Líneas de Trabajo Futuro - Herramientas Visuales}
+\begin{itemize}
+    \item \textbf{Mejora de técnicas de interpretabilidad}
+    \begin{itemize}
+        \item GradCAM avanzado
+        \item SHAP (SHapley Additive exPlanations)
+        \item LIME (Local Interpretable Model-agnostic Explanations)
+    \end{itemize}
+    \item \textbf{Interfaces de usuario clínicas}
+    \begin{itemize}
+        \item Dashboards para radiólogos
+        \item Sistemas de reporte automatizado
+        \item Integración con PACS (Picture Archiving and Communication System)
+    \end{itemize}
+    \item \textbf{Visualizaciones interactivas}
+    \begin{itemize}
+        \item Exploración de regiones de interés
+        \item Comparación de múltiples modelos
+        \item Análisis de incertidumbre
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Impacto Clínico y Social}
+\begin{itemize}
+    \item \textbf{Acceso a diagnóstico especializado}
+    \begin{itemize}
+        \item Regiones con recursos limitados
+        \item Reducción de tiempos de espera
+        \item Mejora de eficiencia del sistema de salud
+    \end{itemize}
+    \item \textbf{Herramientas de triaje}
+    \begin{itemize}
+        \item Clasificación automática de urgencias
+        \item Priorización de casos críticos
+        \item Apoyo en emergencias médicas
+    \end{itemize}
+    \item \textbf{Adaptabilidad epidemiológica}
+    \begin{itemize}
+        \item Extensión a nuevas patologías emergentes
+        \item Adaptación a contextos locales
+        \item Respuesta rápida a crisis sanitarias
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Conclusiones Finales}
+\begin{itemize}
+    \item \textbf{Nuevos estándares establecidos}
+    \begin{itemize}
+        \item Rendimiento superior al estado del arte
+        \item Viabilidad de Vision Transformers en medicina
+        \item Capacidad de extensión demostrada
+    \end{itemize}
+    \item \textbf{Contribución al campo}
+    \begin{itemize}
+        \item Metodología reproducible
+        \item Base de datos diversa y amplia
+        \item Plataforma para futuras investigaciones
+    \end{itemize}
+    \item \textbf{Impacto potencial}
+    \begin{itemize}
+        \item Herramientas valiosas para diagnóstico
+        \item Mejora de acceso a atención médica
+        \item Avance en medicina asistida por computadora
+    \end{itemize}
+    \item \textbf{Próximos pasos}
+    \begin{itemize}
+        \item Validación clínica rigurosa
+        \item Desarrollo de herramientas visuales
+        \item Integración en práctica médica
+    \end{itemize}
 \end{itemize}
 \end{frame}
