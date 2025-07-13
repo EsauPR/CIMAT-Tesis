@@ -111,26 +111,7 @@ Se utiliza el optimizador Adam con learning rates de 1e-4 para ResNet50 y 1e-5 p
 
 ---
 
-### Slide 6: Evaluación y Métricas
-
-"La evaluación de los modelos se realiza utilizando un conjunto de prueba independiente, manteniendo la estructura original de división de datos del dataset ChestX-ray14. Se emplea un umbral de clasificación de 0.5 para todas las patologías.
-
-**Métricas principales utilizadas:**
-- **AUC-ROC**: Área bajo la curva ROC, métrica principal para evaluar la capacidad discriminativa
-- **AUC-PR**: Área bajo la curva Precision-Recall, especialmente importante para clases desbalanceadas
-- **F1-Score**: Media geométrica entre precisión y recall, balance entre falsos positivos y negativos
-- **Accuracy**: Proporción de predicciones correctas sobre el total
-
-**Visualización de resultados:**
-- **Curvas ROC**: Gráficas de TPR vs FPR para cada patología
-- **Mapas de calor GradCAM**: Visualización de las regiones de atención del modelo
-- **Matrices de confusión**: Análisis detallado de TP, TN, FP, FN por patología
-
-La evaluación incluye tanto métricas globales (Global-14 para patologías originales, Global-15 incluyendo COVID-19) como métricas individuales por patología, permitiendo un análisis completo del rendimiento del sistema."
-
----
-
-### Slide 7.1: Extensión a Tuberculosis - Dataset
+### Slide 6.1: Extensión a Tuberculosis - Dataset
 
 "Para demostrar la capacidad de extensión del modelo, se implementa un clasificador binario para la detección de tuberculosis pulmonar, una enfermedad bacteriana común en países en desarrollo y frecuente en pacientes con VIH/SIDA.
 
@@ -140,7 +121,7 @@ Es importante notar que los casos 'no tuberculosis' incluyen tanto pacientes sal
 
 ---
 
-### Slide 7.2: Extensión a Tuberculosis - Arquitectura
+### Slide 6.2: Extensión a Tuberculosis - Arquitectura
 
 "La extensión del modelo se realiza mediante una estrategia de transfer learning eficiente. Se utiliza el backbone ResNet50 pre-entrenado para las 15 patologías originales como extractor de características, manteniendo sus pesos congelados.
 
@@ -154,10 +135,31 @@ Esta arquitectura permite que el modelo mantenga su capacidad de detectar las 15
 
 ---
 
-### Slide 7.3: Extensión a Tuberculosis - Entrenamiento y Resultados
+### Slide 6.3: Extensión a Tuberculosis - Entrenamiento y Resultados
 
 "El entrenamiento de la rama de tuberculosis sigue la estrategia de entrenamiento inicial: solo se entrenan las nuevas capas densas con el backbone congelado, utilizando la misma función de pérdida ponderada y optimizador Adam.
 
 Los resultados muestran un F1-score de 0.707 y accuracy de 0.846, comparable con métodos específicos para detección de tuberculosis reportados en la literatura. El modelo alcanza 388 verdaderos positivos de 488 casos de tuberculosis en el conjunto de prueba.
 
 Además, se evalúa el modelo original de 15 patologías en los casos de tuberculosis, observando que la mayoría son detectados como COVID-19 o neumonía, lo cual es esperable dado que la tuberculosis puede presentar características radiológicas similares a estas patologías. Esto confirma posiblidad de un entrenamiento específico para nuevas enfermedades basado en un proceso de extensión del modelo."
+
+---
+
+### Slide 7: Evaluación y Métricas
+
+"La evaluación de los modelos se realiza utilizando un conjunto de prueba combinado, manteniendo la estructura original de división de datos del dataset ChestX-ray14 junto con los datos de BIMCV. Se emplea un umbral de clasificación de 0.5 para todas las patologías.
+
+**Métricas principales utilizadas:**
+- **AUC-ROC**: Área bajo la curva ROC, métrica principal para evaluar la capacidad discriminativa del modelo
+- **AUC-PR**: Área bajo la curva Precision-Recall, especialmente importante para clases desbalanceadas
+- **F1-Score**: Media geométrica entre precisión y recall, balance entre falsos positivos y negativos
+- **Accuracy**: Proporción de predicciones correctas sobre el total
+
+**Resultados destacados:**
+El modelo ResNet50 alcanza un AUC-ROC Global-15 de 0.852, superando a CheXNet (0.841) y otros métodos del estado del arte. Para COVID-19 específicamente, ambos modelos logran excelente rendimiento: ResNet50 con AUC-ROC de 0.991 y ViT con 0.982.
+
+**Comparación con radiólogos:**
+Los modelos propuestos superan a los radiólogos en 6 de las 15 patologías evaluadas, demostrando la efectividad del deep learning en tareas de diagnóstico radiológico.
+
+**Visualización de resultados:**
+Se utilizan curvas ROC para cada patología, matrices de confusión para análisis detallado, y GradCAM para visualizar las regiones de atención del modelo, proporcionando interpretabilidad clínica a las predicciones."

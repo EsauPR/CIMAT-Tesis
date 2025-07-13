@@ -212,35 +212,6 @@ donde $y$ es el vector de etiquetas reales, $\hat{y}$ las predicciones, $w_c^{(p
 \end{frame}
 
 \begin{frame}
-\frametitle{Evaluación y Métricas}
-\begin{itemize}
-    \item \textbf{Configuración de evaluación}
-    \begin{itemize}
-        \item Conjunto de prueba independiente (estructura original ChestX-ray14)
-        \item Umbral de clasificación: 0.5 para todas las patologías
-    \end{itemize}
-    \item \textbf{Métricas principales}
-    \begin{itemize}
-        \item AUC-ROC: Capacidad discriminativa del modelo
-        \item AUC-PR: Especialmente importante para clases desbalanceadas
-        \item F1-Score: Balance entre precisión y recall
-        \item Accuracy: Proporción de predicciones correctas
-    \end{itemize}
-    \item \textbf{Visualizaciones}
-    \begin{itemize}
-        \item Curvas ROC: TPR vs FPR por patología
-        \item GradCAM: Regiones de atención del modelo
-        \item Matrices de confusión: TP, TN, FP, FN
-    \end{itemize}
-    \item \textbf{Análisis}
-    \begin{itemize}
-        \item Métricas globales: Global-14 y Global-15
-        \item Métricas individuales por patología
-    \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}
 \frametitle{Extensión y Generalización}
 \begin{itemize}
     \item El modelo puede ser extendido fácilmente a nuevas patologías (ejemplo: tuberculosis).
@@ -325,6 +296,37 @@ donde $y$ es el vector de etiquetas reales, $\hat{y}$ las predicciones, $w_c^{(p
         \item Modelo original detecta tuberculosis como COVID-19/neumonía
         \item Características radiológicas similares entre patologías
         \item Confirma necesidad de entrenamiento específico
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Evaluación y Métricas}
+\begin{itemize}
+    \item \textbf{Configuración de evaluación}
+    \begin{itemize}
+        \item Conjunto de prueba independiente (estructura original ChestX-ray14)
+        \item Umbral de clasificación: 0.5 para todas las patologías
+    \end{itemize}
+    \item \textbf{Métricas principales}
+    \begin{itemize}
+        \item AUC-ROC: Capacidad discriminativa del modelo
+        \item AUC-PR: Especialmente importante para clases desbalanceadas
+        \item F1-Score: Balance entre precisión y recall
+        \item Accuracy: Proporción de predicciones correctas
+    \end{itemize}
+    \item \textbf{Resultados destacados}
+    \begin{itemize}
+        \item ResNet50: AUC-ROC Global-15 = 0.852 (supera CheXNet: 0.841)
+        \item COVID-19 ROC AUC: ResNet50 (0.991), ViT (0.982)
+        \item Supera a radiólogos en 6/15 patologías
+    \end{itemize}
+    \item \textbf{Visualizaciones}
+    \begin{itemize}
+        \item Curvas ROC: TPR vs FPR por patología
+        \item GradCAM: Regiones de atención del modelo
+        \item Matrices de confusión: TP, TN, FP, FN
     \end{itemize}
 \end{itemize}
 \end{frame}
