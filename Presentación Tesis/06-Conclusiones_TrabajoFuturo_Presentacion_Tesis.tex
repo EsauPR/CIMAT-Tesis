@@ -8,10 +8,10 @@
 \begin{itemize}
     \item \textbf{Desarrollo exitoso} de dos modelos de aprendizaje profundo para 15 patologías pulmonares
     \begin{itemize}
-        \item ResNet50: AUC-ROC Global-15 = 0.852 (nuevo estándar)
-        \item ViT: AUC-ROC Global-15 = 0.791 (limitado por resolución)
+        \item ResNet50: AUC-ROC Global-15 = 0.852 (nuevo estándar incluyendo COVID-19)
+        \item ViT: AUC-ROC Global-15 = 0.791 (alto rendimiento en COVID-19)
     \end{itemize}
-    \item \textbf{Rendimiento excepcional en COVID-19}
+    \item \textbf{Desempeño destacado en COVID-19}
     \begin{itemize}
         \item ResNet50: AUC-ROC = 0.991, F1-Score = 0.799
         \item ViT: AUC-ROC = 0.982, F1-Score = 0.801
@@ -60,32 +60,6 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}
-\frametitle{Comparación con Radiólogos Humanos}
-\begin{columns}
-\column{0.5\textwidth}
-\textbf{Modelos superan a radiólogos en:}
-\begin{itemize}
-    \item Emphysema (0.938 vs 0.911)
-    \item Nodule (0.806 vs 0.899*)
-    \item Pneumothorax (0.906 vs 0.940*)
-    \item Pleural-Thickening (0.820 vs 0.779)
-    \item Fibrosis (0.852 vs 0.897*)
-\end{itemize}
-
-\column{0.5\textwidth}
-\textbf{Radiólogos mantienen ventaja en:}
-\begin{itemize}
-    \item Effusion (0.900*)
-    \item Hernia (0.985*)
-    \item Mass (0.886*)
-    \item Edema (0.910*)
-    \item Consolidation (0.841*)
-\end{itemize}
-
-\textbf{Conclusión:} Herramientas de apoyo, no reemplazo
-\end{columns}
-\end{frame}
 
 \begin{frame}
 \frametitle{Limitaciones Identificadas}
@@ -112,49 +86,20 @@
 \end{frame}
 
 \begin{frame}
-\frametitle{Líneas de Trabajo Futuro - Arquitecturas}
+\frametitle{Líneas de Trabajo Futuro}
 \begin{itemize}
     \item \textbf{Exploración de nuevas arquitecturas}
     \begin{itemize}
         \item EfficientNet y DenseNet avanzados
         \item Variantes mejoradas de Vision Transformers
         \item Arquitecturas híbridas CNN-Transformer
+        \item Arquitecturas de atención más sofisticadas
     \end{itemize}
-    \item \textbf{Técnicas de atención sofisticadas}
+    \item \textbf{Datos y Validación}
     \begin{itemize}
-        \item Mecanismos de atención adaptativos
-        \item Atención multi-escala
-        \item Atención específica para patologías
-    \end{itemize}
-    \item \textbf{Interpretabilidad mejorada}
-    \begin{itemize}
-        \item Técnicas de explicabilidad avanzadas
-        \item Visualización de decisiones
-        \item Justificación clínica de predicciones
-    \end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Líneas de Trabajo Futuro - Datos y Validación}
-\begin{itemize}
-    \item \textbf{Mejora de bases de datos}
-    \begin{itemize}
-        \item Diversificación geográfica y demográfica
-        \item Más patologías y variaciones
-        \item Datos de alta calidad y anotación precisa
-    \end{itemize}
-    \item \textbf{Validación clínica rigurosa}
-    \begin{itemize}
-        \item Estudios prospectivos multicéntricos
-        \item Validación en entornos hospitalarios reales
-        \item Comparación con estándares clínicos
-    \end{itemize}
-    \item \textbf{Regulación y certificación}
-    \begin{itemize}
-        \item Cumplimiento de estándares médicos
-        \item Certificación FDA/CE para uso clínico
-        \item Protocolos de seguridad y privacidad
+        \item Mejora de bases de datos. Diversificación geográfica y demográfica, inclusion de más patologías, datos de alta calidad y anotación precisa.
+        \item Validación clínica rigurosa.
+        \item Regulación y certificación para uso clínico.
     \end{itemize}
 \end{itemize}
 \end{frame}
@@ -186,12 +131,12 @@
 \begin{frame}
 \frametitle{Líneas de Trabajo Futuro - Herramientas Visuales}
 \begin{itemize}
-    \item \textbf{Mejora de técnicas de interpretabilidad}
-    \begin{itemize}
-        \item GradCAM avanzado
-        \item SHAP (SHapley Additive exPlanations)
-        \item LIME (Local Interpretable Model-agnostic Explanations)
-    \end{itemize}
+    % \item \textbf{Mejora de técnicas de interpretabilidad}
+    % \begin{itemize}
+    %     \item GradCAM avanzado
+    %     \item SHAP (SHapley Additive exPlanations)
+    %     \item LIME (Local Interpretable Model-agnostic Explanations)
+    % \end{itemize}
     \item \textbf{Interfaces de usuario clínicas}
     \begin{itemize}
         \item Dashboards para radiólogos
@@ -202,34 +147,33 @@
     \begin{itemize}
         \item Exploración de regiones de interés
         \item Comparación de múltiples modelos
-        \item Análisis de incertidumbre
     \end{itemize}
 \end{itemize}
 \end{frame}
 
-\begin{frame}
-\frametitle{Impacto Clínico y Social}
-\begin{itemize}
-    \item \textbf{Acceso a diagnóstico especializado}
-    \begin{itemize}
-        \item Regiones con recursos limitados
-        \item Reducción de tiempos de espera
-        \item Mejora de eficiencia del sistema de salud
-    \end{itemize}
-    \item \textbf{Herramientas de triaje}
-    \begin{itemize}
-        \item Clasificación automática de urgencias
-        \item Priorización de casos críticos
-        \item Apoyo en emergencias médicas
-    \end{itemize}
-    \item \textbf{Adaptabilidad epidemiológica}
-    \begin{itemize}
-        \item Extensión a nuevas patologías emergentes
-        \item Adaptación a contextos locales
-        \item Respuesta rápida a crisis sanitarias
-    \end{itemize}
-\end{itemize}
-\end{frame}
+% \begin{frame}
+% \frametitle{Impacto Clínico y Social}
+% \begin{itemize}
+%     \item \textbf{Acceso a diagnóstico especializado}
+%     \begin{itemize}
+%         \item Regiones con recursos limitados
+%         \item Reducción de tiempos de espera
+%         \item Mejora de eficiencia del sistema de salud
+%     \end{itemize}
+%     \item \textbf{Herramientas de triaje}
+%     \begin{itemize}
+%         \item Clasificación automática de urgencias
+%         \item Priorización de casos críticos
+%         \item Apoyo en emergencias médicas
+%     \end{itemize}
+%     \item \textbf{Adaptabilidad epidemiológica}
+%     \begin{itemize}
+%         \item Extensión a nuevas patologías emergentes
+%         \item Adaptación a contextos locales
+%         \item Respuesta rápida a crisis sanitarias
+%     \end{itemize}
+% \end{itemize}
+% \end{frame}
 
 \begin{frame}
 \frametitle{Conclusiones Finales}
@@ -242,21 +186,19 @@
     \end{itemize}
     \item \textbf{Contribución al campo}
     \begin{itemize}
-        \item Metodología reproducible
-        \item Base de datos diversa y amplia
+        \item Metodología reproducible con base de datos diversa
         \item Plataforma para futuras investigaciones
     \end{itemize}
     \item \textbf{Impacto potencial}
     \begin{itemize}
         \item Herramientas valiosas para diagnóstico
-        \item Mejora de acceso a atención médica
-        \item Avance en medicina asistida por computadora
+        \item Mejora y avance a atención médica asistida por computadora
     \end{itemize}
     \item \textbf{Próximos pasos}
     \begin{itemize}
         \item Validación clínica rigurosa
         \item Desarrollo de herramientas visuales
-        \item Integración en práctica médica
+        \item Integración en práctica médica como herramienta de apoyo
     \end{itemize}
 \end{itemize}
 \end{frame}
