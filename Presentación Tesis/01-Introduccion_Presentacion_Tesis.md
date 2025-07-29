@@ -6,7 +6,7 @@
 
 ### Slide 1: Contexto: COVID-19 y Salud Pública
 
-"La pandemia de COVID-19 ha tenido un impacto sin precedentes en la salud y el bienestar de las personas, así como en el funcionamiento de los sistemas de salud a nivel mundial. La alta demanda de atención médica provocó la saturación de hospitales y evidenció la vulnerabilidad de los trabajadores de la salud. En este contexto, surge la necesidad urgente de desarrollar métodos que apoyen el diagnóstico y tratamiento de enfermedades pulmonares."
+"La pandemia de COVID-19 ha tenido un impacto sin precedentes en la salud y el bienestar de las personas, así como en el funcionamiento de los sistemas de salud a nivel mundial. Nosotros lo vivimos de primera mano e inmediantamente la alta demanda de atención médica provocó la saturación de hospitales y evidenció la vulnerabilidad de los trabajadores de la salud. En este contexto, surge la necesidad urgente de desarrollar métodos que apoyen el diagnóstico y tratamiento de enfermedades pulmonares."
 
 ---
 

@@ -51,7 +51,9 @@ Una CNN típica consta de las siguientes capas principales
 
 ### Slide 4: Mecanismos de Atención y Transformers
 
-"Los mecanismos de atención permiten a los modelos enfocarse en partes relevantes de la entrada. Los Transformers revolucionaron el procesamiento de secuencias al permitir el procesamiento paralelo y el uso de atención múltiple, conocido como Multi-Head Attention. El Vision Transformer, o ViT, aplica estos conceptos al análisis de imágenes."
+Los transformes son una alternativa a modelos como las RNN's dónde el contexto e información temporal son importantes. Estos modelos se basan en utilizar mecanismos de atención para capturar las relaciones relevantes bajo un contexto dado.
+
+"Los mecanismos de atención permiten a los modelos enfocarse en partes relevantes de la entrada. Los Transformers revolucionaron el procesamiento de secuencias al permitir el procesamiento paralelo y el uso de atención múltiple, conocido como Multi-Head Attention. En el 2020 surgió Vision Transformer, o ViT, un modelo que aplica estos conceptos al análisis de imágenes."
 
 ---
 
