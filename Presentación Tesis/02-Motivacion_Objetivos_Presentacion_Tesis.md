@@ -29,7 +29,13 @@ la necesidad de modelos que sean interpretables y validados clínicamente,
 
 ### Slide 3: Propuesta de la Tesis
 
-"En este trabajo se propone desarrollar modelos de Deep Learning capaces de detectar múltiples patologías pulmonares, incluyendo COVID-19, utilizando imágenes de rayos X provenientes de diferentes fuentes y regiones. Se comparan modelos basados en Transformers y en redes convolucionales, ambos empleando técnicas de Transfer Learning, y se evalúan mediante métricas de clasificación y visualización de regiones de interés."
+"En este trabajo se propone desarrollar modelos de Deep Learning capaces de detectar múltiples patologías pulmonares, incluyendo COVID-19,
+utilizando imágenes de rayos X provenientes de diferentes fuentes y regiones.
+
+Se comparan modelos basados en Transformers y en redes convolucionales,
+ambos empleando técnicas de Transfer Learning,
+
+y se evalúan mediante métricas de clasificación y visualización de regiones de interés."
 
 ---
 
