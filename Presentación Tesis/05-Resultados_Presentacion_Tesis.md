@@ -34,15 +34,22 @@ Patologías como Cardiomegaly (0.875), Effusion (0.850), Pneumothorax (0.906) y 
 
 ### Slide 4: Resultados por Patología - ViT
 
-"El modelo Vision Transformer, aunque con menor resolución de imagen (384x384 vs 1024x1024), mantiene un rendimiento competitivo. Para COVID-19 alcanza un AUC-ROC de 0.982, muy cercano al modelo ResNet50.
+" En esta tabla tenemos una comparación entre los dos modelos desarrollados
 
-El ViT muestra fortalezas particulares en Cardiomegaly (0.866), Emphysema (0.866) y Pneumothorax (0.842). La diferencia en rendimiento global se atribuye principalmente a la limitación de resolución de imagen debido a restricciones computacionales."
+El modelo Vision Transformer, aunque con menor resolución de imagen (384x384 vs 1024x1024), mantiene un rendimiento competitivo.
+Para COVID-19 alcanza un AUC-ROC de 0.982, muy cercano al modelo ResNet50.
+
+El ViT muestra fortalezas particulares en Cardiomegaly (0.866), Emphysema (0.866) y Pneumothorax (0.842). L
+
+a diferencia en rendimiento global se atribuye principalmente a la limitación de resolución de imagen debido a restricciones computacionales."
 
 ---
 
 ### Slide 5: Curvas ROC - ResNet50
 
-"Las curvas ROC del modelo ResNet50 muestran excelente separabilidad para todas las patologías. La curva de COVID-19 se encuentra muy por encima de la diagonal, indicando una capacidad discriminativa excepcional.
+"
+
+Las curvas ROC del modelo ResNet50 muestran excelente separabilidad para todas las patologías. Las curva de todas las patologías se encuentra por encima de la diagonal, indicando una capacidad discriminativa excepcional.
 
 Las curvas para Emphysema, Pneumothorax y Cardiomegaly también muestran áreas bajo la curva muy altas, confirmando la robustez del modelo en la detección de estas patologías."
 
@@ -58,9 +65,17 @@ La curva de COVID-19 sigue siendo excepcional, demostrando que la arquitectura T
 
 ### Slide 7: Visualización de Atención - GradCAM
 
-"La visualización mediante GradCAM revela que ambos modelos aprenden a enfocar su atención en regiones anatómicamente relevantes. Para Cardiomegaly, el modelo identifica correctamente el área del corazón agrandado.
+"La visualización mediante GradCAM revela que ambos modelos aprenden a enfocar su atención en regiones anatómicamente relevantes.
 
-En casos de COVID-19, las regiones de atención se concentran en las áreas pulmonares afectadas, mostrando patrones de opacidad característicos de la neumonía viral. Esta interpretabilidad clínica es crucial para la aceptación del sistema por parte de los médicos."
+Para Cardiomegaly, el modelo identifica correctamente el área del corazón agrandado.
+
+Para neumonía puede identificar características específicas para este padecimiento en los lóbulos inferiores
+
+El caso de la masa se observa que identifica un elemento redondo formado en el pulmón izquierdo.
+
+En casos de COVID-19, las regiones de atención se concentran en más áreas pulmonares afectadas, mostrando patrones de opacidad característicos de la neumonía viral.
+
+Esta interpretabilidad clínica es crucial para la aceptación del sistema por parte de los médicos."
 
 ---
 
@@ -74,7 +89,8 @@ Los radiólogos mantienen ventaja en patologías como Effusion, Hernia, Mass, Pn
 
 ### Slide 9: Extensión a Tuberculosis - Resultados
 
-"La extensión del modelo a la detección de tuberculosis demuestra la flexibilidad de la arquitectura propuesta. El clasificador binario alcanza un F1-Score de 0.707 y Accuracy de 0.846, comparable con métodos específicos para tuberculosis.
+"La extensión del modelo a la detección de tuberculosis demuestra la flexibilidad de la arquitectura propuesta.
+El clasificador binario alcanza un F1-Score de 0.707 y Accuracy de 0.846, comparable con métodos específicos para tuberculosis.
 
 El análisis de los casos de tuberculosis en el modelo original de 15 patologías revela que la mayoría son detectados como COVID-19 o neumonía, lo cual es esperable dado que la tuberculosis puede presentar características radiológicas similares."
 
@@ -88,8 +104,8 @@ La limitación principal del ViT es el consumo de memoria, que restringe la reso
 
 ---
 
-### Slide 11: Conclusiones de Resultados
+<!-- ### Slide 11: Conclusiones de Resultados
 
 "Los modelos propuestos establecen nuevos estándares en la detección de patologías pulmonares, superando significativamente al estado del arte en múltiples métricas. La capacidad de extensión a nuevas patologías como tuberculosis demuestra la versatilidad del enfoque.
 
-La interpretabilidad clínica proporcionada por GradCAM, combinada con el rendimiento excepcional, posiciona estos modelos como herramientas valiosas para el apoyo al diagnóstico radiológico."
+La interpretabilidad clínica proporcionada por GradCAM, combinada con el rendimiento excepcional, posiciona estos modelos como herramientas valiosas para el apoyo al diagnóstico radiológico." -->
