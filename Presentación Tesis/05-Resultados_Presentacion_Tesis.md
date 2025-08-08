@@ -6,7 +6,11 @@
 
 ### Slide 1: Resumen de Resultados
 
-"Los modelos propuestos demuestran un rendimiento excepcional en la detección de patologías pulmonares. El modelo ResNet50 alcanza un AUC-ROC Global-15 de 0.852, superando significativamente a CheXNet (0.841) y otros métodos del estado del arte. Para COVID-19 específicamente, ambos modelos logran resultados sobresalientes: ResNet50 con AUC-ROC de 0.991 y ViT con 0.982.
+"Los modelos propuestos demuestran un rendimiento excepcional en la detección de patologías pulmonares.
+
+El modelo ResNet50 alcanza un AUC-ROC Global-15 de 0.852, superando significativamente a CheXNet (0.841) y otros métodos del estado del arte.
+
+Para COVID-19 específicamente, ambos modelos logran resultados sobresalientes: ResNet50 con AUC-ROC de 0.991 y ViT con 0.982.
 
 Es importante destacar que los modelos propuestos superan a los radiólogos humanos en 6 de las 15 patologías evaluadas, demostrando la efectividad del deep learning en tareas de diagnóstico radiológico."
 

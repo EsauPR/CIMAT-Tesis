@@ -67,7 +67,7 @@
 \begin{frame}
 \frametitle{Preprocesamiento de Imágenes}
 \begin{itemize}
-    \item Redimensionamiento a $1024 \times 1024$ y $384 \times 384$ píxeles según el modelo.
+    \item Redimensionamiento a $1024 \times 1024$ (ResNet50) y $384 \times 384$ (ViT) píxeles con interpolación basada en área.
     \item Ecualización por histograma sobre el canal Y en el espacio de color YUV.
     \item Normalización (media y std de ImageNet) para cada canal RGB.
     \item Data augmentation: flip horizontal.
@@ -193,8 +193,8 @@ donde $y$ es el vector de etiquetas reales, $\hat{y}$ las predicciones, $w_c^{(p
     \item \textbf{Etapa 2 - Fine-tuning}
     \begin{itemize}
         \item Descongelamiento de últimas capas del backbone
-        \item ResNet50: último bloque convolucional (20 épocas)
-        \item ViT: dos últimos bloques Transformer (12 épocas)
+        \item ResNet50: último capas convolucional (20 épocas)
+        \item ViT: dos últimas capas Transformer (12 épocas)
     \end{itemize}
     \item \textbf{Etapa 3 - Full-tuning}
     \begin{itemize}
@@ -211,14 +211,14 @@ donde $y$ es el vector de etiquetas reales, $\hat{y}$ las predicciones, $w_c^{(p
 \end{itemize}
 \end{frame}
 
-\begin{frame}
-\frametitle{Extensión y Generalización}
-\begin{itemize}
-    \item El modelo puede ser extendido fácilmente a nuevas patologías (ejemplo: tuberculosis).
-    \item El proceso de re-etiquetado y entrenamiento permite adaptar el sistema a diferentes escenarios clínicos.
-    \item Resultados competitivos frente al estado del arte en todas las patologías evaluadas.
-\end{itemize}
-\end{frame}
+% \begin{frame}
+% \frametitle{Extensión y Generalización}
+% \begin{itemize}
+%     \item El modelo puede ser extendido fácilmente a nuevas patologías (ejemplo: tuberculosis).
+%     \item El proceso de re-etiquetado y entrenamiento permite adaptar el sistema a diferentes escenarios clínicos.
+%     \item Resultados competitivos frente al estado del arte en todas las patologías evaluadas.
+% \end{itemize}
+% \end{frame}
 
 \begin{frame}
 \frametitle{Extensión a Tuberculosis - Dataset}
@@ -316,12 +316,12 @@ donde $y$ es el vector de etiquetas reales, $\hat{y}$ las predicciones, $w_c^{(p
         \item F1-Score: Balance entre precisión y recall
         \item Accuracy: Proporción de predicciones correctas
     \end{itemize}
-    \item \textbf{Resultados destacados}
-    \begin{itemize}
-        \item ResNet50: AUC-ROC Global-15 = 0.852 (supera CheXNet: 0.841)
-        \item COVID-19 ROC AUC: ResNet50 (0.991), ViT (0.982)
-        \item Supera a radiólogos en 6/15 patologías
-    \end{itemize}
+    % \item \textbf{Resultados destacados}
+    % \begin{itemize}
+    %     \item ResNet50: AUC-ROC Global-15 = 0.852 (supera CheXNet: 0.841)
+    %     \item COVID-19 ROC AUC: ResNet50 (0.991), ViT (0.982)
+    %     \item Supera a radiólogos en 6/15 patologías
+    % \end{itemize}
     \item \textbf{Visualizaciones}
     \begin{itemize}
         \item Curvas ROC: TPR vs FPR por patología

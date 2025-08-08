@@ -6,13 +6,17 @@
 
 ### Slide 1: Flujo General de la Metodología
 
-"La metodología de este trabajo se centra en el desarrollo de modelos de aprendizaje profundo para la detección de 15 patologías pulmonares en rayos X. Se emplean dos enfoques principales: uno basado en ResNet50, una red convolucional, y otro en Vision Transformer. El proceso está estructurado en etapas de preprocesamiento, entrenamiento, evaluación y extensión a nuevas patologías."
+"La metodología de este trabajo se centra en el desarrollo de modelos de aprendizaje profundo para la detección de 15 patologías pulmonares en rayos X.
+
+Se emplean dos enfoques principales: uno basado en ResNet50, una red convolucional, y otro en Vision Transformer.
+
+El proceso está estructurado en etapas de preprocesamiento, entrenamiento, evaluación y extensión a nuevas patologías."
 
 ---
 
 ### Slide 2: Bases de Datos y Composición
 
-"Utilizamos el dataset ChestX-ray14, que contiene más de 112 mil imágenes de 30 mil pacientes y 14 patologías. Este conjunto se extendió con imágenes de COVID-19 y casos saludables.
+"Utilizamos el dataset ChestX-ray14, que contiene más de 112 mil imágenes de 30 mil pacientes y 14 patologías. Este conjunto se extendió con imágenes de COVID-19 y casos saludables obtenidos del National Institute of Health (NIH)
 
 Las imágenes de rayos X correspondientes a COVID-19 fueron obtenidas de dos bases de datos
 
@@ -28,7 +32,11 @@ También encontrado como covid-chestxray-dataset promovidas por la Universidad d
 
 ### Slide 2.1: Tabla con número de radiografías
 
-En la tabla podemos observar la distribución de las candidades de muestras identificadas con cada patología de cada fuente; 1 son los datos pertenecientes a ChestX-ray y 2 al dataset de BIMCV.
+En la tabla podemos observar la distribución de las candidades de muestras identificadas con cada patología de cada fuente;
+
+1 son los datos pertenecientes a ChestX-ray
+2 al dataset de BIMCV.
+
 Es importante resaltar que para el dataset de COVID19 las imáges etiquetadas como saludables solo demuestran la ausencia de COVID19 o neumonía, pero no asegura la misma ausencia para otra patología.
 
 ### Slide 3: Preprocesamiento de Imágenes
@@ -45,7 +53,7 @@ Se aplicó una técnica de data augmentation que consiste en voltear la imagen e
 
 
 Notas:
-La estrucutra del contraste es conservada por la normalización porque la ecualización es una transformación no lineal y la normalización si.
+La estructura del contraste es conservada por la normalización porque la ecualización es una transformación no lineal y la normalización si.
 
 La relación de los pixeles con la ecualización cambia no linealmente porque usando el histograma hace que las diferencias entre los pixeles más obscuros y claros sean más pronunciados.
 
@@ -77,13 +85,12 @@ Después pasa por una capa densa con dimensiones de entrada 2048 y salida 256 se
 
 ### Slide 4.2: Arquitectura de Modelos
 
-"El segundo enfoque utiliza Vision Transformers, una arquitectura revolucionaria que aplica los principios de atención de los Transformers al procesamiento de imágenes. A diferencia de las redes convolucionales, el modelo ViT descompone la imagen en parches de 32x32 píxeles, que son tratados como tokens secuenciales.
+"El segundo enfoque basado en Vision Transformers, el modelo ViT que se usa descompone la imagen en parches de 32x32 píxeles, que son tratados como tokens secuenciales.
 
 La arquitectura ViT-Base implementada cuenta con 12 capas codificadoras del Transformer, cada una con 12 cabezas de atención y un tamaño de embedding de 768 dimensiones. El modelo procesa imágenes de 384x384 píxeles y genera un vector de características de 768 dimensiones.
 
 Para la clasificación, se agrega una etapa de MLP similar a la del modelo CNN: una capa densa que reduce de 768 a 256 dimensiones, seguida de ReLU y Dropout con probabilidad 0.25, y finalmente una capa de salida con 15 neuronas y función sigmoide para obtener las probabilidades de cada patología.
-
-El mecanismo de atención permite al modelo capturar relaciones globales entre diferentes regiones de la imagen, lo que es especialmente útil para detectar patrones distribuidos en las radiografías pulmonares."
+"
 
 ---
 
@@ -103,7 +110,7 @@ Esta estrategia de ponderación permite que el modelo aprenda de manera más equ
 
 **Etapa 1 - Entrenamiento Inicial**: Se congelan los pesos del backbone pre-entrenado y solo se entrena el clasificador MLP. Para ResNet50 se entrenan 35 épocas, mientras que para ViT se requieren 25 épocas debido a su convergencia más rápida.
 
-**Etapa 2 - Fine-tuning**: Se descongelan las últimas capas del backbone para especializar la extracción de características. En ResNet50 se descongela el último bloque convolucional, mientras que en ViT se descongelan los dos últimos bloques del Transformer. Se entrenan 20 épocas adicionales para ResNet50 y 12 para ViT.
+**Etapa 2 - Fine-tuning**: Se descongelan las últimas capas del backbone para especializar la extracción de características. En ResNet50 se descongela la ultíma capa convolucional, mientras que en ViT se descongelan las dos últimas capas del Transformer. Se entrenan 20 épocas adicionales para ResNet50 y 12 para ViT.
 
 **Etapa 3 - Full-tuning**: Se entrena toda la red para optimizar completamente el modelo. Se realizan 10 épocas para ResNet50 y 8 para ViT, evitando overfitting mediante early stopping basado en el accuracy de validación.
 
@@ -115,7 +122,9 @@ Se utiliza el optimizador Adam con learning rates de 1e-4 para ResNet50 y 1e-5 p
 
 "Para demostrar la capacidad de extensión del modelo, se implementa un clasificador binario para la detección de tuberculosis pulmonar, una enfermedad bacteriana común en países en desarrollo y frecuente en pacientes con VIH/SIDA.
 
-El dataset de tuberculosis incluye 888 casos positivos y 6,000 casos negativos para entrenamiento, con 488 casos positivos y 1,600 negativos para prueba. Los datos provienen de múltiples fuentes: TBX11K dataset, India (DA and DB) dataset, Montgomery County dataset y Shenzhen Hospital dataset.
+El dataset de tuberculosis incluye 888 casos positivos y 6,000 casos negativos para entrenamiento, con 488 casos positivos y 1,600 negativos para prueba.
+
+Los datos provienen de múltiples fuentes: TBX11K dataset, India (DA and DB) dataset, Montgomery County dataset y Shenzhen Hospital dataset.
 
 Es importante notar que los casos 'no tuberculosis' incluyen tanto pacientes saludables como pacientes con otras afecciones pulmonares, lo que refleja la realidad clínica donde la tuberculosis debe diferenciarse de múltiples condiciones respiratorias."
 
@@ -123,7 +132,7 @@ Es importante notar que los casos 'no tuberculosis' incluyen tanto pacientes sal
 
 ### Slide 6.2: Extensión a Tuberculosis - Arquitectura
 
-"La extensión del modelo se realiza mediante una estrategia de transfer learning eficiente. Se utiliza el backbone ResNet50 pre-entrenado para las 15 patologías originales como extractor de características, manteniendo sus pesos congelados.
+"La extensión del modelo se realiza mediante una estrategia de transfer learning similar. Se utiliza el backbone ResNet50 pre-entrenado para las 15 patologías originales como extractor de características, manteniendo sus pesos congelados.
 
 Se agrega una rama adicional de clasificación específica para tuberculosis que incluye:
 - Una capa densa que reduce de 256 a 128 dimensiones
@@ -131,7 +140,8 @@ Se agrega una rama adicional de clasificación específica para tuberculosis que
 - Dropout con probabilidad 0.20
 - Capa de salida con 1 neurona y función sigmoide
 
-Esta arquitectura permite que el modelo mantenga su capacidad de detectar las 15 patologías originales mientras agrega la detección de tuberculosis como una salida binaria adicional. Solo se entrenan las nuevas capas densas, conservando todo el conocimiento previamente adquirido."
+Esta arquitectura permite que el modelo mantenga su capacidad de detectar las 15 patologías originales mientras agrega la detección de tuberculosis como una salida binaria adicional.
+Solo se entrenan las nuevas capas densas, conservando todo el conocimiento previamente adquirido."
 
 ---
 
@@ -154,12 +164,6 @@ Además, se evalúa el modelo original de 15 patologías en los casos de tubercu
 - **AUC-PR**: Área bajo la curva Precision-Recall, especialmente importante para clases desbalanceadas
 - **F1-Score**: Media geométrica entre precisión y recall, balance entre falsos positivos y negativos
 - **Accuracy**: Proporción de predicciones correctas sobre el total
-
-**Resultados destacados:**
-El modelo ResNet50 alcanza un AUC-ROC Global-15 de 0.852, superando a CheXNet (0.841) y otros métodos del estado del arte. Para COVID-19 específicamente, ambos modelos logran excelente rendimiento: ResNet50 con AUC-ROC de 0.991 y ViT con 0.982.
-
-**Comparación con radiólogos:**
-Los modelos propuestos superan a los radiólogos en 6 de las 15 patologías evaluadas, demostrando la efectividad del deep learning en tareas de diagnóstico radiológico.
 
 **Visualización de resultados:**
 Se utilizan curvas ROC para cada patología, matrices de confusión para análisis detallado, y GradCAM para visualizar las regiones de atención del modelo, proporcionando interpretabilidad clínica a las predicciones."
