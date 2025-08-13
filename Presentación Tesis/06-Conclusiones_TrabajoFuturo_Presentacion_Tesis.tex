@@ -3,31 +3,31 @@
 
 \section{Conclusiones y Trabajo Futuro}
 
-\begin{frame}
-\frametitle{Conclusiones de Resultados}
-\begin{itemize}
-    \item \textbf{Rendimiento excepcional}
-    \begin{itemize}
-        \item ResNet50 establece nuevo estándar (AUC-ROC Global-15: 0.852)
-        \item COVID-19: AUC-ROC de 0.991 (ResNet50) y 0.982 (ViT)
-    \end{itemize}
-    \item \textbf{Superación del estado del arte}
-    \begin{itemize}
-        \item Lidera en 5 patologías específicas
-        \item Supera a radiólogos en 6/15 patologías
-    \end{itemize}
-    \item \textbf{Versatilidad demostrada}
-    \begin{itemize}
-        \item Extensión exitosa a tuberculosis
-        \item Interpretabilidad clínica con GradCAM
-    \end{itemize}
-    \item \textbf{Impacto clínico potencial}
-    \begin{itemize}
-        \item Herramienta valiosa para apoyo diagnóstico
-        \item Capacidad de adaptación a nuevas patologías
-    \end{itemize}
-\end{itemize}
-\end{frame}
+% \begin{frame}
+% \frametitle{Conclusiones de Resultados}
+% \begin{itemize}
+%     \item \textbf{Rendimiento excepcional}
+%     \begin{itemize}
+%         \item ResNet50 establece nuevo estándar (AUC-ROC Global-15: 0.852)
+%         \item COVID-19: AUC-ROC de 0.991 (ResNet50) y 0.982 (ViT)
+%     \end{itemize}
+%     \item \textbf{Superación del estado del arte}
+%     \begin{itemize}
+%         \item Lidera en 5 patologías específicas
+%         \item Supera a radiólogos en 6/15 patologías
+%     \end{itemize}
+%     \item \textbf{Versatilidad demostrada}
+%     \begin{itemize}
+%         \item Extensión exitosa a tuberculosis
+%         \item Interpretabilidad clínica con GradCAM
+%     \end{itemize}
+%     \item \textbf{Impacto clínico potencial}
+%     \begin{itemize}
+%         \item Herramienta valiosa para apoyo diagnóstico
+%         \item Capacidad de adaptación a nuevas patologías
+%     \end{itemize}
+% \end{itemize}
+% \end{frame}
 
 % \begin{frame}
 % \frametitle{Logros Principales}
@@ -49,20 +49,22 @@
 
 \begin{frame}
 \frametitle{Contribuciones Científicas}
+Muy buen rendimiento en 15 patologías pulmonares estableciendo un nuevo estándar con la inclusion de COVID-19.
 \begin{itemize}
-    \item \textbf{Introducción de Vision Transformers} en análisis de imágenes médicas
+    \item \textbf{Superación del estado del arte}
     \begin{itemize}
-        \item Demostración de viabilidad vs CNNs tradicionales
-        \item Requiere mayor ajuste pero ofrece atención global
+        \item Lidera en 5 patologías específicas. Supera a radiólogos en 6/15 patologías.
     \end{itemize}
-    \item \textbf{Estrategia de Transfer Learning} de tres etapas
+    \item \textbf{Introducción de Vision Transformers} en análisis de imágenes médicas.
     \begin{itemize}
-        \item Entrenamiento inicial (backbone congelado)
-        \item Fine-tuning (últimas capas)
-        \item Full-tuning (modelo completo)
+        \item Demostración de viabilidad vs CNNs tradicionales como una posible alternativa.
     \end{itemize}
-    \item \textbf{Preservación del rendimiento} en patologías originales
-    \item \textbf{Incorporación exitosa} de COVID-19 sin degradación
+    \item \textbf{Estrategia de Transfer Learning} de tres etapas:
+    \begin{itemize}
+        \item Entrenamiento inicial (backbone congelado).
+        \item Fine-tuning (últimas capas).
+        \item Full-tuning (modelo completo).
+    \end{itemize}
 \end{itemize}
 \end{frame}
 
@@ -71,18 +73,16 @@
 \begin{itemize}
     \item \textbf{Extensión a tuberculosis} exitosa
     \begin{itemize}
-        \item F1-Score: 0.707
-        \item Accuracy: 0.846
-        \item Verdaderos positivos: 388/488 casos
+        \item Aprovechamiento de backbone pre-entrenado.
+        \item Comparable con métodos específicos para tuberculosis.
     \end{itemize}
-    \item \textbf{Comparabilidad} con métodos específicos para tuberculosis
-    \item \textbf{Plataforma versátil} para futuras patologías
-    \item \textbf{Proceso de extensión} simple y eficiente
+    \item \textbf{Proceso de extensión} simple y eficiente:
     \begin{itemize}
-        \item Reutilización del backbone pre-entrenado
-        \item Adición de rama clasificadora específica
-        \item Entrenamiento solo de nuevas capas
+        \item Reutilización del backbone pre-entrenado.
+        \item Adición de rama clasificadora específica.
+        \item Entrenamiento solo de nuevas capas.
     \end{itemize}
+    \item \textbf{Plataforma versátil} para inclusión de futuras patologías.
 \end{itemize}
 \end{frame}
 
@@ -92,21 +92,19 @@
 \begin{itemize}
     \item \textbf{Calidad y representatividad de datos}
     \begin{itemize}
-        \item Diversidad geográfica limitada
-        \item Variabilidad en dispositivos de adquisición
-        \item Posibles sesgos en etiquetado
+        \item Diversidad de datos limitada.
+        \item Posibles sesgos en etiquetado y distribución de patologías.
     \end{itemize}
     \item \textbf{Falta de validación clínica}
     \begin{itemize}
         \item No probado en entornos hospitalarios reales
-        \item Ausencia de estudios prospectivos
         \item Necesidad de certificación médica
     \end{itemize}
-    \item \textbf{Recursos computacionales}
+    \item \textbf{Recursos computacionales caso ViT}
     \begin{itemize}
-        \item ViT limitado a 384x384 píxeles
+        \item Limitado a 384x384 píxeles
         \item Consumo de memoria alto
-        \item Tiempo de entrenamiento extenso
+        \item Tiempo de entrenamiento extenso y necesidad de más datos.
     \end{itemize}
 \end{itemize}
 \end{frame}
@@ -123,7 +121,7 @@
     \end{itemize}
     \item \textbf{Datos y Validación}
     \begin{itemize}
-        \item Mejora de bases de datos. Diversificación geográfica y demográfica, inclusion de más patologías, datos de alta calidad y anotación precisa.
+        \item Mejora de bases de datos; inclusion de más patologías, datos de alta calidad y anotación precisa.
         \item Validación clínica rigurosa.
         \item Regulación y certificación para uso clínico.
     \end{itemize}
@@ -139,12 +137,12 @@
         \item Resonancia magnética (MRI)
         \item Ultrasonido pulmonar
     \end{itemize}
-    \item \textbf{Modelos multimodales}
-    \begin{itemize}
-        \item Fusión de información de diferentes fuentes
-        \item Arquitecturas que procesen múltiples tipos de imagen
-        % \item Técnicas de alineación multimodal
-    \end{itemize}
+    % \item \textbf{Modelos multimodales}
+    % \begin{itemize}
+    %     \item Fusión de información de diferentes fuentes
+    %     \item Arquitecturas que procesen múltiples tipos de imagen
+    %     % \item Técnicas de alineación multimodal
+    % \end{itemize}
     \item \textbf{Datos clínicos adicionales}
     \begin{itemize}
         \item Historiales médicos
@@ -218,7 +216,6 @@
     \item \textbf{Impacto potencial}
     \begin{itemize}
         \item Herramientas valiosas para diagnóstico
-        \item Mejora y avance a atención médica asistida por computadora
     \end{itemize}
     \item \textbf{Próximos pasos}
     \begin{itemize}

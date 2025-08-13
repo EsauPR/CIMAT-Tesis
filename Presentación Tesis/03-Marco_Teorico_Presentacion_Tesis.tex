@@ -119,8 +119,6 @@
         \hline
         Velocidad de entrenamiento & Más rápido gracias a la paralelización & Más lento por la naturaleza secuencial \\
         \hline
-        Acceso al contexto global & Cada token puede atender a todos los demás directamente & Acceso limitado al contexto anterior (o posterior en BiRNNs) \\
-        \hline
         Escalabilidad & Escala bien con grandes cantidades de datos y capas & Escalabilidad limitada por problemas de gradiente \\
         \hline
         Multi-head attention & Permite aprender múltiples representaciones en paralelo & No tiene un mecanismo equivalente \\
@@ -139,30 +137,30 @@
     \item Se presentan dos modelos de arquitecturas para el procesamiento y detección de patologías pulmonares
         \begin{itemize}
             \item Convolucionales (ResNet50). Extrayendo características de las imágenes, a través de la convolución de filtros.
-            \item Modelos basados en atención (Transformers). Procesando imágenes como secuencias de datos, manteniendo información temporal.
+            \item Modelos basados en atención (ViT). Procesando imágenes como secuencias de datos, manteniendo información temporal.
         \end{itemize}
 \end{itemize}
 \end{frame}
 
-\begin{frame}
-\frametitle{Resumen del Marco Teórico}
-\begin{table}[h!]
-    \centering
-    \fontsize{8}{9}\selectfont
-    \begin{tabular}{|p{2.5cm}|p{3cm}|p{3cm}|}
-        \hline
-        \textbf{Aspecto} & \textbf{CNNs} & \textbf{Vision Transformers (ViT)} \\
-        \hline
-        Extracción de características & Local y jerárquica & Global desde el inicio \\
-        \hline
-        Interpretación espacial & Implícita por la estructura convolucional & Necesita codificación posicional \\
-        \hline
-        Campo receptivo (Receptive field) & Aumenta con la profundidad & Global desde la primera capa \\
-        \hline
-        Transferencia de conocimiento & Muy efectiva con preentrenamiento & Requiere mucho preentrenamiento para funcionar bien \\
-        \hline
-    \end{tabular}
-    \caption{Comparación entre redes convolucionales (CNNs) y Vision Transformers (ViT)}
-    \label{tab:comparacion_cnns_vit}
-\end{table}
-\end{frame}
+% \begin{frame}
+% \frametitle{Resumen del Marco Teórico}
+% \begin{table}[h!]
+%     \centering
+%     \fontsize{8}{9}\selectfont
+%     \begin{tabular}{|p{2.5cm}|p{3cm}|p{3cm}|}
+%         \hline
+%         \textbf{Aspecto} & \textbf{CNNs} & \textbf{Vision Transformers (ViT)} \\
+%         \hline
+%         Extracción de características & Local y jerárquica & Global desde el inicio \\
+%         \hline
+%         Interpretación espacial & Implícita por la estructura convolucional & Necesita codificación posicional \\
+%         \hline
+%         Campo receptivo (Receptive field) & Aumenta con la profundidad & Global desde la primera capa \\
+%         \hline
+%         Transferencia de conocimiento & Muy efectiva con preentrenamiento & Requiere mucho preentrenamiento para funcionar bien \\
+%         \hline
+%     \end{tabular}
+%     \caption{Comparación entre redes convolucionales (CNNs) y Vision Transformers (ViT)}
+%     \label{tab:comparacion_cnns_vit}
+% \end{table}
+% \end{frame}

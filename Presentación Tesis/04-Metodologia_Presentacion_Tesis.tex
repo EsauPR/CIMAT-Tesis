@@ -6,9 +6,19 @@
 \begin{frame}
 \frametitle{Flujo General de la Metodología}
 \begin{itemize}
-    \item Desarrollo de modelos de aprendizaje profundo para la detección de 15 patologías pulmonares en rayos X.
-    \item Dos enfoques principales: ResNet50 (CNN) y Vision Transformer (ViT).
-    \item Proceso estructurado: preprocesamiento, entrenamiento, evaluación y extensión a nuevas patologías.
+    \item Desarrollo de dos modelos de aprendizaje profundo para la detección de 15 patologías pulmonares en rayos X.
+    \item Dos enfoques diferentes:
+    \begin{itemize}
+        \item ResNet50 (CNN).
+        \item Vision Transformer (ViT).
+    \end{itemize}
+    \item Siguiendo el proceso estructurado:
+    \begin{itemize}
+        \item Pre-procesamiento.
+        \item Entrenamiento.
+        \item Evaluación.
+        \item Experimento de extensión a nuevas patologías.
+    \end{itemize}
 \end{itemize}
 \end{frame}
 
@@ -67,10 +77,10 @@
 \begin{frame}
 \frametitle{Preprocesamiento de Imágenes}
 \begin{itemize}
-    \item Redimensionamiento a $1024 \times 1024$ (ResNet50) y $384 \times 384$ (ViT) píxeles con interpolación basada en área.
-    \item Ecualización por histograma sobre el canal Y en el espacio de color YUV.
-    \item Normalización (media y std de ImageNet) para cada canal RGB.
-    \item Data augmentation: flip horizontal.
+    \item \textbf{Redimensionamiento} a $1024 \times 1024$ (ResNet50) y $384 \times 384$ (ViT) píxeles con \textbf{interpolación basada en área}.
+    \item \textbf{Ecualización por histograma} sobre el canal Y en el espacio de color YUV; mejora el contraste.
+    \item \textbf{Normalización} (media y std de ImageNet) para cada canal RGB.
+    \item \textbf{Data augmentation}: flip horizontal.
 \end{itemize}
 \end{frame}
 
@@ -229,15 +239,15 @@ donde $y$ es el vector de etiquetas reales, $\hat{y}$ las predicciones, $w_c^{(p
         \item Enfermedad bacteriana común en países en desarrollo
         \item Frecuente en pacientes con VIH/SIDA
     \end{itemize}
-    \item \textbf{Composición del dataset}
-    \begin{itemize}
-        \item Entrenamiento: 888 casos positivos, 6,000 negativos
-        \item Prueba: 488 casos positivos, 1,600 negativos
-    \end{itemize}
     \item \textbf{Fuentes de datos}
     \begin{itemize}
         \item TBX11K dataset, India (DA and DB) dataset
         \item Montgomery County dataset, Shenzhen Hospital dataset
+    \end{itemize}
+    \item \textbf{Composición del dataset}
+    \begin{itemize}
+        \item Entrenamiento: 888 casos positivos, 6,000 negativos
+        \item Prueba: 488 casos positivos, 1,600 negativos
     \end{itemize}
     \item \textbf{Nota}: Casos 'no tuberculosis' incluyen pacientes saludables y con otras afecciones
 \end{itemize}
@@ -250,6 +260,7 @@ donde $y$ es el vector de etiquetas reales, $\hat{y}$ las predicciones, $w_c^{(p
     \begin{itemize}
         \item Backbone ResNet50 pre-entrenado (pesos congelados)
         \item Rama adicional específica para tuberculosis
+        \item Misma función de pérdida y optimizador Adam
     \end{itemize}
     \item \textbf{Rama de clasificación}
     \begin{itemize}
@@ -276,57 +287,57 @@ donde $y$ es el vector de etiquetas reales, $\hat{y}$ las predicciones, $w_c^{(p
 \end{figure}
 \end{frame}
 
-\begin{frame}
-\frametitle{Extensión a Tuberculosis - Entrenamiento y Resultados}
-\begin{itemize}
-    \item \textbf{Entrenamiento}
-    \begin{itemize}
-        \item Estrategia de entrenamiento inicial
-        \item Backbone congelado, solo nuevas capas densas
-        \item Misma función de pérdida ponderada y optimizador Adam
-    \end{itemize}
-    \item \textbf{Resultados}
-    \begin{itemize}
-        \item F1-score: 0.707, Accuracy: 0.846
-        \item 388 verdaderos positivos de 488 casos
-        \item Comparable con métodos específicos de la literatura
-    \end{itemize}
-    \item \textbf{Análisis adicional}
-    \begin{itemize}
-        \item Modelo original detecta tuberculosis como COVID-19/neumonía
-        \item Características radiológicas similares entre patologías
-        \item Confirma necesidad de entrenamiento específico
-    \end{itemize}
-\end{itemize}
-\end{frame}
+% \begin{frame}
+% \frametitle{Extensión a Tuberculosis - Entrenamiento y Resultados}
+% \begin{itemize}
+%     \item \textbf{Entrenamiento}
+%     \begin{itemize}
+%         \item Estrategia de entrenamiento inicial
+%         \item Backbone congelado, solo nuevas capas densas
+%         \item Misma función de pérdida ponderada y optimizador Adam
+%     \end{itemize}
+%     \item \textbf{Resultados}
+%     \begin{itemize}
+%         \item F1-score: 0.707, Accuracy: 0.846
+%         \item 388 verdaderos positivos de 488 casos
+%         \item Comparable con métodos específicos de la literatura
+%     \end{itemize}
+%     \item \textbf{Análisis adicional}
+%     \begin{itemize}
+%         \item Modelo original detecta tuberculosis como COVID-19/neumonía
+%         \item Características radiológicas similares entre patologías
+%         \item Confirma necesidad de entrenamiento específico
+%     \end{itemize}
+% \end{itemize}
+% \end{frame}
 
 
-\begin{frame}
-\frametitle{Evaluación y Métricas}
-\begin{itemize}
-    \item \textbf{Configuración de evaluación}
-    \begin{itemize}
-        \item Conjunto de prueba independiente (estructura original ChestX-ray14)
-        \item Umbral de clasificación: 0.5 para todas las patologías
-    \end{itemize}
-    \item \textbf{Métricas principales}
-    \begin{itemize}
-        \item AUC-ROC: Capacidad discriminativa del modelo
-        \item AUC-PR: Especialmente importante para clases desbalanceadas
-        \item F1-Score: Balance entre precisión y recall
-        \item Accuracy: Proporción de predicciones correctas
-    \end{itemize}
-    % \item \textbf{Resultados destacados}
-    % \begin{itemize}
-    %     \item ResNet50: AUC-ROC Global-15 = 0.852 (supera CheXNet: 0.841)
-    %     \item COVID-19 ROC AUC: ResNet50 (0.991), ViT (0.982)
-    %     \item Supera a radiólogos en 6/15 patologías
-    % \end{itemize}
-    \item \textbf{Visualizaciones}
-    \begin{itemize}
-        \item Curvas ROC: TPR vs FPR por patología
-        \item GradCAM: Regiones de atención del modelo
-        \item Matrices de confusión: TP, TN, FP, FN
-    \end{itemize}
-\end{itemize}
-\end{frame}
+% \begin{frame}
+% \frametitle{Evaluación y Métricas}
+% \begin{itemize}
+%     \item \textbf{Configuración de evaluación}
+%     \begin{itemize}
+%         \item Conjunto de prueba independiente (estructura original ChestX-ray14)
+%         \item Umbral de clasificación: 0.5 para todas las patologías
+%     \end{itemize}
+%     \item \textbf{Métricas principales}
+%     \begin{itemize}
+%         \item AUC-ROC: Capacidad discriminativa del modelo
+%         \item AUC-PR: Especialmente importante para clases desbalanceadas
+%         \item F1-Score: Balance entre precisión y recall
+%         \item Accuracy: Proporción de predicciones correctas
+%     \end{itemize}
+%     % \item \textbf{Resultados destacados}
+%     % \begin{itemize}
+%     %     \item ResNet50: AUC-ROC Global-15 = 0.852 (supera CheXNet: 0.841)
+%     %     \item COVID-19 ROC AUC: ResNet50 (0.991), ViT (0.982)
+%     %     \item Supera a radiólogos en 6/15 patologías
+%     % \end{itemize}
+%     \item \textbf{Visualizaciones}
+%     \begin{itemize}
+%         \item Curvas ROC: TPR vs FPR por patología
+%         \item GradCAM: Regiones de atención del modelo
+%         \item Matrices de confusión: TP, TN, FP, FN
+%     \end{itemize}
+% \end{itemize}
+% \end{frame}
