@@ -20,19 +20,6 @@ codificada en cada estado oculto $h^{(t)}$. Esto no sería un problema si la sal
 lo suficientemente enriquecedora y en altas dimensiones.
 
 
-% \begin{figure}[!ht]
-% \centering
-% \includegraphics[width=.8\textwidth]{Chapters/2. Transformer/Figures/rnn/rnn_cfg.png}
-% \caption[RNN - CFG]{Distintos tipos de RNNs. \textbf{a)} Las activaciones de las capas ocultas $h^{(t)}$
-% alimentan al nodo siguiente, cada etapa de la recurrencia genera una salida $o^{(t)}$ \textbf{b)}
-% Cada nodo es alimentado por las salidas de cada estado oculto $o^{(t)}$. \textbf{c)} Al final de la
-% recurrencia solo tiene una salida $o^{(T)}$, puede ser usada para resumir/predecir un valor de una
-% secuencia. \textbf{d)} Teacher Forcing. En modo de entrenamiento cada nodo en el tiempo $t$ es
-% retroalimentado por la salida correcta $y^{(t-1)}$, en modo evaluación es retroalimentado por las
-% salidas del modelo $O^{(t-1)}$}
-% \label{fig:rnn_cfg}
-% \end{figure}
-
 \begin{figure}[!ht]
     \centering
     \begin{subfigure}[b]{0.49\textwidth}

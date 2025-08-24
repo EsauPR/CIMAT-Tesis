@@ -336,6 +336,15 @@ del $25\%$, similar al modelo de CNN propuesto anteriormente.
 \label{vit-head-dim}
 \end{figure}
 
+
+\begin{figure}[htp]
+    \centering
+    {\includegraphics[width=0.5\textwidth]{Chapters/4. ViT-Lung/images/both_models.png}}
+\caption{Esquema de los modelo basado en ResNet50 y Vit para la detección de las 15 patologías pulmonares.}
+\label{net_both}
+\end{figure}
+
+
 % \subsection{ViT con cabezas de atención Flexibles}
 
 % Como se observó en la sección \ref*{section-mha} el Transformer está basado en la idea de
@@ -550,7 +559,7 @@ Tuberculosis. La arquitectura extendida, incluyendo la nueva rama, está descrit
 
 \begin{figure}[htp]
     \centering
-    {\includegraphics[width=0.5\textwidth]{Chapters/4. ViT-Lung/images/tb_net.pdf}}
+    {\includegraphics[width=0.5\textwidth]{Chapters/4. ViT-Lung/images/tb_net.png}}
 \caption{ Esquema de la extensión del detector de las 15 patologías incluyendo una nueva rama para
           la detección de Tuberculosis.}
 \label{net_tb}
@@ -909,7 +918,7 @@ en cuestión.
 
 \begin{figure}
     \begin{center}
-        \scalebox{0.6}{\input{Chapters/4. ViT-Lung/images/ROC_AUC.pgf}}
+        \scalebox{0.6}{\includegraphics[width=1.5\textwidth]{Chapters/4. ViT-Lung/images/ROC_AUC.pdf}}
     \end{center}
     \caption{Curvas de ROC (gráficas de FPR contra TPR) para cada patología y muestras saludables
     del modelo CNN.}
@@ -918,7 +927,7 @@ en cuestión.
 
 \begin{figure}
     \begin{center}
-        \scalebox{0.6}{\input{Chapters/4. ViT-Lung/images/ROC_AUC_ViT.pgf}}
+        \scalebox{0.6}{\includegraphics[width=1.5\textwidth]{Chapters/4. ViT-Lung/images/ROC_AUC_ViT.pdf}}
     \end{center}
     \caption{Curvas de ROC (gráficas de FPR contra TPR) para cada patología y muestras saludables
              del modelo ViT.}
